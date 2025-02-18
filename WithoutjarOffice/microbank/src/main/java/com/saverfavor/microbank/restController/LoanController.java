@@ -33,7 +33,7 @@ public class LoanController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get")
     public List<Loan> getAllLoans() {
         return loanService.getAllLoans();
     }
