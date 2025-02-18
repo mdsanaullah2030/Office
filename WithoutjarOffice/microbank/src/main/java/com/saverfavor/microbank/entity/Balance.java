@@ -20,6 +20,8 @@ public class Balance {
     private double referralB;
     private double profitreferralwithdraw;
     private double dipositwithdra;
+    private double profitwithdra;
+
 
 
     @ManyToOne(fetch = FetchType.EAGER)

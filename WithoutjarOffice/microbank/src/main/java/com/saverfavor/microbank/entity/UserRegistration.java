@@ -66,6 +66,7 @@ public class UserRegistration {
         }
     }
 
+
     private String generateRandomUserId() {
         int length = 6;
         String characters = "0123456789";
