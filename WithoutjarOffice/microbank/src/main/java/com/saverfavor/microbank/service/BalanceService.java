@@ -24,154 +24,54 @@ public class BalanceService {
         );
     }
 
-    // Save or update a ManuItem
-    public void saveManuItem(Balance manuItem) {
-        Balance existingItem = balanceRepository.findById(manuItem.getId()).orElse(null);
+    public void saveManuItem(Balance balance) {
+        // Find all existing Balance entries for the same userId
+        List<Balance> existingItems = balanceRepository.findByUserRegistrationId
+                (balance.getUserRegistration().getId());
 
-        double depositBalance;
-        if (existingItem != null) {
-            depositBalance = existingItem.getDipositB() + manuItem.getAddBalance();
+        double depositBalance = 0.0; // Initialize depositBalance to 0.0
+        double totalDepositWithdra = 0.0;
+
+        if (!existingItems.isEmpty()) {
+            // Sum up all the dipositB and dipositwithdra for the user
+            for (Balance existingItem : existingItems) {
+                depositBalance += existingItem.getDipositB();
+                totalDepositWithdra += existingItem.getDipositwithdra();
+            }
+            // Add the new balance to the existing depositBalance
+            depositBalance += balance.getAddBalance();
+            // Update dipositwithdra by adding the new addBalance to the total of previous dipositwithdra
+            balance.setDipositwithdra(totalDepositWithdra + balance.getAddBalance());
         } else {
-            depositBalance = manuItem.getAddBalance();
+            // If no existing balance, set the depositBalance to the new addBalance
+            depositBalance = balance.getAddBalance();
+            balance.setDipositwithdra(depositBalance);
         }
 
-        manuItem.setDipositB(depositBalance);
+        // Set the dipositB to the new total deposit balance
+        balance.setDipositB(depositBalance);
 
-        // Determine package
+        // Determine package based on depositBalance
         String packageType;
         if (depositBalance <= 100) {
             packageType = "1";
-        } else if (depositBalance <= 1000) {
+        } else if (depositBalance <= 101) {
             packageType = "2";
-        } else if (depositBalance <= 5000) {
+        } else if (depositBalance <= 1001) {
             packageType = "3";
         } else {
             packageType = "4";
         }
 
-        manuItem.setPackages(packageType);
-        manuItem.setProfitB(calculateProfit(depositBalance, packageType));
+        balance.setPackages(packageType);
+        balance.setProfitB(calculateProfit(depositBalance, packageType));
 
         // Update withdrawB balance
-        updateWithdrawBalance(manuItem);
+        updateWithdrawBalance(balance);
 
-        balanceRepository.save(manuItem);
+        // Save or update the Balance record
+        balanceRepository.save(balance);
     }
-
-
-
-
-    // Scheduled task to update profitB and withdrawB for all ManuItems daily
-    @Scheduled(fixedRate = 86400000 ) // 24 hours in milliseconds
-    public void updateProfitDaily() {
-        List<Balance> allItems = balanceRepository.findAll();
-        for (Balance item : allItems) {
-            double depositBalance = item.getDipositB();
-
-            // Calculate profit based on the package
-            double profit = calculateProfit(depositBalance, item.getPackages());
-            item.setProfitB(item.getProfitB() + profit);
-
-            // Update withdrawB balance
-            updateWithdrawBalance(item);
-
-            balanceRepository.save(item);
-        }
-    }
-
-
-
-
-
-
-
-
-
-    // Scheduled task to update profitB and withdrawB for packageType 1 every 30 days
-    @Scheduled(fixedRate = 2592000000L) // 30 days in milliseconds
-    public void updateWithdrawBPackageType1() {
-        List<Balance> allItems = balanceRepository.findAll();
-        for (Balance item : allItems) {
-            if ("1".equals(item.getPackages())) {
-                double depositBalance = item.getDipositB();
-                // Calculate profit based on the package
-                double profit = calculateProfit(depositBalance, item.getPackages());
-                item.setProfitB(item.getProfitB() + profit);
-
-                // Update withdrawB balance
-                updateWithdrawBalance(item);
-
-                balanceRepository.save(item);
-            }
-        }
-    }
-
-    // Scheduled task to update profitB and withdrawB for packageType 2 every 15 days
-    @Scheduled(fixedRate = 1296000000L) // 15 days in milliseconds
-    public void updateWithdrawBPackageType2() {
-        List<Balance> allItems = balanceRepository.findAll();
-        for (Balance item : allItems) {
-            if ("2".equals(item.getPackages())) {
-                double depositBalance = item.getDipositB();
-                // Calculate profit based on the package
-                double profit = calculateProfit(depositBalance, item.getPackages());
-                item.setProfitB(item.getProfitB() + profit);
-
-                // Update withdrawB balance
-                updateWithdrawBalance(item);
-
-                balanceRepository.save(item);
-            }
-        }
-    }
-
-    // Scheduled task to update profitB and withdrawB for packageType 3 every 7 days
-    @Scheduled(fixedRate = 604800000L) // 7 days in milliseconds
-    public void updateWithdrawBPackageType3() {
-        List<Balance> allItems = balanceRepository.findAll();
-        for (Balance item : allItems) {
-            if ("3".equals(item.getPackages())) {
-                double depositBalance = item.getDipositB();
-                // Calculate profit based on the package
-                double profit = calculateProfit(depositBalance, item.getPackages());
-                item.setProfitB(item.getProfitB() + profit);
-
-                // Update withdrawB balance
-                updateWithdrawBalance(item);
-
-                balanceRepository.save(item);
-            }
-        }
-    }
-
-    // Scheduled task to update profitB and withdrawB for packageType 4 every 1 day
-    @Scheduled(fixedRate = 86400000L) // 1 day in milliseconds
-    public void updateWithdrawBPackageType4() {
-        List<Balance> allItems = balanceRepository.findAll();
-        for (Balance item : allItems) {
-            if ("4".equals(item.getPackages())) {
-                double depositBalance = item.getDipositB();
-                // Calculate profit based on the package
-                double profit = calculateProfit(depositBalance, item.getPackages());
-                item.setProfitB(item.getProfitB() + profit);
-
-                // Update withdrawB balance
-                updateWithdrawBalance(item);
-
-                balanceRepository.save(item);
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -200,8 +100,89 @@ public class BalanceService {
 
     // Helper method to update withdrawB
     private void updateWithdrawBalance(Balance manuItem) {
-        manuItem.setDipositwithdra(manuItem.getDipositB() + manuItem.getProfitB() + manuItem.getReferralB());
+        manuItem.setDipositwithdra(manuItem.getDipositB());
     }
+
+    @Scheduled(fixedRate = 2592000000L) // 30 days in milliseconds
+    public void updateDipositWithdraForPackageType1() {
+        List<Balance> allItems = balanceRepository.findAll();
+        for (Balance item : allItems) {
+            if ("1".equals(item.getPackages())) {
+                if (item.getDipositB() != 2592000000L) {
+                    // Log or send an alert
+                    System.out.println("Alert: DipositB is not 2592000000 for package type 1.");
+                    continue; // Skip the update if the condition is not met
+                }
+                item.setDipositwithdra(item.getDipositB()); // Update withdrawal balance
+                balanceRepository.save(item);
+            }
+        }
+    }
+
+
+    @Scheduled(fixedRate = 1728000000L) // 20 days in milliseconds
+    public void updateDipositWithdraForPackageType2() {
+        List<Balance> allItems = balanceRepository.findAll();
+        for (Balance item : allItems) {
+            if ("2".equals(item.getPackages())) {
+                if (item.getDipositB() != 1728000000L) {
+                    // Log or send an alert
+                    System.out.println("Alert: DipositB is not 1728000000 for package type 2.");
+                    continue; // Skip the update if the condition is not met
+                }
+                item.setDipositwithdra(item.getDipositB());
+                balanceRepository.save(item);
+            }
+        }
+    }
+
+
+    @Scheduled(fixedRate = 864000000L) // 10 days in milliseconds
+    public void updateDipositWithdraForPackageType3() {
+        List<Balance> allItems = balanceRepository.findAll();
+        for (Balance item : allItems) {
+            if ("3".equals(item.getPackages())) {
+                if (item.getDipositB() != 864000000L) {
+                    // Log or send an alert
+                    System.out.println("Alert: DipositB is not 864000000 for package type 3.");
+                    continue; // Skip the update if the condition is not met
+                }
+                item.setDipositwithdra(item.getDipositB());
+                balanceRepository.save(item);
+            }
+        }
+    }
+
+
+//    // Scheduled task to update dipositwithdra for packageType 4 every 7 days
+//    @Scheduled(fixedRate = 604800000L) // 7 days in milliseconds
+//    public void updateDipositWithdraForPackageType4() {
+//        List<Balance> allItems = balanceRepository.findAll();
+//        for (Balance item : allItems) {
+//            if ("4".equals(item.getPackages())) {
+//                item.setDipositwithdra(item.getDipositB());
+//                balanceRepository.save(item);
+//            }
+//        }
+//    }
+
+
+
+    @Scheduled(fixedRate = 604800000L) // 7 days in milliseconds
+    public void updateDipositWithdraForPackageType4() {
+        List<Balance> allItems = balanceRepository.findAll();
+        for (Balance item : allItems) {
+            if ("4".equals(item.getPackages())) {
+                if (item.getDipositB() == 604800000L) {
+                    item.setDipositwithdra(item.getDipositB());
+                    balanceRepository.save(item);
+                } else {
+                    System.out.println("Alert: DipositB does not match the required interval for package type 4.");
+                    // You can also throw an exception if needed
+                    // throw new RuntimeException("DipositB does not match the required interval for package type 4.");
+                }
+            }
+        }
+    }
+
 }
-
-

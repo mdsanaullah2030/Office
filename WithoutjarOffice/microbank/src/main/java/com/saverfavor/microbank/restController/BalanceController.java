@@ -32,11 +32,11 @@ public class BalanceController {
 
     // Save a new ManuItem
     @PostMapping("/save")
-    public ResponseEntity<String> saveManuItem(@RequestBody Balance manuItem) {
+    public ResponseEntity<String> saveManuItem(@RequestBody Balance balance) {
 
 
         try {
-            balanceService.saveManuItem(manuItem);
+            balanceService.saveManuItem(balance);
             return ResponseEntity.ok("Balance saved successfully!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

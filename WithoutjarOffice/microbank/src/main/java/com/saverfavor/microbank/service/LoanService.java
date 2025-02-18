@@ -39,7 +39,9 @@ public class LoanService {
 
     public Loan saveLoan(Loan loan) {
         // Retrieve the user's balance
-        Optional<Balance> balanceOpt = balanceRepository.findByUserRegistrationId(loan.getUserRegistration().getId());
+        Optional<Balance> balanceOpt = balanceRepository.findByUserRegistrationId(loan.getUserRegistration().getId())
+                .stream()
+                .findFirst();
 
         if (balanceOpt.isPresent()) {
             Balance balance = balanceOpt.get();
