@@ -14,5 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserRegistration, Integer> {
+    UserRegistration findByReferralCode(String referralCode);
 
 }

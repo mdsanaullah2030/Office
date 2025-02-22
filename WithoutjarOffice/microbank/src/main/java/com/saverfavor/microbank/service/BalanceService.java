@@ -1,6 +1,10 @@
 package com.saverfavor.microbank.service;
 import com.saverfavor.microbank.entity.Balance;
+import com.saverfavor.microbank.entity.Referral;
+import com.saverfavor.microbank.entity.UserRegistration;
 import com.saverfavor.microbank.repository.BalanceRepository;
+import com.saverfavor.microbank.repository.ReferralRepository;
+import com.saverfavor.microbank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,10 @@ import java.util.List;
 public class BalanceService {
     @Autowired
     private BalanceRepository balanceRepository;
+    @Autowired
+    private ReferralRepository referralRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     // Retrieve all ManuItems
     public List<Balance> getAllManuItems() {
@@ -31,6 +39,10 @@ public class BalanceService {
 
         double depositBalance = 0.0; // Initialize depositBalance to 0.0
         double totalDepositWithdra = 0.0;
+
+
+        UserRegistration user = balance.getUserRegistration();
+        double depositAmount = balance.getAddBalance();
 
         if (!existingItems.isEmpty()) {
             // Sum up all the dipositB and dipositwithdra for the user
@@ -71,6 +83,25 @@ public class BalanceService {
 
         // Save or update the Balance record
         balanceRepository.save(balance);
+
+
+
+
+        // Find referrer
+        Referral referral = referralRepository.findByUser(user);
+        if (referral != null) {
+            UserRegistration referrer = userRepository.findByReferralCode(referral.getReferredbycode());
+            if (referrer != null) {
+                // Find or create balance entry for the referrer
+                Balance referrerBalance = balanceRepository.findByUserRegistration(referrer)
+                        .orElse(new Balance());
+
+                referrerBalance.setUserRegistration(referrer);
+                referrerBalance.setReferralB(referrerBalance.getReferralB() + (depositAmount * 0.10));
+
+                balanceRepository.save(referrerBalance);
+            }
+        }
     }
 
 

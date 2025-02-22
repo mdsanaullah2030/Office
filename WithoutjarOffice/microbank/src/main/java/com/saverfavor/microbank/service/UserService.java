@@ -1,6 +1,8 @@
 package com.saverfavor.microbank.service;
 
+import com.saverfavor.microbank.entity.Referral;
 import com.saverfavor.microbank.entity.UserRegistration;
+import com.saverfavor.microbank.repository.ReferralRepository;
 import com.saverfavor.microbank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +19,9 @@ import java.util.UUID;
 
 @Service
 public class UserService {
+    @Autowired
+    private ReferralRepository referralRepository;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -54,6 +59,24 @@ public class UserService {
 
 
         userRepository.save(userRegistration);
+
+
+        // ********If the user used a referral code, create a Referral entry
+        if (userRegistration.getReferralCode() != null && !userRegistration.getReferralCode().isEmpty()) {
+            UserRegistration referrer = userRepository.findByReferralCode(userRegistration.getReferralCode());
+
+            if (referrer != null) {
+                Referral referral = new Referral();
+                referral.setUser(userRegistration);
+                referral.setReferredbycode(referrer.getReferralCode());
+
+
+                referralRepository.save(referral);
+            }
+        }
+
+///
+
     }
 
 
@@ -78,7 +101,8 @@ public class UserService {
 //Update Registation data //
 
     @Transactional
-    public void updateUserRegistation(int id,UserRegistration userRegistration,MultipartFile imageFile)throws IOException{
+    public void updateUserRegistation(int id,UserRegistration userRegistration,MultipartFile imageFile)
+            throws IOException{
         UserRegistration existingUserRegistration=userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registration not found with this ID"));
 

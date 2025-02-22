@@ -10,6 +10,6 @@ import java.util.Optional;
 @Repository
 
 public interface ReferralRepository extends JpaRepository<Referral, Integer> {
-
+    Referral findByUser(UserRegistration user);
 }
 
