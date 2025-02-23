@@ -60,6 +60,10 @@ public class UserRegistration implements UserDetails {
     private String referralCode;
 
 
+    private String nidnumber;
+
+    private String passport;
+
 
 
 

@@ -49,6 +49,16 @@ public class UserService implements UserDetailsService {
         }
 
 
+        // Validate that either NID or Passport is set, but not both
+        if ((userRegistration.getNidnumber() != null && !userRegistration.getNidnumber().isEmpty()) &&
+                (userRegistration.getPassport() != null && !userRegistration.getPassport().isEmpty())) {
+            throw new RuntimeException("Either NID number or Passport should be provided, but not both.");
+        }
+
+
+
+
+
         //Image Use//
         if (imageFile != null && !imageFile.isEmpty()) {
             String imageFileName = saveImage(imageFile);
