@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +24,8 @@ public class Balance {
     private double dipositwithdra;
     private double profitwithdra;
 
-
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="userId")
@@ -32,6 +35,13 @@ public class Balance {
     @JoinColumn(name = "referralId")
     private Referral referral;
 
+    @ManyToOne(fetch =FetchType.EAGER )
+    @JoinColumn(name = "nomineeId")
+    private Nominee nominee;
 
-
+    // Automatically set the current date before persisting
+    @PrePersist
+    protected void onCreate() {
+        this.date = new Date();
+    }
 }

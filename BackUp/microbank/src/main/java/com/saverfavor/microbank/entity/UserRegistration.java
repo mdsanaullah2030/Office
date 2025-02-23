@@ -55,6 +55,9 @@ public class UserRegistration {
 
     private String referralCode;
 
+    private String nidnumber;
+    private String passport;
+
 
 
 

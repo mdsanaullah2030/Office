@@ -11,6 +11,7 @@ import com.saverfavor.microbank.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,7 @@ public class AuthService {
         // Check if the user already exists
         if (userRepository.findByEmail(userRegistration.getUsername()).isPresent()) {
             return new AuthenticationResponse(null, "User already exists");
+
         }
 
         // Create a new user entity and save it to the database
@@ -88,4 +90,32 @@ public class AuthService {
 
 
 
-}
+
+    // Method to authenticate a user
+    public AuthenticationResponse authenticate(UserRegistration request) {
+
+        // Authenticate user credentials using Spring Security's AuthenticationManager
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+        // Retrieve the user from the database
+        UserRegistration userRegistration = (UserRegistration) userRepository.findByEmail(request.getUsername()).orElseThrow();
+
+        // Generate JWT token for the authenticated user
+        String jwt = jwtService.generateToken(userRegistration);
+
+        // Revoke all existing tokens for this user
+        revokeAllTokenByUser(userRegistration);
+
+        // Save the new token to the token repository
+        saveUserToken(jwt, userRegistration);
+
+
+        return new AuthenticationResponse(jwt, "User login was successful");
+    }
+
+    }
+
