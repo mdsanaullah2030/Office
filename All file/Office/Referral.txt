@@ -1,0 +1,12 @@
+   
+      ......Referral......
+
+
+   http://localhost:8080/api/Referral/save?inviterId=1&inviteeId=1
+
+
+     http://localhost:9090/api/Referral/get  mababa203097
+
+
+Why is the problem showing
+and how do I solve this problem?

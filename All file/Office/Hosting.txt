@@ -1,0 +1,44 @@
+      .....AWS....
+
+Name: finsys
+password: finsys@2025SaVer
+Email:  finsys25@gmail.com
+Ec2
+Linux
+Ubanto
+
+
+
+
+
+IPA:      108.181.173.121
+user:     administrator
+Password: Pass#0987654321
+
+
+
+sudo apt install openjdk-17-jdk
+
+Install MySQL: sudo apt install mysql-workbench
+
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234';
+FLUSH PRIVILEGES
+ctrl=C
+exit
+sudo mysql_secure_installation
+1234
+n
+y
+y
+y
+y
+mysql -u root -p
+show databases;
+CREATE DATABASE saverfavor;
+
+ java -jar microbank-0.0.1-SNAPSHOT.jar
+
+nohup java -jar microbank-0.0.1-SNAPSHOT.jar
+
+
