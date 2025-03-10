@@ -41,18 +41,28 @@ public class  SecurityConfig {
                         .authorizeHttpRequests(
 
                                 req ->
-                                        req.requestMatchers("/login", "/api/userRegistration", "/api/hotel/", "api/room/","/activate/**", "api/location/","/images/**")
+                                        req.requestMatchers("/login",
+                                                        "/api/userRegistration","/api/userRegistration/get","/activate/**",
+                                                        "/api/nominee/get","/api/nominee/get/{id}",
+
+
+                                                        "/api/Balance/save","/api/Balance/get","/api/Balance/get/{id}",
+
+                                                        "/api/loan/save", "/api/loan/get/{id}" ,"/api/loan/get",
+
+                                                        "/api/Referral/save")
                                                 .permitAll()
 
 
-                                                .requestMatchers( "/api/UserRegistration/update/{id}", "/api/nominee/updateNominee/{id}", "/api/nominee/save",
-                                                        "/api/Balance", "/api/Balance/save", "/api/Balance/{id}",
-                                                        "/api/loan/save", "/api/loan/{id}",
-                                                        "/api/Referral/save")
+                                                .requestMatchers( "/api/UserRegistration/update/{id}",
+                                                        "/api/nominee/updateNominee/{id}","/api/nominee/save"
+
+                                                        )
                                                 .hasAuthority("USER")
 
 
-                                                .requestMatchers("/api/UserRegistration/get", "/api/nominee/get", "/api/loan/get", "/api/Balance/get")
+                                                .requestMatchers(
+                                                        "/api/nominee/updateNominee/{id}")
                                                 .hasAnyAuthority("ADMIN")
 
 
@@ -85,7 +95,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8181"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://108.181.173.121:6060", "http://108.181.173.121:6060"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);

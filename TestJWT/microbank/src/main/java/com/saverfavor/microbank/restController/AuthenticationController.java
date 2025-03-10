@@ -1,6 +1,8 @@
 package com.saverfavor.microbank.restController;
 
 import com.saverfavor.microbank.entity.AuthenticationResponse;
+import com.saverfavor.microbank.entity.Loan;
+import com.saverfavor.microbank.entity.Nominee;
 import com.saverfavor.microbank.entity.User;
 
 import com.saverfavor.microbank.service.AuthService;
@@ -13,11 +15,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin
 public class AuthenticationController {
 @Autowired
     private  AuthService authService;
@@ -29,10 +32,13 @@ public class AuthenticationController {
 
 
     @PostMapping("/api/userRegistration")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody User request
-    ) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody User request) {
+        try {
+            AuthenticationResponse response = authService.register(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new AuthenticationResponse(null, e.getMessage()));
+        }
     }
 
 
@@ -58,4 +64,11 @@ public class AuthenticationController {
     }
 
 
+
+
+    //All Data get//
+    @GetMapping("/api/userRegistration/get")
+    public List<User> getAllUsers() {
+        return userService.getAllUserRegistrations();
+    }
 }

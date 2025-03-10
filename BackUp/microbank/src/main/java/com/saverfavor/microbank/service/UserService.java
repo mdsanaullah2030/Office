@@ -20,6 +20,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
 @Value("${image.upload.dir}")
     private String uploadDir;
 

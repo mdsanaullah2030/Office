@@ -1,14 +1,15 @@
 package com.saverfavor.microbank.service;
 
 import com.saverfavor.microbank.entity.Nominee;
-
 import com.saverfavor.microbank.entity.User;
+
 import com.saverfavor.microbank.repository.NomineeRepository;
 import com.saverfavor.microbank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,18 +28,26 @@ public class NomineeService {
 
     // Fetch nominee by ID
     public Nominee getNomineeById(int id) {
-        return nomineeRepository.findById(id).orElse(new Nominee());
+        return nomineeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Nominee not found with id: " + id));
     }
+
 
     // Save a nominee
     @Transactional
     public void saveNominee(Nominee nominee) {
-        // Validate and fetch the associated user
-        User userRegistration = userRepository.findById(nominee.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User with this ID not found"));
+        // Get the currently logged-in user's email
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName(); // Assuming email is the username
 
-        // Set the user and save the nominee
-        nominee.setUser(userRegistration);
+        // Fetch the authenticated user from the database
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Authenticated user not found"));
+
+        // Assign the authenticated user to the nominee
+        nominee.setUser(user);
+
+        // Save nominee
         nomineeRepository.save(nominee);
     }
 

@@ -75,6 +75,8 @@ public class AuthService {
     }
 
 
+
+
     private void sendActivationEmail(User user) {
         String activationLink = "http://localhost:9091/activate/" + user.getId();
         String mailText = "<h3>Dear " + user.getName()

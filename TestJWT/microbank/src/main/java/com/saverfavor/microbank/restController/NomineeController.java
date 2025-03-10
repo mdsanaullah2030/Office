@@ -1,7 +1,9 @@
+
 package com.saverfavor.microbank.restController;
 
 import com.saverfavor.microbank.entity.Nominee;
 import com.saverfavor.microbank.service.NomineeService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/nominee")
+@AllArgsConstructor
+@CrossOrigin
 public class NomineeController {
 
     @Autowired
@@ -20,21 +23,25 @@ public class NomineeController {
 
 
     // Endpoint to fetch all nominees
-    @GetMapping("/get")
+    @GetMapping("/api/nominee/get")
     public ResponseEntity<List<Nominee>> getAllNominees() {
         List<Nominee> nominees = nomineeService.getAllNominee();
         return ResponseEntity.ok(nominees);
     }
 
     // Endpoint to fetch a nominee by ID
-    @GetMapping("/get/{id}")
+    @GetMapping("/api/nominee/get/{id}")
     public ResponseEntity<Nominee> getNomineeById(@PathVariable int id) {
-        Nominee nominee = nomineeService.getNomineeById(id);
-        return ResponseEntity.ok(nominee);
+        try {
+            Nominee nominee = nomineeService.getNomineeById(id);
+            return ResponseEntity.ok(nominee); // Returns 200 OK with nominee data
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Returns 404 if nominee not found
+        }
     }
 
-    // Endpoint to save a nominee
-    @PostMapping("/save")
+
+    @PostMapping("/api/nominee/save")
     public ResponseEntity<String> saveNominee(@RequestBody Nominee nominee) {
         try {
             nomineeService.saveNominee(nominee);
@@ -48,7 +55,7 @@ public class NomineeController {
 
 
     //Nominee Data Update //
-    @PutMapping("/updateNominee/{id}")
+    @PutMapping("/api/nominee/updateNominee/{id}")
     public ResponseEntity<String>updateNominee(
             @PathVariable int id,
             @RequestBody Nominee nominee
