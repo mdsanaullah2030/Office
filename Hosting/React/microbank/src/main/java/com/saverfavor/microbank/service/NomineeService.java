@@ -1,11 +1,9 @@
 package com.saverfavor.microbank.service;
 
 import com.saverfavor.microbank.entity.Nominee;
-import com.saverfavor.microbank.entity.Token;
 import com.saverfavor.microbank.entity.User;
 
 import com.saverfavor.microbank.repository.NomineeRepository;
-import com.saverfavor.microbank.repository.TokenRepository;
 import com.saverfavor.microbank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NomineeService {
@@ -22,8 +19,6 @@ public class NomineeService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private TokenRepository tokenRepository;
 
     // Fetch all nominees
     public List<Nominee> getAllNominee() {
@@ -39,42 +34,15 @@ public class NomineeService {
 
     // Save a nominee
     @Transactional
-    public void saveNominee(Nominee nominee ,String token) {
-        // Debug: Print the received token
-        System.out.println("Token received: " + token);
+    public void saveNominee(Nominee nominee) {
+        // Validate and fetch the associated user
+        User userRegistration = userRepository.findById(nominee.getUser().getId())
+                .orElseThrow(() -> new RuntimeException("User with this ID not found"));
 
-        // Fetch the logged-in user based on the token
-        Optional<Token> activeToken = tokenRepository.findByToken(token);
-
-        // Debug: Check if the token exists in the database
-        if (activeToken.isPresent()) {
-            System.out.println("Token found in database: " + activeToken.get().getToken());
-        } else {
-            System.out.println("Token not found in database.");
-        }
-
-        if (!activeToken.isPresent() || activeToken.get().isLoggedOut()) {
-            throw new RuntimeException("Invalid or logged-out token");
-        }
-
-        // Fetch the user associated with the active token
-        User userRegistration = activeToken.get().getUser();
-
-        // Debug: Print the user ID retrieved from the token
-        System.out.println("User from token: " + userRegistration.getUserid());
-
-        // Set the user in the nominee entity
+        // Set the user and save the nominee
         nominee.setUser(userRegistration);
-
-        // Save the nominee in the database
         nomineeRepository.save(nominee);
-
-        // Debug: Confirm nominee is being saved
-        System.out.println("Nominee saved successfully for User ID: " + userRegistration.getUserid());
     }
-
-
-
 
 
     //Update Nominee Data //

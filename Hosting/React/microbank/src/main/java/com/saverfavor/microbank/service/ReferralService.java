@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-
 @Service
 public class ReferralService {
 
@@ -69,11 +68,4 @@ public class ReferralService {
         }
         return codeBuilder.toString();
     }
-
-
-
-
-
-
 }
-

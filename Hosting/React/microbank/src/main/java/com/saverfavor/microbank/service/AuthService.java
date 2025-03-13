@@ -78,9 +78,13 @@ public class AuthService {
 
 
     private void sendActivationEmail(User user) {
-        String activationLink = "http://localhost:6060/activate/" + user.getId();
-        String mailText = "Dear " + user.getName() + ", your registration on saverFaver.com is successful! "
-                + "Activate your account here: " + activationLink + ". If you didn’t sign up, ignore this message.";
+        String activationLink = "http://108.181.173.121:6061/activate/" + user.getId();
+        String mailText = "<h3>Dear " + user.getName()
+                + ",</h3>"
+                + "<p>Please click on the following link to confirm your account:</p" +
+                ">"
+                + "<a href=\"" + activationLink + "\">Activate Account</a>"
+                + "<br><br>Regards,<br>saverFaver.com";
         String subject = "Confirm User Account";
         try {
             emailService.sendSimpleEmail(user.getEmail(), subject, mailText);
@@ -88,29 +92,6 @@ public class AuthService {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public String activateUser(long id) {
         User user = userRepository.findById(id)

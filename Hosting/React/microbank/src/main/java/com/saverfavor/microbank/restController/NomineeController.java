@@ -41,35 +41,18 @@ public class NomineeController {
     }
 
 
-//    @PostMapping("/api/nominee/save")
-//    public ResponseEntity<String> saveNominee(
-//            @RequestBody Nominee nominee,
-//            @RequestHeader(value="Authorization") String token) {
-//        try {
-//            nomineeService.saveNominee(nominee, token);
-//            return ResponseEntity.ok("Nominee saved successfully!");
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
-
-
-
+    // Endpoint to save a nominee
     @PostMapping("/api/nominee/save")
-    public ResponseEntity<String> saveNominee(
-            @RequestBody Nominee nominee,
-            @RequestHeader(value = "Authorization", required = false) String token) {
-        if (token == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Authorization header is missing");
-        }
-
+    public ResponseEntity<String> saveNominee(@RequestBody Nominee nominee) {
         try {
-            nomineeService.saveNominee(nominee, token);
+            nomineeService.saveNominee(nominee);
             return ResponseEntity.ok("Nominee saved successfully!");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
 
 
     //Nominee Data Update //

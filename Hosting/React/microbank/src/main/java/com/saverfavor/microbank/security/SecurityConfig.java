@@ -12,10 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -45,7 +43,7 @@ public class  SecurityConfig {
                                 req ->
                                         req.requestMatchers("/login",
                                                         "/api/userRegistration","/api/userRegistration/get","/activate/**",
-                                                        "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save",
+                                                        "/api/nominee/save","/api/nominee/get","/api/nominee/get/{id}",
 
 
                                                         "/api/Balance/save","/api/Balance/get","/api/Balance/get/{id}",
@@ -64,7 +62,7 @@ public class  SecurityConfig {
 
 
                                                 .requestMatchers(
-                                                        "/api/nominee/updateNominee/{id}","/ws/**","/all/messages","/private")
+                                                        "/api/nominee/updateNominee/{id}")
                                                 .hasAnyAuthority("ADMIN")
 
 
@@ -97,7 +95,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://108.181.173.121:6060", "http://108.181.173.121:6060"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://108.181.173.121:6061", "http://localhost:5173"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -108,10 +106,6 @@ public class  SecurityConfig {
     }
 
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        return new InMemoryUserDetailsManager();
-    }
 
 
 }
