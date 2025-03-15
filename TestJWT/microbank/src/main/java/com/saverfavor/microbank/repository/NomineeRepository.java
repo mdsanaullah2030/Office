@@ -19,4 +19,6 @@ public interface NomineeRepository extends JpaRepository<Nominee,Integer> {
 
 
     List<Nominee> findByUserId(long userId);
+
+    boolean existsByUserId(long userId);
 }

@@ -45,7 +45,7 @@ public class  SecurityConfig {
                                 req ->
                                         req.requestMatchers("/login",
                                                         "/api/userRegistration","/api/userRegistration/get","/activate/**",
-                                                        "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save",
+                                                        "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save","/api/nominee/updateNominee/{id}",
 
 
                                                         "/api/Balance/save","/api/Balance/get","/api/Balance/get/{id}",
@@ -56,8 +56,8 @@ public class  SecurityConfig {
                                                 .permitAll()
 
 
-                                                .requestMatchers( "/api/UserRegistration/update/{id}",
-                                                        "/api/nominee/updateNominee/{id}"
+                                                .requestMatchers( "/api/userRegistration/update/{id}"
+
 
                                                         )
                                                 .hasAuthority("USER")

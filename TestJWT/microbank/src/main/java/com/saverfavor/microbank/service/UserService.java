@@ -56,7 +56,17 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+//Update User/
+@Transactional
+    public void updateUser(long id,User user)throws IOException{
+        User existingUser=userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
+        existingUser.setAddress(user.getAddress());
+        existingUser.setPhoneNo(user.getPhoneNo());
+        existingUser.setDob(user.getDob());
+        existingUser.setCountry(user.getCountry());
 
-
+        userRepository.save(existingUser);
+    }
 
 }

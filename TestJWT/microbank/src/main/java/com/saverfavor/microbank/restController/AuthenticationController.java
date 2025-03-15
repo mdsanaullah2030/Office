@@ -44,6 +44,19 @@ public class AuthenticationController {
 
 
 
+    @PutMapping("/api/userRegistration/update/{id}")
+    public ResponseEntity<String>updateUser(
+            @PathVariable long id,
+            @RequestBody User user
+    )throws IOException{
+        try {
+            userService.updateUser(id, user);
+            return ResponseEntity.ok("User updated successfully");
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(("User not found"));
+        }
+    }
+
 
 
 
