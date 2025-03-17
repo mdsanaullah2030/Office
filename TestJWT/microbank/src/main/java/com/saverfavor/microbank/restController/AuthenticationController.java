@@ -81,7 +81,19 @@ public class AuthenticationController {
 
     //All Data get//
     @GetMapping("/api/userRegistration/get")
-    public List<User> getAllUsers() {
-        return userService.getAllUserRegistrations();
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<User> users = userService.getAllUserRegistrations();
+
+            if (users.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No users found");
+            }
+
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while fetching user data: " + e.getMessage());
+        }
     }
+
 }
