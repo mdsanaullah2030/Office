@@ -44,7 +44,7 @@ public class  SecurityConfig {
 
                                 req ->
                                         req.requestMatchers("/login",
-                                                        "/api/userRegistration","/api/userRegistration/get","/activate/**",
+                                                        "/api/userRegistration","/activate/**","/api/userRegistration/get","/api/userRegistration/update/{id}",
                                                         "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save","/api/nominee/updateNominee/{id}",
 
 
@@ -56,7 +56,7 @@ public class  SecurityConfig {
                                                 .permitAll()
 
 
-                                                .requestMatchers( "/api/userRegistration/update/{id}"
+                                                .requestMatchers( "**"
 
 
                                                         )
@@ -64,8 +64,14 @@ public class  SecurityConfig {
 
 
                                                 .requestMatchers(
-                                                        "/api/nominee/updateNominee/{id}","/ws/**","/all/messages","/private")
-                                                .hasAnyAuthority("ADMIN")
+
+
+
+
+
+
+                                                        "/api/nominee/updateNominee/{id}")
+                                                .hasAuthority("ADMIN")
 
 
                         )
@@ -105,12 +111,6 @@ public class  SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);  // Apply CORS settings to all endpoints
         return source;
-    }
-
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        return new InMemoryUserDetailsManager();
     }
 
 

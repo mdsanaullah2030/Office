@@ -3,6 +3,8 @@ package com.saverfavor.microbank.service;
 
 import com.saverfavor.microbank.entity.User;
 import com.saverfavor.microbank.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +27,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private  UserRepository userRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 
 
@@ -58,15 +61,16 @@ public class UserService implements UserDetailsService {
 
 //Update User/
 @Transactional
-    public void updateUser(long id,User user)throws IOException{
-        User existingUser=userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
-        existingUser.setAddress(user.getAddress());
-        existingUser.setPhoneNo(user.getPhoneNo());
-        existingUser.setDob(user.getDob());
-        existingUser.setCountry(user.getCountry());
+public void updateUser(long id, User user) throws IOException {
+    User existingUser = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("User not found with this ID"));
 
-        userRepository.save(existingUser);
-    }
+    existingUser.setAddress(user.getAddress());
+    existingUser.setPhoneNo(user.getPhoneNo());
+    existingUser.setDob(user.getDob());
+    existingUser.setCountry(user.getCountry());
+
+    userRepository.save(existingUser);
+}
 
 }

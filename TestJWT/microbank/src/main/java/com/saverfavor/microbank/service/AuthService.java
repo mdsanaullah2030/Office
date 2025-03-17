@@ -98,20 +98,6 @@ public class AuthService {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public String activateUser(long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not Found with this ID"));
