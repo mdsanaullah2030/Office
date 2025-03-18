@@ -22,7 +22,13 @@ public class Loan {
     private  double totalpay;
     private int tenure;
     private  String status;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date requestdate;
+    // Automatically set the current date before persisting
+    @PrePersist
+    protected void onCreate() {
+        this.requestdate = new Date();
+    }
 
 
 

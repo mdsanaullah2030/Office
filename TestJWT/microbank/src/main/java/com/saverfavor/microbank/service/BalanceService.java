@@ -284,6 +284,9 @@ public class BalanceService {
 
 
 
+    public List<Balance> getBalanceByUser(long userId) {
+        return balanceRepository.findByUserRegistrationId(userId);
+    }
 
 
 

@@ -44,4 +44,11 @@ public class LoanController {
     public Loan getLoanById(@PathVariable Integer id) {
         return loanService.getLoanById(id);
     }
+
+
+    @GetMapping("/api/loan/getByUser/{userId}")
+    public ResponseEntity<List<Loan>> getLoansByUser(@PathVariable long userId) {
+        List<Loan> loans = loanService.getLoansByUserId(userId);
+        return ResponseEntity.ok(loans);
+    }
 }

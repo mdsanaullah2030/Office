@@ -44,4 +44,11 @@ public class BalanceController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/api/Balance/getByUser/{userId}")
+    public ResponseEntity<List<Balance>> getBalanceByUser(@PathVariable long userId) {
+        List<Balance> balances = balanceService.getBalanceByUser(userId);
+        return ResponseEntity.ok(balances);
+    }
+
 }

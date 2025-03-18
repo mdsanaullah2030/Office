@@ -48,9 +48,9 @@ public class  SecurityConfig {
                                                         "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save","/api/nominee/updateNominee/{id}",
 
 
-                                                        "/api/Balance/save","/api/Balance/get","/api/Balance/get/{id}",
+                                                        "/api/Balance/save","/api/Balance/get","/api/Balance/get/{id}","/api/Balance/getByUser/{userId}",
 
-                                                        "/api/loan/save", "/api/loan/get/{id}" ,"/api/loan/get",
+                                                        "/api/loan/save", "/api/loan/get/{id}" ,"/api/loan/get","/api/loan/getByUser/{userId}",
 
                                                         "/api/Referral/save")
                                                 .permitAll()
