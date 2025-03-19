@@ -2,11 +2,9 @@
 package com.saverfavor.microbank.restController;
 
 import com.saverfavor.microbank.DTO.ReferralDTO;
-import com.saverfavor.microbank.entity.Nominee;
 import com.saverfavor.microbank.entity.Referral;
 import com.saverfavor.microbank.service.ReferralService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,24 +39,4 @@ public class ReferralController {
         }
     }
 
-
-
-    // Endpoint to fetch a nominee by ID
-    @GetMapping("/get/{id}")
-    public ResponseEntity<Referral> getNomineeById(@PathVariable int id) {
-        try {
-            Referral referral = referralService.getReferralById(id);
-            return ResponseEntity.ok(referral); // Returns 200 OK with nominee data
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Returns 404 if nominee not found
-        }
-    }
-
-
-
-    @GetMapping("/getByUser/{userId}")
-    public ResponseEntity<List<Referral>> getReferralsByUser(@PathVariable long userId) {
-        List<Referral> referrals = referralService.getReferralsByUserId(userId);
-        return ResponseEntity.ok(referrals);
-    }
 }

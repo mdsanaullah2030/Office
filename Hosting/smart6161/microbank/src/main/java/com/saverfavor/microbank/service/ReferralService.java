@@ -1,7 +1,6 @@
 
 package com.saverfavor.microbank.service;
 
-import com.saverfavor.microbank.entity.Nominee;
 import com.saverfavor.microbank.entity.Referral;
 import com.saverfavor.microbank.entity.User;
 import com.saverfavor.microbank.repository.ReferralRepository;
@@ -27,14 +26,6 @@ public class ReferralService {
     public List<Referral> getAllReferrals() {
         return referralRepository.findAll();
     }
-
-
-    // Fetch Referral by ID
-    public Referral getReferralById(int id) {
-        return referralRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Referral not found with id: " + id));
-    }
-
 
     // Create referral entry when someone is invited
     public void createReferral(long inviterId, long inviteeId) {
@@ -80,9 +71,6 @@ public class ReferralService {
     }
 
 
-    public List<Referral> getReferralsByUserId(long userId) {
-        return referralRepository.findByUserId(userId);
-    }
 
 
 
