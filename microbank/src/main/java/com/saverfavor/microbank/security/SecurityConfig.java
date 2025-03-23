@@ -52,7 +52,10 @@ public class  SecurityConfig {
 
                                                         "/api/loan/save", "/api/loan/get/{id}" ,"/api/loan/get","/api/loan/getByUser/{userId}",
 
-                                                        "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,"/api/Referral/get/{id}")
+                                                        "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,"/api/Referral/get/{id}"
+                                                ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**","/all/messages","/private"
+
+                                                )
                                                 .permitAll()
 
 
@@ -100,21 +103,10 @@ public class  SecurityConfig {
     }
 
 
-//Notification //
-//  @Bean
-//    public InMemoryUserDetailsManager userDetailsManager() {
-//      return new InMemoryUserDetailsManager();
-//   }
-
-
-
-
-
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://108.181.173.121:6060", "http://localhost:8181"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://108.181.173.121:6160", "http://108.181.173.121:6160"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
