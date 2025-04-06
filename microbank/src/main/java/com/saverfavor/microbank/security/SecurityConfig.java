@@ -53,7 +53,8 @@ public class  SecurityConfig {
                                                         "/api/loan/save", "/api/loan/get/{id}" ,"/api/loan/get","/api/loan/getByUser/{userId}",
 
                                                         "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,"/api/Referral/get/{id}"
-                                                ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**","/all/messages","/private"
+                                                ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**","/all/messages","/private",
+                                                "/api/transactions/save"
 
                                                 )
                                                 .permitAll()

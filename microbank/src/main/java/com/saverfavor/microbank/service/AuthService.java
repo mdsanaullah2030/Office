@@ -78,7 +78,7 @@ public class AuthService {
 
 
     private void sendActivationEmail(User user) {
-        String activationLink = "http://108.181.173.121:6160/activate/" + user.getId();
+        String activationLink = "http://localhost:6160/activate/" + user.getId();
         String mailText = "Dear " + user.getName() + ", your registration on saverFaver.com is successful! "
                 + "Activate your account here: " + activationLink + ". If you didn’t sign up, ignore this message.";
         String subject = "Confirm User Account";
