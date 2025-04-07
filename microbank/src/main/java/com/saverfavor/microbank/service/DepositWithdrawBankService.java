@@ -36,23 +36,24 @@ public class DepositWithdrawBankService {
                     .orElseThrow(() -> new RuntimeException("Balance record not found"));
             transaction.setBalance(balance);
 
-            // Get available withdrawable balance
-            double withdrawableAmount = balance.getDipositwithdra();
+            // Get current deposit withdraw amount from Balance table
+            double currentWithdrawAmount = balance.getDipositwithdra(); // ✅ Correct field
 
-            // Validate dipositwithdrawamount doesn't exceed withdrawable balance
-            if (transaction.getDipositwithdrawamount() > withdrawableAmount) {
-                throw new RuntimeException(" Withdraw amount exceeds the available balance: " + withdrawableAmount);
+            // Validate dipositwithdrawamount doesn't exceed available withdrawable balance
+            if (transaction.getDipositwithdrawamount() > currentWithdrawAmount) {
+                throw new RuntimeException("Withdraw amount exceeds the available balance: " + currentWithdrawAmount);
             }
 
+            // Set withdrawbalance field in transaction
+            transaction.setWithdrawbalance(String.valueOf(currentWithdrawAmount));
 
+            // Deduct the transaction amount from Balance's dipositwithdrawamount
+            balance.setDipositwithdra(currentWithdrawAmount - transaction.getDipositwithdrawamount());
 
-            // Set withdraw balance
-            transaction.setWithdrawbalance(String.valueOf(withdrawableAmount));
-
-            // Optionally update the Balance if the withdrawal is successful
-            balance.setDipositwithdra(withdrawableAmount - transaction.getDipositwithdrawamount());
+            // Save updated Balance
             balanceRepository.save(balance);
         }
+
 
         return repository.save(transaction);
     }
