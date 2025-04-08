@@ -79,15 +79,25 @@ public class AuthService {
 
     private void sendActivationEmail(User user) {
         String activationLink = "http://localhost:6160/activate/" + user.getId();
-        String mailText = "Dear " + user.getName() + ", your registration on saverFaver.com is successful! "
-                + "Activate your account here: " + activationLink + ". If you didn’t sign up, ignore this message.";
-        String subject = "Confirm User Account";
+
+        String subject = "Activate Your FINSYS Account";
+
+        String mailText = "Dear " + user.getName() + ",\n\n" +
+                "Your registration on FINSYS is successful!\n\n" +
+                "Please click the link below to verify your email address:\n" +
+                activationLink + "\n\n" +
+                "If you didn’t sign up, please ignore this message.\n\n" +
+                "For any assistance, feel free to reach out to our support team at help@getfinsys.com.\n\n" +
+                "Thank you for choosing FINSYS.\n\n" +
+                "© Financial System Solutions";
+
         try {
             emailService.sendSimpleEmail(user.getEmail(), subject, mailText);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to send activation email", e);
         }
     }
+
 
 
 

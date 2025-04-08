@@ -32,6 +32,14 @@ public class DepositWithdrawBank {
     }
 
 
+
+    private String otp;
+    private boolean otpVerified = false;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date otpGeneratedTime;
+
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User userRegistration;

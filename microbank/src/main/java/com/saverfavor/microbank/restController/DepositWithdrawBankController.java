@@ -4,6 +4,7 @@ import com.saverfavor.microbank.entity.DepositWithdrawBank;
 import com.saverfavor.microbank.service.DepositWithdrawBankService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,12 @@ public class DepositWithdrawBankController {
     private DepositWithdrawBankService service;
 
     // Save a new transaction
+//    @PostMapping("/api/transactions/save")
+//    public DepositWithdrawBank saveTransaction(@RequestBody DepositWithdrawBank transaction) {
+//        return service.saveTransaction(transaction);
+//    }
     @PostMapping("/api/transactions/save")
-    public DepositWithdrawBank saveTransaction(@RequestBody DepositWithdrawBank transaction) {
+    public String saveTransaction(@RequestBody DepositWithdrawBank transaction) {
         return service.saveTransaction(transaction);
     }
 
@@ -35,5 +40,11 @@ public class DepositWithdrawBankController {
     @GetMapping("/{id}")
     public Optional<DepositWithdrawBank> getTransactionById(@PathVariable int id) {
         return service.getTransactionById(id);
+    }
+
+    @PostMapping("/confirm-otp")
+    public ResponseEntity<String> confirmOtp(@RequestParam int transactionId, @RequestParam String otp) {
+        String result = service.confirmOtpAndWithdraw(transactionId, otp);
+        return ResponseEntity.ok(result);
     }
 }
