@@ -19,7 +19,7 @@ import java.util.Random;
 public class DepositWithdrawBankService {
 
     @Autowired
-    private DepositWithdrawBankRepository repository;
+    private DepositWithdrawBankRepository depositWithdrawBankRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -35,12 +35,12 @@ public class DepositWithdrawBankService {
 
     // Get all transactions
     public List<DepositWithdrawBank> getAllTransactions() {
-        return repository.findAll();
+        return depositWithdrawBankRepository.findAll();
     }
 
     // Get transaction by ID
     public Optional<DepositWithdrawBank> getTransactionById(int id) {
-        return repository.findById(id);
+        return depositWithdrawBankRepository.findById(id);
     }
 
     // Save deposit/withdraw transaction (with OTP generation)
@@ -70,7 +70,7 @@ public class DepositWithdrawBankService {
             transaction.setOtpGeneratedTime(new Date());
 
             // Save transaction (awaiting OTP verification)
-            repository.save(transaction);
+            depositWithdrawBankRepository.save(transaction);
 
             try {
                 emailService.sendSimpleEmail(
@@ -96,7 +96,7 @@ public class DepositWithdrawBankService {
 
     // Confirm OTP and process withdrawal
     public String confirmOtpAndWithdraw(int transactionId, String userEnteredOtp) {
-        DepositWithdrawBank transaction = repository.findById(transactionId)
+        DepositWithdrawBank transaction = depositWithdrawBankRepository.findById(transactionId)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
 
         if (transaction.isOtpVerified()) {
@@ -124,7 +124,7 @@ public class DepositWithdrawBankService {
         balanceRepository.save(balance);
 
         transaction.setWithdrawbalance(String.valueOf(currentAmount));
-        repository.save(transaction);
+        depositWithdrawBankRepository.save(transaction);
 
         return "Withdrawal successful.";
     }
