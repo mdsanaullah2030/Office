@@ -123,19 +123,19 @@ public class DepositWithdrawBankService {
             throw new RuntimeException("Invalid user.");
         }
 
-        // ✅ Always fetch the latest balance based on userId
+        // Always fetch the latest balance based on userId
         Balance latestBalance = balanceRepository
                 .findTopByUserRegistrationIdOrderByDateDesc(user.getId())
                 .orElseThrow(() -> new RuntimeException("No balance record found for this user."));
 
         double currentWithdrawAmount = latestBalance.getDipositwithdra();
 
-        // ✅ Validate withdrawal amount
+        //  Validate withdrawal amount
         if (transaction.getDipositwithdrawamount() > currentWithdrawAmount) {
             throw new RuntimeException("Withdraw amount exceeds available balance: " + currentWithdrawAmount);
         }
 
-        // ✅ Set balance and withdrawbalance in the transaction
+        //  Set balance and withdrawbalance in the transaction
         transaction.setBalance(latestBalance);
         transaction.setWithdrawbalance(String.valueOf(currentWithdrawAmount));
 
