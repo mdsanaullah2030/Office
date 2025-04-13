@@ -43,8 +43,11 @@ public class DepositWithdrawBankController {
     }
 
     @PostMapping("/api/confirm-otp")
-    public ResponseEntity<String> confirmOtp(@RequestParam int transactionId, @RequestParam String otp) {
-        String result = service.confirmOtpAndWithdraw(transactionId, otp);
+    public ResponseEntity<String> confirmOtp(@RequestParam int userId,
+                                             @RequestParam int balanceId,
+                                             @RequestParam String otp) {
+        String result = service.confirmOtpAndWithdraw(userId, balanceId, otp);
         return ResponseEntity.ok(result);
     }
+
 }

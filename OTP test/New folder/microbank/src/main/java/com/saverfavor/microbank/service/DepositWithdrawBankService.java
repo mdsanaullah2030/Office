@@ -113,7 +113,8 @@ public class DepositWithdrawBankService {
 //    }
 
 
-    public String saveTransaction(DepositWithdrawBank transaction) {
+    public String saveTransaction(DepositWithdrawBank transaction, String userEnteredOtp)
+    {
         User user = transaction.getUserRegistration();
         if (user != null && user.getId() != 0) {
             user = userRepository.findById(user.getId())
@@ -130,17 +131,33 @@ public class DepositWithdrawBankService {
 
         double currentWithdrawAmount = latestBalance.getDipositwithdra();
 
-        //  Validate withdrawal amount
         if (transaction.getDipositwithdrawamount() > currentWithdrawAmount) {
             throw new RuntimeException("Withdraw amount exceeds available balance: " + currentWithdrawAmount);
         }
 
-        //  Set balance and withdrawbalance in the transaction
+
+//
+
+
+
+
+        // Set balance and withdrawbalance in the transaction
         transaction.setBalance(latestBalance);
-        transaction.setWithdrawbalance(String.valueOf(currentWithdrawAmount));
+//        transaction.setWithdrawbalance(String.valueOf(currentWithdrawAmount));
+
+
+        // Subtract the amount from dipositB and dipositwithdra
+        double withdrawAmounts = transaction.getDipositwithdrawamount();
+        latestBalance.setDipositB(latestBalance.getDipositB() - withdrawAmounts);
+        latestBalance.setDipositwithdra(latestBalance.getDipositwithdra() - withdrawAmounts);
+        balanceRepository.save(latestBalance);
+
+
+
 
         // Generate OTP
         String otp = generateOtp();
+        transaction.setGeneratedOtp(otp);  // Save OTP in the transaction
         transaction.setOtpVerified(false);
         transaction.setOtpGeneratedTime(new Date());
 
@@ -160,47 +177,51 @@ public class DepositWithdrawBankService {
             throw new RuntimeException("Failed to send OTP email");
         }
 
-        return "OTP sent to your email.";
-    }
+        // If user enters the OTP, compare it and verify
+        if (userEnteredOtp != null && userEnteredOtp.equals(transaction.getGeneratedOtp())) {
+            long elapsedTime = new Date().getTime() - transaction.getOtpGeneratedTime().getTime();
+            if (elapsedTime > 5 * 60 * 1000) {
+                throw new RuntimeException("OTP has expired.");
+            }
+
+            // OTP is valid and within the expiry time
+            transaction.setOtpVerified(true);
+
+            // Deduct the balance after OTP verification
+            Balance balance = transaction.getBalance();
+            double currentAmount = balance.getDipositwithdra();
+
+            if (transaction.getDipositwithdrawamount() > currentAmount) {
+                throw new RuntimeException("Insufficient balance.");
+            }
+
+            // Recalculate packages
+            double updatedDipositB = balance.getDipositB();
+            String packageType;
+
+            if (updatedDipositB <= 100) {
+                packageType = "1";
+            } else if (updatedDipositB <= 101) {
+                packageType = "2";
+            } else if (updatedDipositB <= 1001) {
+                packageType = "3";
+            } else {
+                packageType = "4";
+            }
+
+            balance.setPackages(packageType);
 
 
 
 
+            balance.setDipositwithdra(currentAmount - transaction.getDipositwithdrawamount());
+            balanceRepository.save(balance);
+            depositWithdrawBankRepository.save(transaction);
 
-
-    // Confirm OTP and process withdrawal
-    //findById(transactionId)
-    public String confirmOtpAndWithdraw(int userId, int balanceId, String userEnteredOtp) {
-        DepositWithdrawBank transaction = depositWithdrawBankRepository
-                .findTopByUserRegistrationIdAndBalanceIdAndOtpVerifiedFalseOrderByIdDesc(userId, balanceId)
-                .orElseThrow(() -> new RuntimeException("Pending OTP transaction not found."));
-
-        // Compare OTP
-        if (!transaction .getGeneratedOtp().equals(userEnteredOtp)) {
+            return "Withdrawal successful.";
+        } else {
             throw new RuntimeException("Invalid OTP entered.");
         }
-
-        // Check for expiry (5 mins)
-        long elapsedTime = new Date().getTime() - transaction.getOtpGeneratedTime().getTime();
-        if (elapsedTime > 5 * 60 * 1000) {
-            throw new RuntimeException("OTP has expired.");
-        }
-
-        transaction.setOtpVerified(true);
-
-        // Deduct balance
-        Balance balance = transaction.getBalance();
-        double currentAmount = balance.getDipositwithdra();
-
-        if (transaction.getDipositwithdrawamount() > currentAmount) {
-            throw new RuntimeException("Insufficient balance.");
-        }
-
-        balance.setDipositwithdra(currentAmount - transaction.getDipositwithdrawamount());
-        balanceRepository.save(balance);
-        depositWithdrawBankRepository.save(transaction);
-
-        return "Withdrawal successful.";
     }
 
 
@@ -212,4 +233,44 @@ public class DepositWithdrawBankService {
         int otp = 100000 + random.nextInt(900000);
         return String.valueOf(otp);
     }
+
+
+
+    public String verifyOtp(int transactionId, String userEnteredOtp) {
+        DepositWithdrawBank transaction = depositWithdrawBankRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+//
+//        if (transaction.getOtpVerified()) {
+//            return "Transaction already verified.";
+//        }
+
+        if (!userEnteredOtp.equals(transaction.getGeneratedOtp())) {
+            throw new RuntimeException("Invalid OTP.");
+        }
+
+        long elapsedTime = new Date().getTime() - transaction.getOtpGeneratedTime().getTime();
+        if (elapsedTime > 5 * 60 * 1000) {
+            throw new RuntimeException("OTP has expired.");
+        }
+
+        // OTP is valid → mark verified
+        transaction.setOtpVerified(true);
+
+        // Deduct balance
+        Balance balance = transaction.getBalance();
+        double current = balance.getDipositwithdra();
+        double amount = transaction.getDipositwithdrawamount();
+
+        if (amount > current) {
+            throw new RuntimeException("Insufficient balance.");
+        }
+
+        balance.setDipositwithdra(current - amount);
+        balanceRepository.save(balance);
+        depositWithdrawBankRepository.save(transaction);
+
+        return "OTP verified and withdrawal successful.";
+    }
+
+
 }

@@ -2,46 +2,34 @@ package com.saverfavor.microbank.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class DepositWithdrawBank {
+public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String withdrawbalance;
-    private int accountnumber;
-    private String bankname;
-    private int routingnumber;
-    private int swiftcode;
-    private int dipositwithdrawamount;
+    private int eligeblebalancey;
+    private int loanamuont;
+    private double weeklypay;
+    private  double totalpay;
+    private int tenure;
+    private  String status;
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestdate;
     // Automatically set the current date before persisting
-
-
-    private String generatedOtp; // Add this
-
     @PrePersist
     protected void onCreate() {
         this.requestdate = new Date();
     }
 
-
-
-
-    private boolean otpVerified = false;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date otpGeneratedTime;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -52,4 +40,7 @@ public class DepositWithdrawBank {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "balanceId")
     private Balance balance;
+
+
+
 }
