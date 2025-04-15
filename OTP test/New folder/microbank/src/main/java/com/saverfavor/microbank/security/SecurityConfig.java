@@ -54,7 +54,7 @@ public class  SecurityConfig {
 
                                                         "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,"/api/Referral/get/{id}"
                                                 ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**","/all/messages","/private",
-                                                "/api/transactions/save","/api/confirm-otp"
+                                                "/api/transactions/save","/api/confirm-otp","/api/Withdrawal/save"
 
                                                 )
                                                 .permitAll()

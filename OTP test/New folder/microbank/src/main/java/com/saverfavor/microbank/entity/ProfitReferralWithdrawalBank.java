@@ -20,12 +20,12 @@ public class ProfitReferralWithdrawalBank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String withdrawbalance;
+    private Double withdrawbalance;
     private int accountnumber;
     private String bankname;
     private int routingnumber;
     private int swiftcode;
-    private int withdrawamount;
+    private Double withdrawamount;
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestdate;
     // Automatically set the current date before persisting
@@ -56,3 +56,10 @@ public class ProfitReferralWithdrawalBank {
 
 
 }
+
+
+
+
+
+
+

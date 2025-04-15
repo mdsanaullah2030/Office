@@ -6,12 +6,11 @@ import com.saverfavor.microbank.entity.User;
 import com.saverfavor.microbank.repository.BalanceRepository;
 import com.saverfavor.microbank.repository.ProfitReferralWithdrawalBankRepository;
 import com.saverfavor.microbank.repository.UserRepository;
-
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -19,75 +18,102 @@ import java.util.Random;
 public class ProfitReferralWithdrawalBankService {
 
     @Autowired
-    private ProfitReferralWithdrawalBankRepository withdrawalRepo;
+    private ProfitReferralWithdrawalBankRepository withdrawalRepository;
+
+    @Autowired
+    private BalanceRepository balanceRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private BalanceRepository balanceRepository;
+    private EmailService emailService;
 
     /**
-     * Create a withdrawal request with OTP generation.
+     * Creates a withdrawal request, subtracts from profitB, sends OTP.
      */
-    public ProfitReferralWithdrawalBank createWithdrawalRequest(long userId, int balanceId, ProfitReferralWithdrawalBank withdrawalRequest) {
+    public String saveWithdrawalRequest(ProfitReferralWithdrawalBank request) {
+        long userId = request.getUserRegistration().getId();
+
+        // 1. Get user
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        request.setUserRegistration(user);
 
-        Balance balance = balanceRepository.findById(balanceId)
-                .orElseThrow(() -> new RuntimeException("Balance not found with ID: " + balanceId));
+        // 2. Check cooldown (3 mins)
+        Optional<ProfitReferralWithdrawalBank> lastRequestOpt =
+                withdrawalRepository.findTopByUserRegistrationIdOrderByRequestdateDesc(userId);
 
-        // Set user and balance reference
-        withdrawalRequest.setUserRegistration(user);
-        withdrawalRequest.setBalance(balance);
+        if (lastRequestOpt.isPresent()) {
+            long diff = new Date().getTime() - lastRequestOpt.get().getRequestdate().getTime();
+            if (diff < 3 * 60 * 1000) {
+                return "You must wait at least 3 minutes between withdrawals.";
+            }
+        }
 
-        // Generate and set OTP
+        // 3. Get balance record
+        Balance balance = balanceRepository
+                .findTopByUserRegistrationIdOrderByIdDesc(userId)
+                .orElseThrow(() -> new RuntimeException("Balance not found"));
+
+        double currentProfitB = balance.getProfitB();
+        double withdrawAmount = request.getWithdrawamount();
+
+        if (withdrawAmount > currentProfitB) {
+            return "Insufficient profit balance.";
+        }
+
+        // 4. Set withdrawbalance to current profitB
+        request.setWithdrawbalance(currentProfitB);
+
+        // 5. Subtract withdraw amount from profitB and save
+        balance.setProfitB(currentProfitB - withdrawAmount);
+        balanceRepository.save(balance);
+
+        // 6. Generate OTP
         String otp = generateOtp();
-        withdrawalRequest.setGeneratedOtp(otp);
-        withdrawalRequest.setOtpVerified(false);
-        withdrawalRequest.setOtpGeneratedTime(new Date());
+        request.setGeneratedOtp(otp);
+        request.setOtpVerified(false);
+        request.setOtpGeneratedTime(new Date());
+        request.setBalance(balance);
 
-        // Save to DB
-        return withdrawalRepo.save(withdrawalRequest);
-    }
+        withdrawalRepository.save(request);
 
-    /**
-     * Verify OTP and mark the withdrawal as verified.
-     */
-    public boolean verifyOtp(int withdrawalId, String enteredOtp) {
-        Optional<ProfitReferralWithdrawalBank> optional = withdrawalRepo.findById(withdrawalId);
-
-        if (optional.isEmpty()) {
-            throw new RuntimeException("Withdrawal not found");
+        // 7. Send email
+        try {
+            emailService.sendSimpleEmail(
+                    user.getEmail(),
+                    "Withdrawal OTP Verification",
+                    "Dear " + user.getName() + ",\n\n" +
+                            "Your OTP for withdrawal: " + otp + "\n\n" +
+                            "Thanks,\nSaverFavor Microbank"
+            );
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send OTP email.");
         }
 
-        ProfitReferralWithdrawalBank request = optional.get();
+        return "Withdrawal request submitted successfully!";
+    }
 
-        if (request.getGeneratedOtp().equals(enteredOtp)) {
-            request.setOtpVerified(true);
-            withdrawalRepo.save(request);
-            return true;
+
+    public void syncWithdrawBalanceWithProfitB() {
+        // For all users' latest balance
+        var balances = balanceRepository.findLatestBalanceForAllUsers();
+        for (Balance balance : balances) {
+            User user = balance.getUserRegistration();
+            Optional<ProfitReferralWithdrawalBank> latestWithdrawalOpt =
+                    withdrawalRepository.findTopByUserRegistrationIdOrderByRequestdateDesc(user.getId());
+
+            if (latestWithdrawalOpt.isPresent()) {
+                ProfitReferralWithdrawalBank withdrawal = latestWithdrawalOpt.get();
+                withdrawal.setWithdrawbalance(balance.getProfitB());
+                withdrawalRepository.save(withdrawal);
+            }
         }
-
-        return false;
     }
 
-    /**
-     * Get all withdrawals for a user.
-     */
-    public List<ProfitReferralWithdrawalBank> getWithdrawalsByUser(int userId) {
-        return withdrawalRepo.findAll().stream()
-                .filter(w -> w.getUserRegistration().getId() == userId)
-                .toList();
-    }
-
-    /**
-     * Helper method to generate 6-digit OTP
-     */
     private String generateOtp() {
-        Random random = new Random();
-        int otp = 100000 + random.nextInt(900000);
-        return String.valueOf(otp);
+        Random r = new Random();
+        return String.valueOf(100000 + r.nextInt(900000));
     }
-
 }
