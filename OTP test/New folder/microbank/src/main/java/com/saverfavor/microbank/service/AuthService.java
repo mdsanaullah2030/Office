@@ -96,6 +96,12 @@ public class AuthService {
         } catch (MessagingException e) {
             throw new RuntimeException("Failed to send activation email", e);
         }
+
+
+
+
+
+
     }
 
 
@@ -155,6 +161,10 @@ public class AuthService {
 
 
 
-
+    public void logoutByUserId(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
+        revokeAllTokenByUser(user);
+    }
 
 }

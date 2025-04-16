@@ -68,7 +68,7 @@ public void updateUser(long id, User user) throws IOException {
     existingUser.setAddress(user.getAddress());
     existingUser.setPhoneNo(user.getPhoneNo());
     existingUser.setDob(user.getDob());
-    existingUser.setCountry(user.getCountry());
+
 
     userRepository.save(existingUser);
 }

@@ -29,9 +29,6 @@ public class ProfitReferralWithdrawalBankService {
     @Autowired
     private EmailService emailService;
 
-    /**
-     * Creates a withdrawal request, subtracts from profitB, sends OTP.
-     */
     public String saveWithdrawalRequest(ProfitReferralWithdrawalBank request) {
         long userId = request.getUserRegistration().getId();
 
@@ -73,7 +70,7 @@ public class ProfitReferralWithdrawalBankService {
         // 6. Generate OTP
         String otp = generateOtp();
         request.setGeneratedOtp(otp);
-        request.setOtpVerified(false);
+
         request.setOtpGeneratedTime(new Date());
         request.setBalance(balance);
 
@@ -116,4 +113,37 @@ public class ProfitReferralWithdrawalBankService {
         Random r = new Random();
         return String.valueOf(100000 + r.nextInt(900000));
     }
+
+
+    public boolean verifyOtp(Long userId, String otp) {
+        Optional<ProfitReferralWithdrawalBank> latestOpt =
+                withdrawalRepository.findTopByUserRegistrationIdOrderByRequestdateDesc(userId);
+
+        if (latestOpt.isEmpty()) {
+            throw new RuntimeException("No withdrawal request found for user.");
+        }
+
+        ProfitReferralWithdrawalBank latest = latestOpt.get();
+
+        // Check if OTP is already verified
+
+
+        // Check if OTP matches
+        if (!latest.getGeneratedOtp().equals(otp)) {
+            return false;
+        }
+
+        // Check if OTP is expired (e.g., 5 mins expiry)
+        long timeDiff = new Date().getTime() - latest.getOtpGeneratedTime().getTime();
+        if (timeDiff > 5 * 60 * 1000) {
+            throw new RuntimeException("OTP has expired. Please request a new withdrawal.");
+        }
+
+        // If all checks passed
+
+        withdrawalRepository.save(latest);
+
+        return true;
+    }
+
 }

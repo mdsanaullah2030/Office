@@ -24,4 +24,6 @@ where t.user.id = :userId and t.loggedOut = false
 
     Optional<Token> findByUserId(Long userId);
 
+
+
 }

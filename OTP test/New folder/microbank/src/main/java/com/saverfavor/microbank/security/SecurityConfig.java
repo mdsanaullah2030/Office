@@ -44,7 +44,7 @@ public class  SecurityConfig {
 
                                 req ->
                                         req.requestMatchers("/login",
-                                                        "/api/userRegistration","/activate/**","/api/userRegistration/get","/api/userRegistration/update/{id}",
+                                                        "/api/userRegistration","/activate/**","/api/userRegistration/update/{id}","/api/userRegistration/get",
                                                         "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save","/api/nominee/updateNominee/{id}",
 
 
@@ -54,7 +54,7 @@ public class  SecurityConfig {
 
                                                         "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,"/api/Referral/get/{id}"
                                                 ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**","/all/messages","/private",
-                                                "/api/transactions/save","/api/confirm-otp","/api/Withdrawal/save"
+                                                "/api/transactions/save","/api/confirm-otp","/api/Withdrawal/save","/api/Withdrawal/verify"
 
                                                 )
                                                 .permitAll()

@@ -11,11 +11,17 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class BalanceService {
+
     @Autowired
     private BalanceRepository balanceRepository;
+
+
 
 
     // Retrieve all ManuItems
@@ -101,6 +107,13 @@ public class BalanceService {
         depositBalance += balance.getAddBalance();
         balance.setDipositB(depositBalance);
 
+
+
+
+
+
+
+
         // ❌ Do NOT set dipositwithdra here; let scheduled job handle it
         balance.setDipositwithdra(0);  // Or leave as default
 
@@ -181,12 +194,12 @@ public class BalanceService {
     }
 
 
-    @Scheduled(fixedRate = 1728000000L) // 20 days in milliseconds
+    @Scheduled(fixedRate = 120000) // 20 days  1728000000L in milliseconds
     public void updateDipositWithdraForPackageType2() {
         List<Balance> allItems = balanceRepository.findAll();
         for (Balance item : allItems) {
             if ("2".equals(item.getPackages())) {
-                if (item.getDipositB() != 1728000000L) {
+                if (item.getDipositB() != 120000) {
                     // Log or send an alert
                     System.out.println("Alert: DipositB is not 1728000000 for package type 2.");
                     continue; // Skip the update if the condition is not met
@@ -198,12 +211,12 @@ public class BalanceService {
     }
 
 
-    @Scheduled(fixedRate = 864000000L) // 10 days in milliseconds
+    @Scheduled(fixedRate = 120000) // 10 days 864000000L in milliseconds
     public void updateDipositWithdraForPackageType3() {
         List<Balance> allItems = balanceRepository.findAll();
         for (Balance item : allItems) {
             if ("3".equals(item.getPackages())) {
-                if (item.getDipositB() != 864000000L) {
+                if (item.getDipositB() != 120000) {
                     // Log or send an alert
                     System.out.println("Alert: DipositB is not 864000000 for package type 3.");
                     continue; // Skip the update if the condition is not met
@@ -219,12 +232,12 @@ public class BalanceService {
 
 
 
-    @Scheduled(fixedRate = 604800000L) // 7 days in milliseconds
+    @Scheduled(fixedRate = 120000) // 7 days  604800000Lin milliseconds
     public void updateDipositWithdraForPackageType4() {
         List<Balance> allItems = balanceRepository.findAll();
         for (Balance item : allItems) {
             if ("4".equals(item.getPackages())) {
-                if (item.getDipositB() == 604800000L) {
+                if (item.getDipositB() == 120000) {
                     item.setDipositwithdra(item.getDipositB());
                     balanceRepository.save(item);
                 } else {
@@ -238,22 +251,22 @@ public class BalanceService {
 
 
     // Scheduled task to update profitB and withdrawB for all ManuItems daily
-    @Scheduled(fixedRate =86400000) // 24 hours in milliseconds
-    public void updateProfitDaily() {
-        List<Balance> allItems = balanceRepository.findAll();
-        for (Balance item : allItems) {
-            double dipositwithdra = item.getDipositwithdra();
-
-            // Calculate profit based on the package
-            double profit = calculateProfit(dipositwithdra, item.getPackages());
-            item.setProfitB(item.getProfitB() + profit);
-
-
-
-            balanceRepository.save(item);
-        }
-    }
-
+//    @Scheduled(fixedRate =86400000) // 24 hours in milliseconds
+//    public void updateProfitDaily() {
+//        List<Balance> allItems = balanceRepository.findAll();
+//        for (Balance item : allItems) {
+//            double dipositwithdra = item.getDipositwithdra();
+//
+//            // Calculate profit based on the package
+//            double profit = calculateProfit(dipositwithdra, item.getPackages());
+//            item.setProfitB(item.getProfitB() + profit);
+//
+//
+//
+//            balanceRepository.save(item);
+//        }
+//    }
+//
 
 
 
@@ -278,9 +291,9 @@ public class BalanceService {
             String packageType = item.getPackages();
             long requiredTime = switch (packageType) {
                 case "1" -> 120000 ; // 30 days
-                case "2" -> 1728000000L; // 20 days
-                case "3" -> 864000000L;  // 10 days
-                case "4" -> 604800000L;  // 7 days
+                case "2" -> 120000; // 20 1728000000L days
+                case "3" -> 120000;  // 10 864000000L days
+                case "4" -> 120000;  // 7   604800000L days
                 default -> 0L;
             };
 
@@ -292,4 +305,21 @@ public class BalanceService {
     }
 
 
-}
+    @Scheduled(fixedRate = 120000)//86400000//
+    public void updateProfitDaily() {
+        List<Balance> latestBalances = balanceRepository.findLatestBalanceForAllUsers();
+        for (Balance item : latestBalances) {
+            double dipositwithdra = item.getDipositwithdra();
+            double profit = calculateProfit(dipositwithdra, item.getPackages());
+            item.setProfitB(item.getProfitB() + profit);
+            balanceRepository.save(item);
+        }
+    }
+
+
+    }
+
+
+
+
+

@@ -25,10 +25,44 @@ public class DepositWithdrawBankController {
 //    public DepositWithdrawBank saveTransaction(@RequestBody DepositWithdrawBank transaction) {
 //        return service.saveTransaction(transaction);
 //    }
+//    @PostMapping("/api/transactions/save")
+//    public String saveTransaction(@RequestBody DepositWithdrawBank transaction) {
+//        return service.saveTransaction(transaction);
+//    }
+
+
+
+    // @PostMapping("/api/nominee/save")
+    //    public ResponseEntity<String> saveNominee(@RequestBody Nominee nominee) {
+    //        try {
+    //            nomineeService.saveNominee(nominee);
+    //            return ResponseEntity.ok("Nominee saved successfully!");
+    //        } catch (RuntimeException e) {
+    //            return ResponseEntity.badRequest().body(e.getMessage());
+    //        }
+    //    }/
+
+
     @PostMapping("/api/transactions/save")
-    public String saveTransaction(@RequestBody DepositWithdrawBank transaction) {
-        return service.saveTransaction(transaction);
+    public ResponseEntity<String> saveTransactionWithOtp(@RequestBody DepositWithdrawBank transaction,
+                                                         @RequestParam(required = false) String otp) {
+        try {
+            String result = service.saveTransaction(transaction, otp); // Pass OTP properly
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Unexpected error occurred. Please try again later.");
+        }
     }
+
+
+
+
+
+
+
+
 
     // Get all transactions
     @GetMapping("/all")
@@ -42,12 +76,19 @@ public class DepositWithdrawBankController {
         return service.getTransactionById(id);
     }
 
+//    @PostMapping("/api/confirm-otp")
+//    public ResponseEntity<String> confirmOtp(@RequestParam int userId,
+//                                             @RequestParam int balanceId,
+//                                             @RequestParam String otp) {
+//        String result = service.confirmOtpAndWithdraw(userId, balanceId, otp);
+//        return ResponseEntity.ok(result);
+//    }
+
     @PostMapping("/api/confirm-otp")
-    public ResponseEntity<String> confirmOtp(@RequestParam int userId,
-                                             @RequestParam int balanceId,
+    public ResponseEntity<String> confirmOtp(@RequestParam int transactionId,
                                              @RequestParam String otp) {
-        String result = service.confirmOtpAndWithdraw(userId, balanceId, otp);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(service.verifyOtp(transactionId, otp));
     }
+
 
 }

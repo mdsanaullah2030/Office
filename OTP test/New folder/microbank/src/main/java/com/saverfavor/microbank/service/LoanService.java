@@ -1,5 +1,4 @@
 package com.saverfavor.microbank.service;
-
 import com.saverfavor.microbank.entity.Balance;
 import com.saverfavor.microbank.entity.Loan;
 import com.saverfavor.microbank.repository.BalanceRepository;

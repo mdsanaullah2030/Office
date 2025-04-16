@@ -38,7 +38,7 @@ public class ProfitReferralWithdrawalBank {
 
     private String generatedOtp; // Add this
 
-    private boolean otpVerified = false;
+    private String otpVerified;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date otpGeneratedTime;
