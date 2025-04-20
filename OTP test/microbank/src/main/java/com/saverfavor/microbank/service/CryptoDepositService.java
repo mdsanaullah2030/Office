@@ -24,13 +24,25 @@ public class CryptoDepositService {
     @Autowired
     private EmailService emailService;
 
+
+  /// Get all transactions
     public List<CryptoDepositWithdrawal> getAllTransactions() {
         return cryptoDepositRepository.findAll();
     }
 
+
+    /// Get all transactions find by ID
     public Optional<CryptoDepositWithdrawal> getTransactionById(int id) {
         return cryptoDepositRepository.findById(id);
     }
+
+
+    //User Id loan data get//
+    public List<CryptoDepositWithdrawal> getCryptoDepositByUserId(long userId) {
+        return cryptoDepositRepository.findByUserRegistrationId(userId);
+    }
+
+
 
     @Transactional
     public String saveTransaction(CryptoDepositWithdrawal transaction, String userEnteredOtp) {

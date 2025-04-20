@@ -1,16 +1,15 @@
 package com.saverfavor.microbank.restController;
 
-import com.saverfavor.microbank.entity.CryptoDepositWithdrawal;
+
 import com.saverfavor.microbank.entity.CryptoProfitWithdrawal;
-import com.saverfavor.microbank.entity.DepositWithdrawBank;
-import com.saverfavor.microbank.repository.CryptoProfitRepository;
-import com.saverfavor.microbank.service.CryptoProfitService;
+
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping
+@AllArgsConstructor
 @CrossOrigin
 public class CryptoProfitController {
     @Autowired

@@ -2,6 +2,7 @@ package com.saverfavor.microbank.service;
 
 import com.saverfavor.microbank.entity.Balance;
 import com.saverfavor.microbank.entity.DepositWithdrawBank;
+import com.saverfavor.microbank.entity.Loan;
 import com.saverfavor.microbank.entity.User;
 import com.saverfavor.microbank.repository.BalanceRepository;
 import com.saverfavor.microbank.repository.DepositWithdrawBankRepository;
@@ -42,6 +43,14 @@ public class DepositWithdrawBankService {
     public Optional<DepositWithdrawBank> getTransactionById(int id) {
         return depositWithdrawBankRepository.findById(id);
     }
+
+
+    //User Id loan data get//
+    public List<DepositWithdrawBank> getDepositWithdrawBank(long userId) {
+        return depositWithdrawBankRepository.findByUserRegistrationId(userId);
+    }
+
+
 
     // Save deposit/withdraw transaction (with OTP generation)
 //    public String saveTransaction(DepositWithdrawBank transaction) {

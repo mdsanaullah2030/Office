@@ -25,13 +25,17 @@ public class LoanService {
     public List<Loan> getAllLoans() {
         return loanRepository.findAll();
     }
-
+//get loan ID//
     public Loan getLoanById(Integer id) {  // Changed Long to Integer
         Optional<Loan> loan = loanRepository.findById(id);
         return loan.orElseThrow(() -> new RuntimeException("Loan not found with ID: " + id));
     }
 
 
+    //User Id loan data get//
+    public List<Loan> getLoansByUserId(long userId) {
+        return loanRepository.findByUserRegistrationId(userId);
+    }
 
 
 
@@ -87,9 +91,5 @@ public class LoanService {
         }
     }
 
-    //User Id loan data get//
-    public List<Loan> getLoansByUserId(long userId) {
-        return loanRepository.findByUserRegistrationId(userId);
-    }
 
 }

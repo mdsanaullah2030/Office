@@ -1,6 +1,7 @@
 package com.saverfavor.microbank.restController;
 
 import com.saverfavor.microbank.entity.DepositWithdrawBank;
+import com.saverfavor.microbank.entity.Loan;
 import com.saverfavor.microbank.service.DepositWithdrawBankService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,27 +21,31 @@ public class DepositWithdrawBankController {
     @Autowired
     private DepositWithdrawBankService service;
 
-    // Save a new transaction
-//    @PostMapping("/api/transactions/save")
-//    public DepositWithdrawBank saveTransaction(@RequestBody DepositWithdrawBank transaction) {
-//        return service.saveTransaction(transaction);
-//    }
-//    @PostMapping("/api/transactions/save")
-//    public String saveTransaction(@RequestBody DepositWithdrawBank transaction) {
-//        return service.saveTransaction(transaction);
-//    }
 
 
 
-    // @PostMapping("/api/nominee/save")
-    //    public ResponseEntity<String> saveNominee(@RequestBody Nominee nominee) {
-    //        try {
-    //            nomineeService.saveNominee(nominee);
-    //            return ResponseEntity.ok("Nominee saved successfully!");
-    //        } catch (RuntimeException e) {
-    //            return ResponseEntity.badRequest().body(e.getMessage());
-    //        }
-    //    }/
+    @GetMapping("/api/transactions/get")
+    public List<DepositWithdrawBank> getAllLoans() {
+        return service.getAllTransactions();
+    }
+
+
+
+    @GetMapping("/api/transactions/getByUser/{userId}")
+    public ResponseEntity<List<DepositWithdrawBank>> gettransactionsByUser(@PathVariable long userId) {
+        List<DepositWithdrawBank> DepositWithdraw = service.getDepositWithdrawBank(userId);
+        return ResponseEntity.ok(DepositWithdraw);
+    }
+
+
+
+
+    // Get transaction by ID
+    @GetMapping("/api/transactions/{id}")
+    public Optional<DepositWithdrawBank> getTransactionById(@PathVariable int id) {
+        return service.getTransactionById(id);
+    }
+
 
 
     @PostMapping("/api/transactions/save")
@@ -56,33 +61,6 @@ public class DepositWithdrawBankController {
         }
     }
 
-
-
-
-
-
-
-
-
-    // Get all transactions
-    @GetMapping("/all")
-    public List<DepositWithdrawBank> getAllTransactions() {
-        return service.getAllTransactions();
-    }
-
-    // Get transaction by ID
-    @GetMapping("/{id}")
-    public Optional<DepositWithdrawBank> getTransactionById(@PathVariable int id) {
-        return service.getTransactionById(id);
-    }
-
-//    @PostMapping("/api/confirm-otp")
-//    public ResponseEntity<String> confirmOtp(@RequestParam int userId,
-//                                             @RequestParam int balanceId,
-//                                             @RequestParam String otp) {
-//        String result = service.confirmOtpAndWithdraw(userId, balanceId, otp);
-//        return ResponseEntity.ok(result);
-//    }
 
     @PostMapping("/api/confirm-otp")
     public ResponseEntity<String> confirmOtp(@RequestParam int transactionId,

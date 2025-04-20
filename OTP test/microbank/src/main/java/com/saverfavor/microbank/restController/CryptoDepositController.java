@@ -1,6 +1,7 @@
 package com.saverfavor.microbank.restController;
 
 import com.saverfavor.microbank.entity.CryptoDepositWithdrawal;
+import com.saverfavor.microbank.entity.Loan;
 import com.saverfavor.microbank.service.CryptoDepositService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,14 @@ public class CryptoDepositController {
     @Autowired
     private CryptoDepositService cryptoDepositService;
 
-    @GetMapping("/transactions")
+
+    //All transactions data Get  CryptoDeposit//
+    @GetMapping("/api/CryptoDeposit/get")
     public List<CryptoDepositWithdrawal> getAllTransactions() {
         return cryptoDepositService.getAllTransactions();
     }
 
-    @GetMapping("/transactions/{id}")
+    @GetMapping("/api/CryptoDeposit/{id}")
     public ResponseEntity<CryptoDepositWithdrawal> getTransaction(@PathVariable int id) {
         return cryptoDepositService.getTransactionById(id)
                 .map(ResponseEntity::ok)
@@ -37,5 +40,12 @@ public class CryptoDepositController {
     @PostMapping("/verify-otp")
     public ResponseEntity<String> verifyOtp(@RequestParam int transactionId, @RequestParam String otp) {
         return ResponseEntity.ok(cryptoDepositService.verifyOtp(transactionId, otp));
+    }
+
+
+    @GetMapping("/api/CryptoDeposit/getByUser/{userId}")
+    public ResponseEntity<List<CryptoDepositWithdrawal>> getCryptoDepositByUser(@PathVariable long userId) {
+        List<CryptoDepositWithdrawal> CryptoDeposit = cryptoDepositService.getCryptoDepositByUserId(userId);
+        return ResponseEntity.ok(CryptoDeposit);
     }
 }
