@@ -2,7 +2,6 @@ package com.saverfavor.microbank.service;
 
 import com.saverfavor.microbank.entity.Balance;
 import com.saverfavor.microbank.entity.DepositWithdrawBank;
-import com.saverfavor.microbank.entity.Loan;
 import com.saverfavor.microbank.entity.User;
 import com.saverfavor.microbank.repository.BalanceRepository;
 import com.saverfavor.microbank.repository.DepositWithdrawBankRepository;
@@ -34,6 +33,7 @@ public class DepositWithdrawBankService {
 
 
 
+
     // Get all transactions
     public List<DepositWithdrawBank> getAllTransactions() {
         return depositWithdrawBankRepository.findAll();
@@ -52,74 +52,6 @@ public class DepositWithdrawBankService {
 
 
 
-    // Save deposit/withdraw transaction (with OTP generation)
-//    public String saveTransaction(DepositWithdrawBank transaction) {
-//        User user = transaction.getUserRegistration();
-//        if (user != null && user.getId() != 0) {
-//            user = userRepository.findById(user.getId())
-//                    .orElseThrow(() -> new RuntimeException("User not found"));
-//            transaction.setUserRegistration(user);
-//        }
-//
-//
-//
-//
-//
-//        if (transaction.getBalance() != null && transaction.getBalance().getId() != 0) {
-//            Balance balance = balanceRepository.findById(transaction.getBalance().getId())
-//                    .orElseThrow(() -> new RuntimeException("Balance record not found"));
-//            transaction.setBalance(balance);
-//
-//
-//            Balance latestBalance = balanceRepository
-//                    .findTopByUserRegistrationIdOrderByDateDesc(user.getId())
-//                    .orElseThrow(() -> new RuntimeException("No balance record found for this user."));
-//            transaction.setBalance(latestBalance);
-//
-//
-//
-//            // Validate amount
-//            double currentWithdrawAmount = balance.getDipositwithdra();
-//            if (transaction.getDipositwithdrawamount() > currentWithdrawAmount) {
-//                throw new RuntimeException("Withdraw amount exceeds the available balance: " + currentWithdrawAmount);
-//            }
-//
-//
-//            // Set withdrawbalance based on current dipositwithdra
-//            transaction.setWithdrawbalance(String.valueOf(currentWithdrawAmount));
-//
-//
-//
-//            // Generate OTP
-//            String otp = generateOtp();
-//
-//            transaction.setOtpVerified(false);
-//            transaction.setOtpGeneratedTime(new Date());
-//
-//            // Save transaction (awaiting OTP verification)
-//            depositWithdrawBankRepository.save(transaction);
-//
-//            try {
-//                emailService.sendSimpleEmail(
-//                        user.getEmail(),
-//                        "Withdrawal OTP Verification",
-//                        "Dear " + user.getName() + ",\n\n" +
-//                                "Your one-time password (OTP) for processing your withdrawal request on FINSYS is: " + otp + "\n\n" +
-//                                "Please use this OTP to complete the transaction. For any assistance, feel free to reach out to our support team at help@getfinsys.com.\n\n" +
-//                                "Thank you for choosing FINSYS.\n\n" +
-//                                "© Financial System Solutions"
-//                );
-//
-//
-//            } catch (MessagingException e) {
-//                throw new RuntimeException("Failed to send OTP email");
-//            }
-//
-//            return "OTP sent to your email.";
-//        }
-//
-//        throw new RuntimeException("Invalid transaction data.");
-//    }
 
 
     public String saveTransaction(DepositWithdrawBank transaction, String userEnteredOtp)

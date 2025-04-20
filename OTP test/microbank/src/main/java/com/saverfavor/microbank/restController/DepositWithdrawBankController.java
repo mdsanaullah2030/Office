@@ -1,7 +1,6 @@
 package com.saverfavor.microbank.restController;
 
 import com.saverfavor.microbank.entity.DepositWithdrawBank;
-import com.saverfavor.microbank.entity.Loan;
 import com.saverfavor.microbank.service.DepositWithdrawBankService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ public class DepositWithdrawBankController {
     private DepositWithdrawBankService service;
 
 
-
-
     @GetMapping("/api/transactions/get")
     public List<DepositWithdrawBank> getAllLoans() {
         return service.getAllTransactions();
@@ -42,11 +39,9 @@ public class DepositWithdrawBankController {
 
     // Get transaction by ID
     @GetMapping("/api/transactions/{id}")
-    public Optional<DepositWithdrawBank> getTransactionById(@PathVariable int id) {
+    public Optional<DepositWithdrawBank> getTransaction(@PathVariable int id) {
         return service.getTransactionById(id);
     }
-
-
 
     @PostMapping("/api/transactions/save")
     public ResponseEntity<String> saveTransactionWithOtp(@RequestBody DepositWithdrawBank transaction,
@@ -61,6 +56,33 @@ public class DepositWithdrawBankController {
         }
     }
 
+
+
+
+
+
+
+
+
+    // Get all transactions
+    @GetMapping("/all")
+    public List<DepositWithdrawBank> getAllTransactions() {
+        return service.getAllTransactions();
+    }
+
+    // Get transaction by ID
+    @GetMapping("/{id}")
+    public Optional<DepositWithdrawBank> getTransactionById(@PathVariable int id) {
+        return service.getTransactionById(id);
+    }
+
+//    @PostMapping("/api/confirm-otp")
+//    public ResponseEntity<String> confirmOtp(@RequestParam int userId,
+//                                             @RequestParam int balanceId,
+//                                             @RequestParam String otp) {
+//        String result = service.confirmOtpAndWithdraw(userId, balanceId, otp);
+//        return ResponseEntity.ok(result);
+//    }
 
     @PostMapping("/api/confirm-otp")
     public ResponseEntity<String> confirmOtp(@RequestParam int transactionId,

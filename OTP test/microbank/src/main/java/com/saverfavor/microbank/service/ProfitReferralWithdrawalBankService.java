@@ -1,6 +1,7 @@
 package com.saverfavor.microbank.service;
 
 import com.saverfavor.microbank.entity.Balance;
+import com.saverfavor.microbank.entity.DepositWithdrawBank;
 import com.saverfavor.microbank.entity.ProfitReferralWithdrawalBank;
 import com.saverfavor.microbank.entity.User;
 import com.saverfavor.microbank.repository.BalanceRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -28,6 +30,31 @@ public class ProfitReferralWithdrawalBankService {
 
     @Autowired
     private EmailService emailService;
+
+
+
+
+
+    // Get all transactions
+    public List<ProfitReferralWithdrawalBank> getAllTransactions() {
+        return withdrawalRepository.findAll();
+    }
+
+    // Get transaction by ID
+    public Optional<ProfitReferralWithdrawalBank> getProfitById(int id) {
+        return withdrawalRepository.findById(id);
+    }
+
+
+    //User Id loan data get//
+    public List<ProfitReferralWithdrawalBank> getProfitReferraWithdrawBank(long userId) {
+        return withdrawalRepository.findByUserRegistrationId(userId);
+    }
+
+
+
+
+
 
     public String saveWithdrawalRequest(ProfitReferralWithdrawalBank request) {
         long userId = request.getUserRegistration().getId();

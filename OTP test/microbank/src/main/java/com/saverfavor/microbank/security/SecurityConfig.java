@@ -54,8 +54,14 @@ public class  SecurityConfig {
 
                                                         "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,"/api/Referral/get/{id}"
                                                 ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**","/all/messages","/private",
-                                                "/api/transactions/save","/api/confirm-otp","/api/Withdrawal/save","/api/Withdrawal/verify","/api/withdraw/CryptoDeposit","/api/withdraw/CryptoProfit",
-                                                        "/api/transactions/get","/api/transactions/getByUser/{userId}","/api/transactions/{id}","/api/CryptoDeposit/get","/api/CryptoDeposit/{id}","/api/CryptoDeposit/getByUser/{userId}"
+                                                "/api/transactions/save","/api/confirm-otp","/api/Withdrawal/verify","/api/withdraw/CryptoDeposit/save",
+                                                        "/api/transactions/get","/api/transactions/getByUser/{userId}","/api/transactions/{id}","/api/CryptoDeposit/get","/api/CryptoDeposit/{id}","/api/CryptoDeposit/getByUser/{userId}",
+                                                "/api/ProfitWithdrawalBank/get","/api/ProfitWithdrawalBank/{id}"
+
+                                                ,"/api/ProfitWithdrawalBank/getByUser/{userId}","/api/ProfitWithdrawalBank/save",
+
+
+                                                        "/api/CryptoProfit/get", "/api/CryptoProfit/{id}","/api/CryptoProfit/getByUser/{userId}","/api/withdraw/CryptoProfit/save"
 
                                                 )
                                                 .permitAll()

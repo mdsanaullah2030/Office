@@ -8,19 +8,40 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 public class ProfitReferralWithdrawalBankController {
 
     @Autowired
     private ProfitReferralWithdrawalBankService withdrawalService;
 
-//    @PostMapping("/api/Withdrawal/save")
-//    public String submitWithdrawalRequest(@RequestBody ProfitReferralWithdrawalBank request) {
-//        withdrawalService.saveWithdrawalRequest(request);
-//        return "Withdrawal request submitted successfully!";
-//    }
 
-    @PostMapping("/api/Withdrawal/save")
+
+    @GetMapping("/api/ProfitWithdrawalBank/get")
+    public List<ProfitReferralWithdrawalBank> getAllLoans() {
+        return withdrawalService.getAllTransactions();
+    }
+
+
+    // Get transaction by ID
+    @GetMapping("/api/ProfitWithdrawalBank/{id}")
+    public Optional<ProfitReferralWithdrawalBank> getTransaction(@PathVariable int id) {
+        return withdrawalService.getProfitById(id);
+    }
+
+
+    @GetMapping("/api/ProfitWithdrawalBank/getByUser/{userId}")
+    public ResponseEntity<List<ProfitReferralWithdrawalBank>> gettransactionsByUser(@PathVariable long userId) {
+        List<ProfitReferralWithdrawalBank> ProfitWithdrawal = withdrawalService.getProfitReferraWithdrawBank(userId);
+        return ResponseEntity.ok(ProfitWithdrawal);
+    }
+
+
+
+
+    @PostMapping("/api/ProfitWithdrawalBank/save")
     public ResponseEntity<String> saveTransactionWithOtp(@RequestBody ProfitReferralWithdrawalBank request  ) {
 
         try {

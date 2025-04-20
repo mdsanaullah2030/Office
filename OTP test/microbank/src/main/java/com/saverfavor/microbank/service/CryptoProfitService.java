@@ -9,9 +9,9 @@ import com.saverfavor.microbank.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -30,7 +30,32 @@ public class CryptoProfitService {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
+
+
+
+        // Get all transactions
+        public List<CryptoProfitWithdrawal> getAllTransactions() {
+            return cryptoProfitRepository.findAll();
+        }
+
+        // Get transaction by ID
+        public Optional<CryptoProfitWithdrawal> getProfitById(int id) {
+            return cryptoProfitRepository.findById(id);
+        }
+
+
+        //User Id loan data get//
+        public List<CryptoProfitWithdrawal> getProfitReferraWithdrawBank(long userId) {
+            return cryptoProfitRepository.findByUserRegistrationId(userId);
+        }
+
+
+
+
+
+
+
+
     public String saveWithdrawalRequest(CryptoProfitWithdrawal request) {
         long userId = request.getUserRegistration().getId();
 

@@ -25,7 +25,8 @@ public class CryptoDepositService {
     private EmailService emailService;
 
 
-  /// Get all transactions
+
+    /// Get all transactions
     public List<CryptoDepositWithdrawal> getAllTransactions() {
         return cryptoDepositRepository.findAll();
     }

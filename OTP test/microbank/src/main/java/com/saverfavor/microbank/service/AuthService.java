@@ -78,7 +78,7 @@ public class AuthService {
 
 
     private void sendActivationEmail(User user) {
-        String activationLink = "http://localhost:6160/activate/" + user.getId();
+        String activationLink = "http://75.119.134.82:6160/activate/" + user.getId();
 
         String subject = "Activate Your FINSYS Account";
 
