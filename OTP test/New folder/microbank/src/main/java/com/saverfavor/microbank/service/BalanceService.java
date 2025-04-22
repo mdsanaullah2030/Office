@@ -38,58 +38,6 @@ public class BalanceService {
 
 
 
-//    public void saveManuItem(Balance balance) {
-//        // Find all existing Balance entries for the same userId
-//        List<Balance> existingItems = balanceRepository.findByUserRegistrationId
-//                (balance.getUserRegistration().getId());
-//
-//        double depositBalance = 0.0; // Initialize depositBalance to 0.0
-//        double totalDepositWithdra = 0.0;
-//
-//        if (!existingItems.isEmpty()) {
-//            // Sum up all the dipositB and dipositwithdra for the user
-//            for (Balance existingItem : existingItems) {
-//                depositBalance += existingItem.getDipositB();
-//                totalDepositWithdra += existingItem.getDipositwithdra();
-//            }
-//            // Add the new balance to the existing depositBalance
-//            depositBalance += balance.getAddBalance();
-//            // Update dipositwithdra by adding the new addBalance to the total of previous dipositwithdra
-//            balance.setDipositwithdra(totalDepositWithdra + balance.getAddBalance());
-//        } else {
-//            // If no existing balance, set the depositBalance to the new addBalance
-//            depositBalance = balance.getAddBalance();
-//            balance.setDipositwithdra(depositBalance);
-//        }
-//
-//        // Set the dipositB to the new total deposit balance
-//        balance.setDipositB(depositBalance);
-//
-//        // Determine package based on depositBalance
-//        String packageType;
-//        if (depositBalance <= 100) {
-//            packageType = "1";
-//        } else if (depositBalance <= 101) {
-//            packageType = "2";
-//        } else if (depositBalance <= 1001) {
-//            packageType = "3";
-//        } else {
-//            packageType = "4";
-//        }
-//
-//        balance.setPackages(packageType);
-//        balance.setProfitB(calculateProfit(depositBalance, packageType));
-//
-//        // Update withdrawB balance
-//        updateWithdrawBalance(balance);
-
-//
-//        // Save or update the Balance record
-//        balanceRepository.save(balance);
-//    }
-
-
-
 
 
 
@@ -114,7 +62,7 @@ public class BalanceService {
 
 
 
-        // ❌ Do NOT set dipositwithdra here; let scheduled job handle it
+        //  Do NOT set dipositwithdra here; let scheduled job handle it
         balance.setDipositwithdra(0);  // Or leave as default
 
         // Determine package
@@ -249,24 +197,6 @@ public class BalanceService {
         }
     }
 
-
-    // Scheduled task to update profitB and withdrawB for all ManuItems daily
-//    @Scheduled(fixedRate =86400000) // 24 hours in milliseconds
-//    public void updateProfitDaily() {
-//        List<Balance> allItems = balanceRepository.findAll();
-//        for (Balance item : allItems) {
-//            double dipositwithdra = item.getDipositwithdra();
-//
-//            // Calculate profit based on the package
-//            double profit = calculateProfit(dipositwithdra, item.getPackages());
-//            item.setProfitB(item.getProfitB() + profit);
-//
-//
-//
-//            balanceRepository.save(item);
-//        }
-//    }
-//
 
 
 

@@ -20,28 +20,28 @@ public class DepositWithdrawBankController {
     @Autowired
     private DepositWithdrawBankService service;
 
-    // Save a new transaction
-//    @PostMapping("/api/transactions/save")
-//    public DepositWithdrawBank saveTransaction(@RequestBody DepositWithdrawBank transaction) {
-//        return service.saveTransaction(transaction);
-//    }
-//    @PostMapping("/api/transactions/save")
-//    public String saveTransaction(@RequestBody DepositWithdrawBank transaction) {
-//        return service.saveTransaction(transaction);
-//    }
+
+    @GetMapping("/api/transactions/get")
+    public List<DepositWithdrawBank> getAllLoans() {
+        return service.getAllTransactions();
+    }
 
 
 
-    // @PostMapping("/api/nominee/save")
-    //    public ResponseEntity<String> saveNominee(@RequestBody Nominee nominee) {
-    //        try {
-    //            nomineeService.saveNominee(nominee);
-    //            return ResponseEntity.ok("Nominee saved successfully!");
-    //        } catch (RuntimeException e) {
-    //            return ResponseEntity.badRequest().body(e.getMessage());
-    //        }
-    //    }/
+    @GetMapping("/api/transactions/getByUser/{userId}")
+    public ResponseEntity<List<DepositWithdrawBank>> gettransactionsByUser(@PathVariable long userId) {
+        List<DepositWithdrawBank> DepositWithdraw = service.getDepositWithdrawBank(userId);
+        return ResponseEntity.ok(DepositWithdraw);
+    }
 
+
+
+
+    // Get transaction by ID
+    @GetMapping("/api/transactions/{id}")
+    public Optional<DepositWithdrawBank> getTransaction(@PathVariable int id) {
+        return service.getTransactionById(id);
+    }
 
     @PostMapping("/api/transactions/save")
     public ResponseEntity<String> saveTransactionWithOtp(@RequestBody DepositWithdrawBank transaction,

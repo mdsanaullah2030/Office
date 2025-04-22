@@ -22,6 +22,10 @@ public class Loan {
     private  double totalpay;
     private int tenure;
     private  String status;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean emailSent;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestdate;
     // Automatically set the current date before persisting

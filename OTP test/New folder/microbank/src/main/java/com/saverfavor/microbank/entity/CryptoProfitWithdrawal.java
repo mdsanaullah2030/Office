@@ -13,33 +13,32 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProfitReferralWithdrawalBank {
-
-
+public class CryptoProfitWithdrawal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private Double withdrawbalance;
-    private int accountnumber;
-    private String bankname;
-    private int routingnumber;
-    private int swiftcode;
+    private String withdrawbalance;
+    private String walletid;
+    private String btc;
+    private String usdt;
     private Double withdrawamount;
+
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestdate;
     // Automatically set the current date before persisting
+
+
+    private String generatedOtp; // Add this
+
     @PrePersist
     protected void onCreate() {
         this.requestdate = new Date();
     }
 
 
-
-    private String generatedOtp; // Add this
-
-    private Boolean otpVerified;
-
+    private boolean otpVerified = false;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date otpGeneratedTime;
@@ -53,14 +52,4 @@ public class ProfitReferralWithdrawalBank {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "balanceId")
     private Balance balance;
-
-
-
 }
-
-
-
-
-
-
-
