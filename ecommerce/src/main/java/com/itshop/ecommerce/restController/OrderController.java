@@ -1,0 +1,65 @@
+package com.itshop.ecommerce.restController;
+
+import com.itshop.ecommerce.entity.Order;
+import com.itshop.ecommerce.entity.ProductDetails;
+import com.itshop.ecommerce.repository.ProductDetailsRepository;
+import com.itshop.ecommerce.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping
+@CrossOrigin
+public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private ProductDetailsRepository productDetailsRepository;
+
+    //  Save Order
+    @PostMapping("/api/orders/save")
+    public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
+        Order savedOrder = orderService.saveOrder(order);
+        return ResponseEntity.ok(savedOrder);
+    }
+
+
+
+
+
+
+
+
+
+
+    // Get All Orders
+    @GetMapping("/api/orders/all")
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(orders);
+    }
+
+    //  Get Single Order by ID
+    @GetMapping("/api/orders/{id}")
+    public ResponseEntity<Order> getOrderById(@PathVariable int id) {
+        Optional<Order> orderOptional = orderService.getOrderById(id);
+        return orderOptional.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+//  Get User ID Order by Get
+
+    @GetMapping("/api/Order/getByUser/{userId}")
+    public ResponseEntity<List<Order>> getOrdersByUser(@PathVariable long userId) {
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        return ResponseEntity.ok(orders);
+    }
+
+}

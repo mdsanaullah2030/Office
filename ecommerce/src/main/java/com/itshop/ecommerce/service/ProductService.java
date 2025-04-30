@@ -11,27 +11,41 @@ import java.util.List;
 public class ProductService {
 
     @Autowired
-    private ProductRepository noteBookRepository;
+    private ProductRepository productRepository;
 
     public Product saveNoteBook(Product noteBook) {
-        return noteBookRepository.save(noteBook);
+        return productRepository.save(noteBook);
     }
 
     public List<Product> getAllNoteBooks() {
-        return noteBookRepository.findAll();
+        return productRepository.findAll();
     }
 
     public Product getNoteBookById(int id) {
-        return noteBookRepository.findById(id).orElse(null);
+        return productRepository.findById(id).orElse(null);
     }
 
 
     public Product updateNoteBook(int id, Product updatedProduct) {
-        return noteBookRepository.findById(id).map(existing -> {
+        return productRepository.findById(id).map(existing -> {
             existing.setName(updatedProduct.getName());
             existing.setCatagory(updatedProduct.getCatagory());
-            return noteBookRepository.save(existing);
+            return productRepository.save(existing);
         }).orElse(null);
     }
+
+
+
+
+    public List<Product> findProductsByCatagory(String catagoryName) {
+        return productRepository.findProductsByCatagoryName(catagoryName);
+    }
+
+
+  public List<Product> findProductsByCatagoryID(int catagoryId){
+        return productRepository.findProductsByCatagoryId(catagoryId);
+  }
+
+
 
 }

@@ -1,6 +1,8 @@
 package com.itshop.ecommerce.service;
 
+import com.itshop.ecommerce.entity.Catagory;
 import com.itshop.ecommerce.entity.ProductDetails;
+import com.itshop.ecommerce.repository.CatagoryRepository;
 import com.itshop.ecommerce.repository.ProductDetailsRepository;
 import org.apache.catalina.LifecycleState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class ProductDetailsService {
 
     @Value("src/main/resources/static/images")
     private String uploadDir;
+    @Autowired
+    private CatagoryRepository catagoryRepository;
 
     public List<ProductDetails> getAllProductDetails(){
         return productDetailsRepository.findAll();
@@ -32,7 +36,9 @@ public class ProductDetailsService {
     }
 
     @Transactional
-    public void saveProductDetails(ProductDetails productDetails, MultipartFile image1File, MultipartFile image2File,MultipartFile image3File,MultipartFile image4File,MultipartFile image5File) throws IOException {
+    public void saveProductDetails(ProductDetails productDetails, MultipartFile image1File, MultipartFile image2File,MultipartFile image3File) throws IOException {
+
+
         if (image1File != null && !image1File.isEmpty()) {
             String imageFileName = saveImage(image1File, productDetails);
             productDetails.setImagea(imageFileName);
@@ -49,15 +55,7 @@ public class ProductDetailsService {
             productDetails.setImagec(imageFileName);
         }
 
-        if (image4File != null && !image4File.isEmpty()) {
-            String imageFileName = saveImage(image4File, productDetails);
-            productDetails.setImaged(imageFileName);
-        }
 
-        if (image5File != null && !image5File.isEmpty()) {
-            String imageFileName = saveImage(image5File, productDetails);
-            productDetails.setImagef(imageFileName);
-        }
 
         productDetailsRepository.save(productDetails); //  You forgot to save it in the database!
     }

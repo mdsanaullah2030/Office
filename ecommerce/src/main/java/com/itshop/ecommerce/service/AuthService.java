@@ -1,3 +1,4 @@
+
 package com.itshop.ecommerce.service;
 import com.itshop.ecommerce.entity.AuthenticationResponse;
 import com.itshop.ecommerce.entity.Role;
@@ -80,7 +81,7 @@ public class AuthService {
 
 
     private void sendActivationEmail(User user) {
-        String activationLink = "http://75.119.134.82:6160/activate/" + user.getId();
+        String activationLink = "http://75.119.134.82:6161/activate/" + user.getId();
 
         String subject = "Activate Your FINSYS Account";
 
@@ -128,12 +129,12 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // ✅ Ensure user is activated
+        //  Ensure user is activated
         if (!user.isEnabled()) {
             return new AuthenticationResponse(null, "User is not activated.");
         }
 
-        // ✅ Ensure account is not locked
+        //  Ensure account is not locked
         if (!user.isAccountNonLocked()) {
             return new AuthenticationResponse(null, "User account is locked.");
         }
@@ -148,7 +149,7 @@ public class AuthService {
             return new AuthenticationResponse(null, "Invalid username or password");
         }
 
-        // ✅ Generate JWT token only if checks passed
+        //  Generate JWT token only if checks passed
         String jwt = jwtService.generateToken(user);
         revokeAllTokenByUser(user);
         saveUserToken(jwt, user);

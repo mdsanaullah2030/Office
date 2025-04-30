@@ -46,13 +46,17 @@ public class  SecurityConfig {
                                         req.requestMatchers("/login",
                                                         "/api/userRegistration","/activate/**","/api/userRegistration/get",
 
-                                                        "/api/notebooks/save","/api/notebooks/getall","/api/notebooks/{id}",
 
                                                         "/api/catagories/save","/api/catagories/get","/api/catagories/get/{id}","/api/catagories/update/{id}",
 
-                                                        "/api/Product/save","/api/Product/getall","/api/Product/get/{id}","/api/Product/update/{id}",
+                                                        "/api/findCatagories/name",
 
-                                                        "/api/ProductDetails/save","/api/productDetails/getall"
+                                                        "/api/Product/save","/api/Product/getall","/api/Product/get/{id}","/api/Product/update/{id}",
+                                                        "/api/catagorybyproduct/id","/api/catagorybyproduct/name",
+
+                                                        "/api/ProductDetails/save","/api/productDetails/getall",
+
+                                                        "/api/orders/save","/api/orders/all","/api/Order/getByUser/{userId}","/api/orders/{id}"
 
 
 
@@ -108,7 +112,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://75.119.134.82:6060", "http://localhost:5173"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://75.119.134.82:6161", "http://localhost:5173"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);

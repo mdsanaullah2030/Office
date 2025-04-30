@@ -35,11 +35,10 @@ public class ProductDetailsController {
             @RequestPart("productDetails") ProductDetails productDetails,
             @RequestPart("imagea") MultipartFile image1,
             @RequestPart("imageb") MultipartFile image2,
-            @RequestPart("imagec") MultipartFile image3,
-            @RequestPart("imaged") MultipartFile image4,
-            @RequestPart("imagef") MultipartFile image5
+            @RequestPart("imagec") MultipartFile image3
+
     )   throws IOException {
-        productDetailsService.saveProductDetails(productDetails, image1, image2,image3,image4,image5);
+        productDetailsService.saveProductDetails(productDetails, image1, image2,image3);
         return new ResponseEntity<>("ProductDetails saved successfully with images", HttpStatus.OK);
     }
 }

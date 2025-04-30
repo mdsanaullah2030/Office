@@ -3,6 +3,7 @@ package com.itshop.ecommerce.restController;
 import com.itshop.ecommerce.entity.Catagory;
 import com.itshop.ecommerce.service.CatagoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,5 +35,15 @@ public class CatagoryController {
     @PutMapping("/api/catagories/update/{id}")
     public Catagory updateCatagory(@PathVariable int id, @RequestBody Catagory catagory) {
         return catagoryService.updateCatagory(id, catagory);
+    }
+
+
+
+
+
+    @GetMapping("/api/findCatagories/name")
+    public ResponseEntity<List<Catagory>>findCatagoryName(@RequestParam(value = "catagoriName")String catagoriName){
+        List<Catagory> catagories=catagoryService.findCatagoriesByName(catagoriName);
+        return  ResponseEntity.ok(catagories);
     }
 }

@@ -32,4 +32,12 @@ public class CatagoryService {
             return catagoryRepository.save(c);
         }).orElse(null);
     }
+
+
+
+
+
+    public List<Catagory>findCatagoriesByName(String catagoryName){
+        return catagoryRepository.findCatagoryName(catagoryName);
+    }
 }
