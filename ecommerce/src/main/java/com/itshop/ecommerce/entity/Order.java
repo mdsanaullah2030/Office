@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "orders") // ✅ Here we renamed the table!
+@Table(name = "orders") //  Here we renamed the table!
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

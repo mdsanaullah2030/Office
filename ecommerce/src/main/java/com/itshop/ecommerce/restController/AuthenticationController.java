@@ -1,6 +1,7 @@
 package com.itshop.ecommerce.restController;
 
 import com.itshop.ecommerce.entity.AuthenticationResponse;
+import com.itshop.ecommerce.entity.Catagory;
 import com.itshop.ecommerce.entity.User;
 import com.itshop.ecommerce.service.AuthService;
 import com.itshop.ecommerce.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -53,6 +55,19 @@ public class AuthenticationController {
         String response = authService.activateUser(id);
         return ResponseEntity.ok(response);
     }
+
+
+
+    @GetMapping("/api/userRegistration/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable long id) {
+        try {
+            User user = userService.getUserRegistrationById(id);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 

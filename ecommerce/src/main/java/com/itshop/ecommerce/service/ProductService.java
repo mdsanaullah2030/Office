@@ -1,5 +1,7 @@
 package com.itshop.ecommerce.service;
 
+
+
 import com.itshop.ecommerce.entity.Product;
 import com.itshop.ecommerce.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +15,20 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product saveNoteBook(Product noteBook) {
-        return productRepository.save(noteBook);
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
     }
 
-    public List<Product> getAllNoteBooks() {
+    public List<Product> getAllProduct() {
         return productRepository.findAll();
     }
 
-    public Product getNoteBookById(int id) {
+    public Product getProductById(int id) {
         return productRepository.findById(id).orElse(null);
     }
 
 
-    public Product updateNoteBook(int id, Product updatedProduct) {
+    public Product updateProduct(int id, Product updatedProduct) {
         return productRepository.findById(id).map(existing -> {
             existing.setName(updatedProduct.getName());
             existing.setCatagory(updatedProduct.getCatagory());
@@ -42,9 +44,9 @@ public class ProductService {
     }
 
 
-  public List<Product> findProductsByCatagoryID(int catagoryId){
+    public List<Product> findProductsByCatagoryID(int catagoryId){
         return productRepository.findProductsByCatagoryId(catagoryId);
-  }
+    }
 
 
 

@@ -1,8 +1,11 @@
 package com.itshop.ecommerce.restController;
 
 import com.itshop.ecommerce.entity.Product;
+import com.itshop.ecommerce.entity.ProductDetails;
+import com.itshop.ecommerce.service.ProductDetailsService;
 import com.itshop.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,25 +19,26 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+
     @PostMapping("/api/Product/save")
-    public Product saveNoteBook(@RequestBody Product noteBook) {
-        return productService.saveNoteBook(noteBook);
+    public Product saveProduct(@RequestBody Product noteBook) {
+        return productService.saveProduct(noteBook);
     }
 
     @GetMapping("/api/Product/getall")
-    public List<Product> getAllNoteBooks() {
-        return productService.getAllNoteBooks();
+    public List<Product> getAllProduct() {
+        return productService.getAllProduct();
     }
 
     @GetMapping("/api/Product/get/{id}")
-    public Product getNoteBookById(@PathVariable int id) {
-        return productService.getNoteBookById(id);
+    public Product getProductById(@PathVariable int id) {
+        return productService.getProductById(id);
     }
 
 
     @PutMapping("/api/Product/update/{id}")
-    public Product updateNoteBook(@PathVariable int id, @RequestBody Product updatedProduct) {
-        return productService.updateNoteBook(id, updatedProduct);
+    public Product updateProduct(@PathVariable int id, @RequestBody Product updatedProduct) {
+        return productService.updateProduct(id, updatedProduct);
     }
 
 
@@ -50,6 +54,7 @@ public class ProductController {
         List<Product> products = productService.findProductsByCatagory(catagoryName);
         return ResponseEntity.ok(products);
     }
+
 
 
 

@@ -44,19 +44,24 @@ public class  SecurityConfig {
 
                                 req ->
                                         req.requestMatchers("/login",
-                                                        "/api/userRegistration","/activate/**","/api/userRegistration/get",
+
+                                                        "/api/userRegistration","/activate/**","/images/**",
 
 
-                                                        "/api/catagories/save","/api/catagories/get","/api/catagories/get/{id}","/api/catagories/update/{id}",
+                                                        "/api/catagories/get/{id}",
 
-                                                        "/api/findCatagories/name",
+                                                        "/api/findCatagories/name","/api/catagories/get",
 
-                                                        "/api/Product/save","/api/Product/getall","/api/Product/get/{id}","/api/Product/update/{id}",
+                                                        "/api/Product/getall","/api/Product/get/{id}","/api/Product/update/{id}",
+
                                                         "/api/catagorybyproduct/id","/api/catagorybyproduct/name",
 
-                                                        "/api/ProductDetails/save","/api/productDetails/getall",
+                                                        "/api/productDetails/getall","/api/productDetails/byCategory/{catagoryId}",
 
-                                                        "/api/orders/save","/api/orders/all","/api/Order/getByUser/{userId}","/api/orders/{id}"
+                                                        "/api/productDetails/{id}","/api/productDetails/byName/{name}"
+
+
+
 
 
 
@@ -65,7 +70,7 @@ public class  SecurityConfig {
                                                 .permitAll()
 
 
-                                                .requestMatchers( "**"
+                                                .requestMatchers(   "/api/orders/save"
 
 
                                                 )
@@ -79,7 +84,20 @@ public class  SecurityConfig {
 
 
 
-                                                        "/api/nominee/updateNominee/{id}","/ws/**","/all/messages","/private")
+                                                        "/api/userRegistration/get","/api/userRegistration/{id}",
+
+                                                        "/api/catagories/save" ,"/api/catagories/update/{id}",
+
+                                                        "/api/Product/save","/api/Product/update/{id}",
+
+                                                        "/api/ProductDetails/save",
+
+
+                                                        "/api/orders/all","/api/Order/getByUser/{userId}","/api/orders/{id}"
+
+
+
+                                                )
                                                 .hasAuthority("ADMIN")
 
 
@@ -112,7 +130,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://75.119.134.82:6161", "http://localhost:5173"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://localhost:6161", "http://localhost:5173"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -124,3 +142,6 @@ public class  SecurityConfig {
 
 
 }
+
+
+

@@ -30,6 +30,32 @@ public class ProductDetailsController {
         return productDetailsService.getAllProductDetails();
     }
 
+
+
+    @GetMapping("/api/productDetails/byName/{name}")
+    public ResponseEntity<ProductDetails> getProductDetailsByName(@PathVariable String name) {
+        return productDetailsService.getProductDetailsByName(name)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+
+
+
+    @GetMapping("/api/productDetails/{id}")
+    public ProductDetails getProductById(@PathVariable int id) {
+        return productDetailsService.getProductById(id);
+    }
+
+
+    @GetMapping("/api/productDetails/byCategory/{catagoryId}")
+    public ResponseEntity<List<ProductDetails>> getProductDetailsByCatagoryId(@PathVariable int catagoryId) {
+        List<ProductDetails> productList = productDetailsService.getProductDetailsByCatagoryId(catagoryId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+
     @PostMapping("/api/ProductDetails/save")
     public ResponseEntity<String> saveProductDetails(
             @RequestPart("productDetails") ProductDetails productDetails,
