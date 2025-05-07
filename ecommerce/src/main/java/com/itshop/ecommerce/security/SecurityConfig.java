@@ -58,7 +58,18 @@ public class  SecurityConfig {
 
                                                         "/api/productDetails/getall","/api/productDetails/byCategory/{catagoryId}",
 
-                                                        "/api/productDetails/{id}","/api/productDetails/byName/{name}"
+                                                        "/api/productDetails/{id}","/api/productDetails/byName/{name}",
+
+
+
+                                                        "/api/PcBuilder/save","api/PcBuilder/get","/api/PcBuilder/get/{id}",
+
+                                                        "/api/PcForPartAdd/save","/api/PcForPartAdd/get","/api/PcForPartAdd/update/{id}","/api/PcForPartAdd/delete/{id}",
+                                                        "/api/PcForPartAdd/get/{id}"
+
+
+
+
 
 
 
@@ -70,7 +81,10 @@ public class  SecurityConfig {
                                                 .permitAll()
 
 
-                                                .requestMatchers(   "/api/orders/save"
+                                                .requestMatchers(   "/api/orders/save","/api/addcart/save",
+                                                        "/api/addcart/userget/{userId}","/api/remove/{cartId}"
+
+
 
 
                                                 )
@@ -114,7 +128,6 @@ public class  SecurityConfig {
     }
 
 
-
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
@@ -130,7 +143,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:6161", "http://localhost:5173"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://75.119.134.82:6161", "http://localhost:5173"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
