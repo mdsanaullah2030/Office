@@ -45,7 +45,8 @@ public class  SecurityConfig {
                                 req ->
                                         req.requestMatchers("/login",
 
-                                                        "/api/userRegistration","/activate/**","/images/**",
+                                                        "/api/userRegistration","/api/userRegistration/{id}",
+                                                        "/activate/**","/images/**",
 
 
                                                         "/api/catagories/get/{id}",
@@ -62,10 +63,9 @@ public class  SecurityConfig {
 
 
 
-                                                        "/api/PcBuilder/save","api/PcBuilder/get","/api/PcBuilder/get/{id}",
+                                                        "/api/PcBuilder/get","/api/PcBuilder/get/{id}",
 
-                                                        "/api/PcForPartAdd/save","/api/PcForPartAdd/get","/api/PcForPartAdd/update/{id}","/api/PcForPartAdd/delete/{id}",
-                                                        "/api/PcForPartAdd/get/{id}"
+                                                        "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get"
 
 
 
@@ -98,7 +98,7 @@ public class  SecurityConfig {
 
 
 
-                                                        "/api/userRegistration/get","/api/userRegistration/{id}",
+                                                        "/api/userRegistration/get",
 
                                                         "/api/catagories/save" ,"/api/catagories/update/{id}",
 
@@ -107,7 +107,13 @@ public class  SecurityConfig {
                                                         "/api/ProductDetails/save",
 
 
-                                                        "/api/orders/all","/api/Order/getByUser/{userId}","/api/orders/{id}"
+                                                        "/api/orders/all","/api/Order/getByUser/{userId}","/api/orders/{id}",
+
+                                                        "/api/PcBuilder/save",
+
+                                                        "/api/PcForPartAdd/save","/api/PcForPartAdd/update/{id}","/api/PcForPartAdd/delete/{id}"
+
+
 
 
 
@@ -143,7 +149,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://75.119.134.82:6161", "http://localhost:5173"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://localhost:6161", "http://localhost:5173"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);

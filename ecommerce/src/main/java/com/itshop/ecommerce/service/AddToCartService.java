@@ -5,6 +5,7 @@ import com.itshop.ecommerce.entity.AddToCart;
 import com.itshop.ecommerce.entity.ProductDetails;
 import com.itshop.ecommerce.entity.User;
 import com.itshop.ecommerce.repository.AddToCartRepository;
+import com.itshop.ecommerce.repository.PcForPartAddRepository;
 import com.itshop.ecommerce.repository.ProductDetailsRepository;
 import com.itshop.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class AddToCartService {
 
     @Autowired
     private ProductDetailsRepository productDetailsRepository;
+    @Autowired
+    private PcForPartAddRepository pcForPartAddRepository;
 
     public AddToCart addToCart(Long userId, int productDetailsId, int quantity) {
         User user = userRepository.findById(userId).orElseThrow();

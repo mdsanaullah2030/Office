@@ -31,7 +31,7 @@ public class PcForPartAdd {
     private double specialprice;   // 4900
 
     private int quantity;
-    private  String image;
+    private  String imagea;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pcbuilder_id")

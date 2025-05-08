@@ -20,7 +20,7 @@ public class PcBuilder {
 
     @Column(unique = true, nullable = false)
     private  String name;
-    private  String image;
+    private  String imagea;
 
 
 
