@@ -67,9 +67,9 @@ public class PcBuilderService {
 
 
 
-public List<PcBuilder>getAllPcBuilder(){
-    return pcBuilderRepository.findAll();
-}
+    public List<PcBuilder> getAllPcBuilder() {
+        return pcBuilderRepository.findAll();
+    }
 
 
   public Optional<PcBuilder>getPcBuilderById(int id){

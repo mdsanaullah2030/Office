@@ -1,5 +1,7 @@
 package com.itshop.ecommerce.restController;
 
+import com.itshop.ecommerce.entity.Catagory;
+import com.itshop.ecommerce.entity.Order;
 import com.itshop.ecommerce.entity.PcBuilder;
 import com.itshop.ecommerce.entity.Product;
 import com.itshop.ecommerce.service.PcForPartAddService;
@@ -38,7 +40,32 @@ public class PcBuilderController {
 
 
 
-    @GetMapping("/api/PcBuilder/get/{id}")
+
+
+
+//    @GetMapping("/api/PcBuilder/get")
+//    public ResponseEntity<?> getAllOrders() {
+//        try {
+//            List<PcBuilder> orders = pcBuilderService.getAllPcBuilder();
+//            return ResponseEntity.ok(orders);
+//        } catch (Exception e) {
+//            e.printStackTrace(); // See detailed error in logs
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error fetching PcBuilder data: " + e.getMessage());
+//        }
+//    }
+
+
+
+    @GetMapping("/api/PcBuilder/Allget")
+    public ResponseEntity<List<PcBuilder>> getAllLocation() {
+        List<PcBuilder> pcBuilder = pcBuilderService.getAllPcBuilder();
+        return ResponseEntity.ok(pcBuilder);}
+
+
+
+
+        @GetMapping("/api/PcBuilder/get/{id}")
     public Optional<PcBuilder> getPcBuilderById(@PathVariable int id) {
         return pcBuilderService.getPcBuilderById(id);
     }
