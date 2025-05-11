@@ -32,7 +32,21 @@ public class OrderController {
 
 
 
+    // Update order status
+    @PutMapping("/api/orders/updete/{id}")
 
+    public ResponseEntity<String> updateOrderActions(@PathVariable int id, @RequestParam String actions) {
+        orderService.updateOrderActions(id, actions);
+        return ResponseEntity.ok("Order actions updated successfully.");
+    }
+
+
+
+    // Delete order
+    @DeleteMapping("/api/orders/delete/{id}")
+    public String deleteOrder(@PathVariable int id) {
+        return orderService.deleteOrder(id);
+    }
 
 
 

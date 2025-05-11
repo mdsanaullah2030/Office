@@ -25,6 +25,19 @@ public class AddToCartController {
         return cartService.addToCart(userId, productDetailsId, quantity);
     }
 
+
+
+    @PostMapping("/api/addcart/save/pcpart")
+    public AddToCart addPcPartToCart(@RequestParam Long userId,
+                                     @RequestParam int pcPartId,
+                                     @RequestParam int quantity) {
+        return cartService.addPcPartToCart(userId, pcPartId, quantity);
+    }
+
+
+
+
+
     @GetMapping("/user/{userId}")
     public List<AddToCart> getCartItems(@PathVariable Long userId) {
         return cartService.getCartItemsByUserId(userId);

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "orders") //  Here we renamed the table!
 @AllArgsConstructor
@@ -20,19 +22,29 @@ public class Order {
     private String name;
     private String email;
     private String phoneNo;
-
     private String productid;
     private String productname;
     private int quantity;
     private Double price;
+    private String districts;
+    private  String upazila;
+    private  String address;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "catagory_id")
-    private Catagory catagory;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_id")
-    private Product product;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "requestdate", updatable = false)
+    private Date requestdate;
+
+    @PrePersist
+    protected void onCreate() {
+        this.requestdate = new Date();
+    }
+
+
+    private  String status;
+
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -43,4 +55,9 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "productDetails_id")
     private ProductDetails productDetails;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "addToCart_id")
+    private AddToCart addToCart;
 }

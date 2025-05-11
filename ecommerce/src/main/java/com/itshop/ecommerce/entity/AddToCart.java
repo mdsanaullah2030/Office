@@ -23,6 +23,12 @@ public class AddToCart {
 
     private int quantity;
     private double price;
+
+
+    @ManyToOne
+    @JoinColumn(name = "pcforpartadd_id")
+    private PcForPartAdd pcForPartAdd;
+
 }
 
 
