@@ -31,6 +31,19 @@ public class OrderController {
 
 
 
+    //   PcForPartOrder"
+    @PostMapping("/api/pcforpartorder/save")
+    public ResponseEntity<Order> savePcForPartOrder(@RequestBody Order order) {
+        Order savedOrder = orderService.PcForPartOrder(order);
+        return ResponseEntity.ok(savedOrder);
+    }
+
+
+
+
+
+
+
 
     // Update order status
     @PutMapping("/api/orders/updete/{id}")

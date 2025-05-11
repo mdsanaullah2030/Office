@@ -60,4 +60,9 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "addToCart_id")
     private AddToCart addToCart;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "pcForPartAdd_id")
+    private PcForPartAdd pcForPartAdd;
 }

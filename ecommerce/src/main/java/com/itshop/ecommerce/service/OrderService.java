@@ -26,6 +26,9 @@ public class OrderService {
    @Autowired
    private AddToCartRepository addToCartRepository;
 
+   @Autowired
+   private PcForPartAddRepository pcForPartAddRepository;
+
 
 
 
@@ -75,6 +78,44 @@ public class OrderService {
                 int remainingQuantity = productDetails.getQuantity() - orderQuantity;
                 productDetails.setQuantity(remainingQuantity);
                 productDetailsRepository.save(productDetails);
+            });
+        }
+
+        return orderRepository.save(order);
+    }
+
+
+
+    public Order PcForPartOrder(Order order) {
+
+        // Set User details
+        if (order.getUser() != null && order.getUser().getId() != 0) {
+            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
+                order.setUser(user);
+                order.setName(user.getName());
+                order.setEmail(user.getEmail());
+                order.setPhoneNo(user.getPhoneNo());
+            });
+        }
+
+        // Set PcForPartAdd details and calculate price
+        if (order.getPcForPartAdd() != null && order.getPcForPartAdd().getId() != 0) {
+            pcForPartAddRepository.findById(order.getPcForPartAdd().getId()).ifPresent(pcPart -> {
+                order.setPcForPartAdd(pcPart);
+                order.setProductid(String.valueOf(pcPart.getId())); // or some unique field
+                order.setProductname(pcPart.getName());
+
+                // Calculate price
+                double unitPrice = pcPart.getSpecialprice() > 0
+                        ? pcPart.getSpecialprice()
+                        : pcPart.getRegularprice();
+                int orderQuantity = order.getQuantity();
+                order.setPrice(unitPrice * orderQuantity);
+
+                // Decrease stock quantity
+                int remainingQuantity = pcPart.getQuantity() - orderQuantity;
+                pcPart.setQuantity(remainingQuantity);
+                pcForPartAddRepository.save(pcPart);
             });
         }
 

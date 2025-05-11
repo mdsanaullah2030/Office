@@ -69,7 +69,7 @@ public class  SecurityConfig {
 
 
 
-                                                       , "/api/orders/save","/api/orders/updete/{id}","/api/orders/delete/{id}"
+                                                       , "/api/orders/save","/api/orders/updete/{id}","/api/orders/delete/{id}","/api/pcforpartorder/save"
 
 
 
