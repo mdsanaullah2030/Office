@@ -101,26 +101,86 @@ public class OrderService {
         // Set PcForPartAdd details and calculate price
         if (order.getPcForPartAdd() != null && order.getPcForPartAdd().getId() != 0) {
             pcForPartAddRepository.findById(order.getPcForPartAdd().getId()).ifPresent(pcPart -> {
+
+                int orderedQty = order.getQuantity();
+                int availableQty = pcPart.getQuantity();
+
+                // Check if enough quantity exists
+                if (availableQty < orderedQty) {
+                    throw new RuntimeException("Not enough quantity available for product: " + pcPart.getName());
+                }
+
+                // Set product-related fields in order
                 order.setPcForPartAdd(pcPart);
-                order.setProductid(String.valueOf(pcPart.getId())); // or some unique field
+                order.setProductid(String.valueOf(pcPart.getId()));
                 order.setProductname(pcPart.getName());
 
-                // Calculate price
-                double unitPrice = pcPart.getSpecialprice() > 0
-                        ? pcPart.getSpecialprice()
-                        : pcPart.getRegularprice();
-                int orderQuantity = order.getQuantity();
-                order.setPrice(unitPrice * orderQuantity);
+                // Set price based on specialprice or regularprice
+                double unitPrice = pcPart.getSpecialprice() > 0 ? pcPart.getSpecialprice() : pcPart.getRegularprice();
+                order.setPrice(unitPrice * orderedQty);
 
-                // Decrease stock quantity
-                int remainingQuantity = pcPart.getQuantity() - orderQuantity;
-                pcPart.setQuantity(remainingQuantity);
+                // Update available quantity in PcForPartAdd
+                pcPart.setQuantity(availableQty - orderedQty);
                 pcForPartAddRepository.save(pcPart);
             });
         }
 
         return orderRepository.save(order);
     }
+
+
+
+
+
+    @Transactional
+    public Order saveOrderFromCartAndPcPart(int userId, int addToCartId, int pcForPartAddId) {
+        User user = userRepository.findById((long) userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        AddToCart cart = addToCartRepository.findById(addToCartId)
+                .orElseThrow(() -> new RuntimeException("AddToCart entry not found"));
+
+        PcForPartAdd pcPart = pcForPartAddRepository.findById(pcForPartAddId)
+                .orElseThrow(() -> new RuntimeException("PcForPartAdd not found"));
+
+        if (pcPart.getQuantity() < cart.getQuantity()) {
+            throw new RuntimeException("Not enough quantity available for: " + pcPart.getName());
+        }
+
+        // Create new Order
+        Order order = new Order();
+        order.setUser(user);
+        order.setName(user.getName());
+        order.setEmail(user.getEmail());
+        order.setPhoneNo(user.getPhoneNo());
+
+        order.setAddToCart(cart);
+        order.setPcForPartAdd(pcPart);
+
+        order.setProductid(String.valueOf(pcPart.getId()));
+        order.setProductname(pcPart.getName());
+        order.setQuantity(cart.getQuantity());
+        order.setPrice(cart.getPrice());
+        order.setStatus("PENDING"); // default status
+        order.setDistricts("");     // you can set these if needed
+        order.setUpazila("");
+        order.setAddress("");
+
+        // Subtract quantity
+        pcPart.setQuantity(pcPart.getQuantity() - cart.getQuantity());
+        pcForPartAddRepository.save(pcPart);
+
+        return orderRepository.save(order);
+    }
+
+
+
+
+
+
+
+
+
 
 
 

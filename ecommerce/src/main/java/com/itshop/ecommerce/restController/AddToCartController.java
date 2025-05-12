@@ -38,12 +38,12 @@ public class AddToCartController {
 
 
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/api/addcart/user/get/{userId}")
     public List<AddToCart> getCartItems(@PathVariable Long userId) {
         return cartService.getCartItemsByUserId(userId);
     }
 
-    @DeleteMapping("/remove/{cartId}")
+    @DeleteMapping("/api/addcart/remove/{cartId}")
     public void removeFromCart(@PathVariable int cartId) {
         cartService.removeFromCart(cartId);
     }

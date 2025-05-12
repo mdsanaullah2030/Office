@@ -65,11 +65,17 @@ public class  SecurityConfig {
 
                                                         "/api/PcBuilder/Allget","/api/PcBuilder/get/{id}",
 
-                                                        "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/addcart/save/pcpart"
+                                                        "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/addcart/save/pcpart",
 
 
 
-                                                       , "/api/orders/save","/api/orders/updete/{id}","/api/orders/delete/{id}","/api/pcforpartorder/save"
+
+                                                        "/api/pcpartorder/save","/api/orders/cartpcpart/save"
+
+
+
+
+
 
 
 
@@ -81,8 +87,10 @@ public class  SecurityConfig {
                                                 .permitAll()
 
 
-                                                .requestMatchers(   "/api/addcart/save",
-                                                        "/api/addcart/userget/{userId}","/api/remove/{cartId}"
+                                                .requestMatchers(   "/api/addcart/save","/api/orders/save",
+
+                                                        "/api/orders/delete/{id}","/api/Order/getByUser/{userId}",
+                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/addcart/save/pcpart"
 
 
 
@@ -107,7 +115,8 @@ public class  SecurityConfig {
                                                         ,"/api/ProductDetails/save",
 
 
-                                                          "/api/orders/all","/api/Order/getByUser/{userId}","/api/orders/{id}",
+                                                          "/api/orders/all","/api/orders/{id}",
+                                                        "/api/orders/delete/{id}","/api/orders/updete/{id}",
 
                                                         "/api/PcBuilder/save",
 

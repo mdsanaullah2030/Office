@@ -18,7 +18,6 @@ public class Product {
 
     @Column(unique = true, nullable = false)
     private String name;
-    private  String imagea;
 
 
 
