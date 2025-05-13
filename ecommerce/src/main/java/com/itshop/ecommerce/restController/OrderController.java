@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -50,17 +51,56 @@ public class OrderController {
 
 
     @PostMapping("/api/orders/cartpcpart/save")
+
     public ResponseEntity<Order> createOrderFromCartAndPart(
             @RequestParam int userId,
             @RequestParam int addToCartId,
-            @RequestParam int pcForPartAddId) {
+            @RequestParam int pcForPartAddId,
+            @RequestBody Map<String, String> addressData
+    ) {
+        String districts = addressData.getOrDefault("districts", "");
+        String upazila = addressData.getOrDefault("upazila", "");
+        String address = addressData.getOrDefault("address", "");
 
-        Order order = orderService.saveOrderFromCartAndPcPart(userId, addToCartId, pcForPartAddId);
+        Order order = orderService.saveOrderFromCartAndPcPart(
+                userId,
+                addToCartId,
+                pcForPartAddId,
+                districts,
+                upazila,
+                address
+        );
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
 
 
+
+///Add To Card product details  Order
+
+    @PostMapping("/api/orders/cadordreproductdetails/save")
+
+    public ResponseEntity<Order> createOrderCartproductDetailsId(
+            @RequestParam int userId,
+            @RequestParam int addToCartId,
+            @RequestParam int productDetailsId,
+            @RequestBody Map<String, String> addressData
+    ) {
+        String districts = addressData.getOrDefault("districts", "");
+        String upazila = addressData.getOrDefault("upazila", "");
+        String address = addressData.getOrDefault("address", "");
+
+        //  Correct service method here
+        Order order = orderService.saveOrderProductDetails(
+                userId,
+                addToCartId,
+                productDetailsId,
+                districts,
+                upazila,
+                address
+        );
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
+    }
 
 
 

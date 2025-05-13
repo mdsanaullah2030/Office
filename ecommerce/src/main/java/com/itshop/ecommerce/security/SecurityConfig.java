@@ -70,7 +70,9 @@ public class  SecurityConfig {
 
 
 
-                                                        "/api/pcpartorder/save","/api/orders/cartpcpart/save"
+                                                        "/api/pcpartorder/save","/api/orders/cartpcpart/save",
+                                                        "/api/orders/cartpcpart/save","/api/orders/cadordreproductdetails/save"
+
 
 
 

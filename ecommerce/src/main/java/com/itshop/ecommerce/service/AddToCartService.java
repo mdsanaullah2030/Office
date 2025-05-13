@@ -29,7 +29,9 @@ public class AddToCartService {
     @Autowired
     private PcForPartAddRepository pcForPartAddRepository;
 
-    public AddToCart addToCart(Long userId, int productDetailsId, int quantity) {
+
+
+    public AddToCart productDetailsaddToCart(Long userId, int productDetailsId, int quantity) {
         User user = userRepository.findById(userId).orElseThrow();
         ProductDetails productDetails = productDetailsRepository.findById(productDetailsId).orElseThrow();
 

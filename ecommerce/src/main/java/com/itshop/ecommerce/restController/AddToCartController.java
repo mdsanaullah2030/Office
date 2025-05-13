@@ -22,7 +22,7 @@ public class AddToCartController {
     public AddToCart addToCart(@RequestParam Long userId,
                                @RequestParam int productDetailsId,
                                @RequestParam int quantity) {
-        return cartService.addToCart(userId, productDetailsId, quantity);
+        return cartService.productDetailsaddToCart(userId, productDetailsId, quantity);
     }
 
 
