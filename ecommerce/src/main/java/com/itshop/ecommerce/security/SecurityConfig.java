@@ -46,7 +46,7 @@ public class  SecurityConfig {
                                         req.requestMatchers("/login",
 
                                                         "/api/userRegistration","/api/userRegistration/{id}",
-                                                        "/activate/**","/images/**",
+                                                        "/activate/**","/images/**","/api/HomePageImage/getall","/api/HomePageImage/get/{id}",
 
 
                                                         "/api/catagories/get/{id}",
@@ -65,13 +65,15 @@ public class  SecurityConfig {
 
                                                         "/api/PcBuilder/Allget","/api/PcBuilder/get/{id}",
 
-                                                        "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/addcart/save/pcpart",
+                                                        "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/PcForPartAdd/getPcBuilder/Byid/{id}",
+
+
+                                                        "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save"
 
 
 
 
-                                                        "/api/pcpartorder/save","/api/orders/cartpcpart/save",
-                                                        "/api/orders/cartpcpart/save","/api/orders/cadordreproductdetails/save"
+
 
 
 
@@ -89,10 +91,12 @@ public class  SecurityConfig {
                                                 .permitAll()
 
 
-                                                .requestMatchers(   "/api/addcart/save","/api/orders/save",
+                                                .requestMatchers(   "/api/productdetails/orders/save","/api/pcforpart/orders/save",
+
+                                                        "/api/orders/AddToCadrt/productdetails/save","/api/orders/AddToCard/pcpart/save",
 
                                                         "/api/orders/delete/{id}","/api/Order/getByUser/{userId}",
-                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/addcart/save/pcpart"
+                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
 
 
 
@@ -109,6 +113,9 @@ public class  SecurityConfig {
 
 
                                                         "/api/userRegistration/get",
+
+
+                                                        "/api/HomePageImage/save","/api/HomePageImage/update/{is}","/api/HomePageImage/delete/{id}",
 
                                                         "/api/catagories/save" ,"/api/catagories/update/{id}",
 

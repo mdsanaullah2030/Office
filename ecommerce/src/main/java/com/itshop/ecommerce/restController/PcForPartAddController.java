@@ -1,5 +1,6 @@
 package com.itshop.ecommerce.restController;
 
+import com.itshop.ecommerce.entity.PcBuilder;
 import com.itshop.ecommerce.entity.PcForPartAdd;
 import com.itshop.ecommerce.entity.Product;
 import com.itshop.ecommerce.service.PcForPartAddService;
@@ -66,6 +67,13 @@ public class PcForPartAddController {
         pcForPartAddService.deletePcForPart(id);
         return ResponseEntity.ok("Deleted CPU with ID " + id);
     }
+
+
+    @GetMapping("/api/PcForPartAdd/getPcBuilder/Byid/{id}")
+    public ResponseEntity<List<PcForPartAdd>> getPcPartsByBuilderId(@PathVariable("id") PcBuilder id) {
+    List<PcForPartAdd> parts = pcForPartAddService.getPartsByPcBuilderId(id);
+    return ResponseEntity.ok(parts);
+}
 
 
 

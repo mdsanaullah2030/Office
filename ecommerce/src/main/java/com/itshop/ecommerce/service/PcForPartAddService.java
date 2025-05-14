@@ -116,5 +116,13 @@ public class PcForPartAddService {
     }
 
 
+    public List<PcForPartAdd> getPartsByPcBuilderId(PcBuilder pcBuilder) {
+        return pcForPartAddRepository.findByPcBuilder(pcBuilder);
+    }
+
+
+
+
+
 }
 

@@ -24,7 +24,7 @@ public class OrderController {
     private ProductDetailsRepository productDetailsRepository;
 
     //  Save Order
-    @PostMapping("/api/orders/save")
+    @PostMapping("/api/productdetails/orders/save")
     public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
         Order savedOrder = orderService.saveOrder(order);
         return ResponseEntity.ok(savedOrder);
@@ -32,16 +32,9 @@ public class OrderController {
 
 
 
-    //   PcForPartOrder"
-//    @PostMapping("/api/pcforpartorder/save")
-//    public ResponseEntity<Order> savePcForPartOrder(@RequestBody Order order) {
-//        Order savedOrder = orderService.PcForPartOrder(order);
-//        return ResponseEntity.ok(savedOrder);
-//    }
+///api/pcpartorder/save
 
-
-
-    @PostMapping("/api/pcpartorder/save")
+    @PostMapping("/api/pcforpart/orders/save")
     public ResponseEntity<Order> savePcForPartOrder(@RequestBody Order order) {
         Order savedOrder = orderService.PcForPartOrder(order);
         return ResponseEntity.ok(savedOrder);
@@ -50,7 +43,7 @@ public class OrderController {
 
 
 
-    @PostMapping("/api/orders/cartpcpart/save")
+    @PostMapping("/api/orders/AddToCard/pcpart/save")
 
     public ResponseEntity<Order> createOrderFromCartAndPart(
             @RequestParam int userId,
@@ -78,7 +71,7 @@ public class OrderController {
 
 ///Add To Card product details  Order
 
-    @PostMapping("/api/orders/cadordreproductdetails/save")
+    @PostMapping("/api/orders/AddToCadrt/productdetails/save")
 
     public ResponseEntity<Order> createOrderCartproductDetailsId(
             @RequestParam int userId,

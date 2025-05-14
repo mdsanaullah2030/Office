@@ -44,6 +44,17 @@ public class ProductDetailsService {
     }
 
 
+    public List<ProductDetails> getProductDetailsByCatagoryId(int catagoryId) {
+        return productDetailsRepository.findByCatagoryId(catagoryId);
+    }
+
+    public Optional<ProductDetails> getProductDetailsByName(String name) {
+        return productDetailsRepository.findByName(name);
+    }
+
+
+
+
 
     @Transactional
     public void saveProductDetails(ProductDetails productDetails, MultipartFile image1File, MultipartFile image2File,MultipartFile image3File) throws IOException {
@@ -90,13 +101,7 @@ public class ProductDetailsService {
         return filename;
     }
 
-    public List<ProductDetails> getProductDetailsByCatagoryId(int catagoryId) {
-        return productDetailsRepository.findByCatagoryId(catagoryId);
-    }
 
-    public Optional<ProductDetails> getProductDetailsByName(String name) {
-        return productDetailsRepository.findByName(name);
-    }
 
 }
 

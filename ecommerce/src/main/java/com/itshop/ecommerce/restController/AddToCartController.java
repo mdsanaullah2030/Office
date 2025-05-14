@@ -18,7 +18,7 @@ public class AddToCartController {
     @Autowired
     private AddToCartService cartService;
 
-    @PostMapping("/api/addcart/save")
+    @PostMapping("/api/productdetails/AddTocart/save")
     public AddToCart addToCart(@RequestParam Long userId,
                                @RequestParam int productDetailsId,
                                @RequestParam int quantity) {
@@ -27,7 +27,7 @@ public class AddToCartController {
 
 
 
-    @PostMapping("/api/addcart/save/pcpart")
+    @PostMapping("/api/pcforpart/AddToCart/save")
     public AddToCart addPcPartToCart(@RequestParam Long userId,
                                      @RequestParam int pcPartId,
                                      @RequestParam int quantity) {
