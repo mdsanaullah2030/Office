@@ -48,7 +48,7 @@ public class PcForPartAddController {
     }
 
 
-    @GetMapping("api/PcBuilder/get")
+    @GetMapping("/api/PcForPartAdd/get/{id}")
     public Optional<PcForPartAdd> getCpuById(@PathVariable int id) {
         return pcForPartAddService.getCpuById(id);
     }

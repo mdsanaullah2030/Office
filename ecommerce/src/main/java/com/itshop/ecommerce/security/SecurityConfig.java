@@ -46,7 +46,9 @@ public class  SecurityConfig {
                                         req.requestMatchers("/login",
 
                                                         "/api/userRegistration","/api/userRegistration/{id}",
-                                                        "/activate/**","/images/**","/api/HomePageImage/getall","/api/HomePageImage/get/{id}",
+                                                        "/activate/**","/images/**","/api/HomePageImage/getall","/api/HomePageImage/get/{id}"
+
+                                                        ,"/api/ServiceFeature/get",
 
 
                                                         "/api/catagories/get/{id}",
@@ -63,13 +65,12 @@ public class  SecurityConfig {
 
 
 
-                                                        "/api/PcBuilder/Allget","/api/PcBuilder/get/{id}",
+                                                        "/api/PcBuilder/Allget","/api/PcForPartAdd/get/{id}",
 
                                                         "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/PcForPartAdd/getPcBuilder/Byid/{id}",
 
 
                                                         "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save"
-
 
 
 
@@ -116,6 +117,11 @@ public class  SecurityConfig {
 
 
                                                         "/api/HomePageImage/save","/api/HomePageImage/update/{is}","/api/HomePageImage/delete/{id}",
+
+
+                                                        "/api/ServiceFeature/save","/api/ServiceFeature/updete/{id}",
+                                                        "/api/ServiceFeature/delete/{id}",
+
 
                                                         "/api/catagories/save" ,"/api/catagories/update/{id}",
 
