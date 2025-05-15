@@ -70,10 +70,16 @@ public class PcForPartAddController {
 
 
     @GetMapping("/api/PcForPartAdd/getPcBuilder/Byid/{id}")
-    public ResponseEntity<List<PcForPartAdd>> getPcPartsByBuilderId(@PathVariable("id") PcBuilder id) {
-    List<PcForPartAdd> parts = pcForPartAddService.getPartsByPcBuilderId(id);
-    return ResponseEntity.ok(parts);
-}
+    public ResponseEntity<?> getPcPartsByBuilderId(@PathVariable("id") int id) {
+        try {
+            List<PcForPartAdd> parts = pcForPartAddService.getPartsByPcBuilderId(id);
+            return ResponseEntity.ok(parts);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred: " + ex.getMessage());
+        }
+    }
 
 
 

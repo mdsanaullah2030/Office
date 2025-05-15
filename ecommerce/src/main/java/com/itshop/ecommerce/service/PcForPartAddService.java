@@ -33,7 +33,7 @@ public class PcForPartAddService {
     private String uploadDir;
 
     // Create
-    public PcForPartAdd savePcForPart(PcForPartAdd pcForPartAdd,MultipartFile image1File) throws IOException {
+    public PcForPartAdd savePcForPart(PcForPartAdd pcForPartAdd, MultipartFile image1File) throws IOException {
         int builderId = pcForPartAdd.getPcbuilder().getId();
         PcBuilder builder = pcBuilderRepository.findById(builderId)
                 .orElseThrow(() -> new RuntimeException("PcBuilder with id " + builderId + " not found"));
@@ -48,10 +48,6 @@ public class PcForPartAddService {
 
         return pcForPartAddRepository.save(pcForPartAdd);
     }
-
-
-
-
 
 
     public String saveImage(MultipartFile file, PcForPartAdd l) throws IOException {
@@ -71,18 +67,6 @@ public class PcForPartAddService {
 
         return filename;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     // Read all
@@ -116,13 +100,11 @@ public class PcForPartAddService {
     }
 
 
-    public List<PcForPartAdd> getPartsByPcBuilderId(PcBuilder pcBuilder) {
-        return pcForPartAddRepository.findByPcBuilder(pcBuilder);
+    public List<PcForPartAdd> getPartsByPcBuilderId(int id) {
+        PcBuilder pcBuilder = pcBuilderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("PcBuilder not found with ID: " + id));
+        return pcForPartAddRepository.findByPcBuilderId(pcBuilder.getId());
+
+
     }
-
-
-
-
-
 }
-
