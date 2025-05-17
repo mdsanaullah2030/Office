@@ -55,6 +55,18 @@ public class ProductDetailsController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
+///Brand By ID Get All Product Details
+
+    @GetMapping("/api/productDetails/Brand/get/ById/{id}")
+    public ResponseEntity<List<ProductDetails>> getProductDetailsByBrandId(@PathVariable("id") int brandId) {
+        List<ProductDetails> productList = productDetailsService.getProductDetailsByBrandId(brandId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+
+
+
+
 
     @PostMapping("/api/ProductDetails/save")
     public ResponseEntity<String> saveProductDetails(

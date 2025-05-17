@@ -12,9 +12,9 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-public class Brands {
+@Getter
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

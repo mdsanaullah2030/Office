@@ -50,6 +50,12 @@ public class  SecurityConfig {
 
                                                         ,"/api/ServiceFeature/get",
 
+                                                      "/api/brands/get/all","/api/brands/get/{id}","/api/brands/update/{id}",
+
+                                                        "/api/branches/save","/api/branches/get/all","/api/branches/getID/{id}",
+                                                        "/api/branches/update/{id}","/api/branches/delete/{id}",
+
+
 
                                                         "/api/catagories/get/{id}",
 
@@ -61,7 +67,7 @@ public class  SecurityConfig {
 
                                                         "/api/productDetails/getall","/api/productDetails/byCategory/{catagoryId}",
 
-                                                        "/api/productDetails/{id}","/api/productDetails/byName/{name}",
+                                                        "/api/productDetails/{id}","/api/productDetails/byName/{name}","/api/productDetails/Brand/get/ById/{id}",
 
 
 
@@ -70,7 +76,8 @@ public class  SecurityConfig {
                                                         "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/PcForPartAdd/getPcBuilder/Byid/{id}",
 
 
-                                                        "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save"
+                                                        "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save",
+                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
 
 
 
@@ -96,8 +103,8 @@ public class  SecurityConfig {
 
                                                         "/api/orders/AddToCadrt/productdetails/save","/api/orders/AddToCard/pcpart/save",
 
-                                                        "/api/orders/delete/{id}","/api/Order/getByUser/{userId}",
-                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
+                                                        "/api/orders/delete/{id}","/api/Order/getByUser/{userId}"
+
 
 
 
@@ -122,6 +129,7 @@ public class  SecurityConfig {
                                                         "/api/ServiceFeature/save","/api/ServiceFeature/updete/{id}",
                                                         "/api/ServiceFeature/delete/{id}",
 
+                                                        "/api/brands/save","/api/brands/delete/{id}",
 
                                                         "/api/catagories/save" ,"/api/catagories/update/{id}",
 

@@ -43,10 +43,20 @@ public class ProductDetailsService {
         return productDetailsRepository.findById(id).orElse(null);
     }
 
-
+//Catagory ID By Get All Product Details
     public List<ProductDetails> getProductDetailsByCatagoryId(int catagoryId) {
         return productDetailsRepository.findByCatagoryId(catagoryId);
     }
+
+
+
+    //Brand ID By Get All Product Details
+    public List<ProductDetails> getProductDetailsByBrandId(int brandId) {
+        return productDetailsRepository.findByBrandId(brandId);
+    }
+
+
+
 
     public Optional<ProductDetails> getProductDetailsByName(String name) {
         return productDetailsRepository.findByName(name);

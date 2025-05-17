@@ -14,6 +14,10 @@ public interface ProductDetailsRepository extends JpaRepository<ProductDetails,I
 
     List<ProductDetails> findByCatagoryId(int catagoryId);
 
+
+    List<ProductDetails> findByBrandId(int brandId);
+
+
     Optional<ProductDetails> findById(Integer id);
     Optional<ProductDetails> findByName(String name);
 

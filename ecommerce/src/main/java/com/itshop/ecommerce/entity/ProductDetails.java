@@ -52,4 +52,11 @@ public class ProductDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
+
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
 }
