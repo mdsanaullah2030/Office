@@ -113,6 +113,13 @@ public class ProductDetailsService {
 
 
 
+
+
+    public List<ProductDetails> filterProductDetails(String brandname, String productName, Double regularPrice) {
+        return productDetailsRepository.filterByBrandnameAndProductNameAndRegularPrice(brandname, productName, regularPrice);
+    }
+
+
 }
 
 

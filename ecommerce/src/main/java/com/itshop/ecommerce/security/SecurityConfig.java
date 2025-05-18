@@ -52,8 +52,8 @@ public class  SecurityConfig {
 
                                                       "/api/brands/get/all","/api/brands/get/{id}","/api/brands/update/{id}",
 
-                                                        "/api/branches/save","/api/branches/get/all","/api/branches/getID/{id}",
-                                                        "/api/branches/update/{id}","/api/branches/delete/{id}",
+                                                        "/api/branches/get/all","/api/branches/getID/{id}",
+
 
 
 
@@ -78,6 +78,28 @@ public class  SecurityConfig {
 
                                                         "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save",
                                                         "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
+
+
+
+                                                ,"/api/productDetails/filter",
+
+                                                        "/api/aboutus/get",
+
+
+
+
+                                             "/api/media/get"
+
+
+                                                , "/api/ccbuilder/get/{id}","/api/ccbuilder/get"
+
+
+
+
+                                                ,"/api/items/get","/api/items/get/{id}",
+                                                "/api/CCBuilder/Item/Ditels/save","/api/CCBuilder/Item/Ditels/get"
+
+
 
 
 
@@ -126,6 +148,9 @@ public class  SecurityConfig {
                                                         "/api/HomePageImage/save","/api/HomePageImage/update/{is}","/api/HomePageImage/delete/{id}",
 
 
+                                                        "/api/branches/save","/api/branches/update/{id}","/api/branches/delete/{id}",
+
+
                                                         "/api/ServiceFeature/save","/api/ServiceFeature/updete/{id}",
                                                         "/api/ServiceFeature/delete/{id}",
 
@@ -146,6 +171,18 @@ public class  SecurityConfig {
                                                         "/api/PcForPartAdd/save","/api/PcForPartAdd/update/{id}","/api/PcForPartAdd/delete/{id}"
 
 
+
+                                                        ,"/api/aboutus/save","/api/aboutus/delete/{id}",
+                                                        "/api/aboutus/updete/{id}",
+
+
+                                                        "/api/media/getid/{id}","/api/media/Delete/{id}",   "/api/media/save",
+
+
+                                                           "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}"
+
+                                                        ,"/api/items/update/{id}",
+                                                        "/api/items/delete/{id}","/api/items/save"
 
 
 

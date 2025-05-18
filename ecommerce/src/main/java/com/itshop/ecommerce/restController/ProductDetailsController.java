@@ -79,4 +79,21 @@ public class ProductDetailsController {
         productDetailsService.saveProductDetails(productDetails, image1, image2,image3);
         return new ResponseEntity<>("ProductDetails saved successfully with images", HttpStatus.OK);
     }
+
+
+
+
+
+
+    @GetMapping("/api/productDetails/filter")
+    public ResponseEntity<List<ProductDetails>> filterProductDetails(
+            @RequestParam(required = false) String brandname,
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) Double regularPrice
+    ) {
+        List<ProductDetails> results = productDetailsService.filterProductDetails(brandname, productName, regularPrice);
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
+
 }
