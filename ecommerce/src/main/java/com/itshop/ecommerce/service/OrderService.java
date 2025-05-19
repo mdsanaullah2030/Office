@@ -29,6 +29,9 @@ public class OrderService {
    @Autowired
    private PcForPartAddRepository pcForPartAddRepository;
 
+   @Autowired
+   private CCBuilderItemDitelsRepository ccBuilderItemDitelsRepository;
+
 
 
 
@@ -46,6 +49,9 @@ public class OrderService {
     public List<Order> getOrdersByUserId(long userId) {
         return orderRepository.findByUserId(userId);
     }
+
+
+//Product Details Order
 
     public Order saveOrder(Order order) {
 
@@ -85,6 +91,10 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+
+
+
+//PC Part Order
 
 
     public Order PcForPartOrder(Order order) {
@@ -129,6 +139,61 @@ public class OrderService {
 
         return orderRepository.save(order);
     }
+
+
+
+
+    //CC Item Bulder Order **********
+
+
+    public Order CCItemBulderOrder(Order order) {
+
+        // Set User details
+        if (order.getUser() != null && order.getUser().getId() != 0) {
+            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
+                order.setUser(user);
+                order.setName(user.getName());
+                order.setEmail(user.getEmail());
+                order.setPhoneNo(user.getPhoneNo());
+            });
+        }
+
+        // Set PcForPartAdd details and calculate price
+        if (order.getCcBuilderItemDitels() != null && order.getCcBuilderItemDitels().getId() != 0) {
+            ccBuilderItemDitelsRepository.findById(order.getCcBuilderItemDitels().getId()).ifPresent(pcPart -> {
+
+                int orderedQty = order.getQuantity();
+                int availableQty = pcPart.getQuantity();
+
+                // Check if enough quantity exists
+                if (availableQty < orderedQty) {
+                    throw new RuntimeException("Not enough quantity available for product: " + pcPart.getName());
+                }
+
+                // Set product-related fields in order
+                order.setCcBuilderItemDitels(pcPart);
+                order.setProductid(String.valueOf(pcPart.getId()));
+                order.setProductname(pcPart.getName());
+                order.setStatus("PENDING");
+
+                // Set price based on specialprice or regularprice
+                double unitPrice = pcPart.getSpecialprice() > 0 ? pcPart.getSpecialprice() : pcPart.getRegularprice();
+                order.setPrice(unitPrice * orderedQty);
+
+                // Update available quantity in PcForPartAdd
+                pcPart.setQuantity(availableQty - orderedQty);
+                ccBuilderItemDitelsRepository.save(pcPart);
+            });
+        }
+
+        return orderRepository.save(order);
+    }
+
+
+
+
+
+
 
 
 
@@ -245,7 +310,7 @@ public Order saveOrderFromCartAndPcPart(
 
 
 
-
+///Update Order Statas
 
 
     @Transactional

@@ -29,6 +29,11 @@ public class AddToCart {
     @JoinColumn(name = "pcforpartadd_id")
     private PcForPartAdd pcForPartAdd;
 
+
+    @ManyToOne
+    @JoinColumn(name = "CCItem_id")
+    private CCBuilderItemDitels ccBuilderItemDitels;
+
 }
 
 

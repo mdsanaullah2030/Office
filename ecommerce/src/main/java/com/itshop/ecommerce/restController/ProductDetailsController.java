@@ -63,6 +63,13 @@ public class ProductDetailsController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
+///Product By ID Get All Product Details
+
+    @GetMapping("/api/productDetails/Product/get/ById/{id}")
+    public ResponseEntity<List<ProductDetails>> getProductDetailsByBrandIds(@PathVariable("id") int productId) {
+        List<ProductDetails> productList = productDetailsService.getProductDetailsByProductId(productId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
 
 
 
@@ -83,7 +90,7 @@ public class ProductDetailsController {
 
 
 
-
+//Filter
 
     @GetMapping("/api/productDetails/filter")
     public ResponseEntity<List<ProductDetails>> filterProductDetails(

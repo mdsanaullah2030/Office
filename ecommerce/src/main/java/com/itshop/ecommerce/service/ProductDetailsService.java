@@ -1,10 +1,10 @@
 package com.itshop.ecommerce.service;
 
+import com.itshop.ecommerce.entity.Brand;
 import com.itshop.ecommerce.entity.Catagory;
 import com.itshop.ecommerce.entity.Product;
 import com.itshop.ecommerce.entity.ProductDetails;
-import com.itshop.ecommerce.repository.CatagoryRepository;
-import com.itshop.ecommerce.repository.ProductDetailsRepository;
+import com.itshop.ecommerce.repository.*;
 import org.apache.catalina.LifecycleState;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,13 @@ public class ProductDetailsService {
     @Autowired
     private CatagoryRepository catagoryRepository;
 
+
+    @Autowired
+    private BrandRepository brandRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     public List<ProductDetails> getAllProductDetails(){
         return productDetailsRepository.findAll();
 
@@ -55,8 +62,10 @@ public class ProductDetailsService {
         return productDetailsRepository.findByBrandId(brandId);
     }
 
-
-
+//By Product Id ProductDetails
+    public List<ProductDetails> getProductDetailsByProductId(int productId) {
+        return productDetailsRepository.findByProductId(productId);
+    }
 
     public Optional<ProductDetails> getProductDetailsByName(String name) {
         return productDetailsRepository.findByName(name);
@@ -68,6 +77,51 @@ public class ProductDetailsService {
 
     @Transactional
     public void saveProductDetails(ProductDetails productDetails, MultipartFile image1File, MultipartFile image2File,MultipartFile image3File) throws IOException {
+
+
+
+
+
+
+
+
+
+
+        if (productDetails.getCatagory() != null && productDetails.getCatagory().getId() != 0) {
+            Catagory cat = catagoryRepository.findById(productDetails.getCatagory().getId())
+                    .orElseThrow(() -> new RuntimeException("Catagory not found"));
+            productDetails.setCatagory(cat);
+        } else {
+            productDetails.setCatagory(null);
+        }
+
+        if (productDetails.getProduct() != null && productDetails.getProduct().getId() != 0) {
+            Product prod = productRepository.findById(productDetails.getProduct().getId())
+                    .orElse(null);  // orThrow if needed
+            productDetails.setProduct(prod);
+        } else {
+            productDetails.setProduct(null);
+        }
+
+        if (productDetails.getBrand() != null && productDetails.getBrand().getId() != 0) {
+            Brand brand = brandRepository.findById(productDetails.getBrand().getId())
+                    .orElse(null);
+            productDetails.setBrand(brand);
+        } else {
+            productDetails.setBrand(null);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         if (image1File != null && !image1File.isEmpty()) {
@@ -93,6 +147,7 @@ public class ProductDetailsService {
 
 
 
+
     public String saveImage(MultipartFile file, ProductDetails l) throws IOException {
         Path uploadPath = Paths.get(uploadDir + "/location");
 
@@ -115,9 +170,14 @@ public class ProductDetailsService {
 
 
 
+///Filter
+
+
     public List<ProductDetails> filterProductDetails(String brandname, String productName, Double regularPrice) {
         return productDetailsRepository.filterByBrandnameAndProductNameAndRegularPrice(brandname, productName, regularPrice);
     }
+
+
 
 
 }

@@ -65,4 +65,9 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pcForPartAdd_id")
     private PcForPartAdd pcForPartAdd;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ccBuilderItem_id")
+    private CCBuilderItemDitels ccBuilderItemDitels;
 }

@@ -13,19 +13,28 @@ import java.util.Optional;
 public interface ProductDetailsRepository extends JpaRepository<ProductDetails,Integer>
 {
 
-
+//Catagory By ID
     List<ProductDetails> findByCatagoryId(int catagoryId);
 
-
+///Brand BY ID
     List<ProductDetails> findByBrandId(int brandId);
 
 
+
+// find By Product Id
+ List<ProductDetails>findByProductId(int productId) ;
+
+
+
+//Product Details BY ID
     Optional<ProductDetails> findById(Integer id);
+
+ //  Product Details BY Name
     Optional<ProductDetails> findByName(String name);
 
 
 
-
+////Filter
     @Query("SELECT p FROM ProductDetails p " +
             "WHERE (:brandname IS NULL OR p.brand.brandname = :brandname) " +
             "AND (:productName IS NULL OR p.product.name = :productName) " +

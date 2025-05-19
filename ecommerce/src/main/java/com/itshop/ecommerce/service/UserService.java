@@ -50,11 +50,13 @@ public class UserService implements UserDetailsService {
 
 
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Loading user by username: " + username);
         User user = userRepository.findByEmail(username)
-                .or(() -> userRepository.findByPhoneNo(username)) // try phone number
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email or phone: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        System.out.println("User found: " + user);
         return user;
     }
 

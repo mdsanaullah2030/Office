@@ -23,7 +23,7 @@ public class OrderController {
     @Autowired
     private ProductDetailsRepository productDetailsRepository;
 
-    //  Save Order
+    //  Save Product Ditels Order
     @PostMapping("/api/productdetails/orders/save")
     public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
         Order savedOrder = orderService.saveOrder(order);
@@ -42,6 +42,21 @@ public class OrderController {
 
 
 
+
+    ///api/CC Item Bulder Order/save
+
+    @PostMapping("/api/CCItem/Bulder/orders/save")
+    public ResponseEntity<Order> saveCCItemBulderOrder(@RequestBody Order order) {
+        Order savedOrder = orderService.CCItemBulderOrder(order);
+        return ResponseEntity.ok(savedOrder);
+    }
+
+
+
+
+
+
+//Add To Card PC Part Order
 
     @PostMapping("/api/orders/AddToCard/pcpart/save")
 

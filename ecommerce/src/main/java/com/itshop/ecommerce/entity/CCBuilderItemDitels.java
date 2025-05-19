@@ -40,7 +40,10 @@ public class CCBuilderItemDitels {
     private CCBuilder ccBuilder;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "item_id")
+    @ManyToOne(fetch = FetchType.EAGER,optional = true)
+    @JoinColumn(name = "item_id",nullable = true)
     private Item item;
 }
+
+///@ManyToOne(fetch = FetchType.EAGER, optional = true)
+//@JoinColumn(name = "item_id", nullable = true)

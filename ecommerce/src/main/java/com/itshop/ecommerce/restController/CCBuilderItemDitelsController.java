@@ -2,6 +2,7 @@ package com.itshop.ecommerce.restController;
 
 import com.itshop.ecommerce.entity.CCBuilderItemDitels;
 import com.itshop.ecommerce.entity.PcForPartAdd;
+import com.itshop.ecommerce.entity.ProductDetails;
 import com.itshop.ecommerce.service.CCBuilderItemDitelsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +46,62 @@ public class CCBuilderItemDitelsController {
 
     }
 
-//
-//    @PutMapping("/{id}")
-//    public CCBuilderItemDitels updateItem(@PathVariable int id, @RequestBody CCBuilderItemDitels item) {
-//        return service.updateItem(id, item);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteItem(@PathVariable int id) {
-//        service.deleteItem(id);
-//    }
+    @PutMapping("/api/CCBuilder/Item/Ditels/update/{id}")
+    public ResponseEntity<String> updateItem(
+            @PathVariable int id,
+            @RequestPart("ccbuilder") CCBuilderItemDitels updatedItem,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile
+    ) throws IOException {
+        service.updateItem(id, updatedItem, imageFile);
+        return new ResponseEntity<>("Item updated successfully", HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/api/CCBuilder/Item/Ditels/delete/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable int id) {
+        service.deleteItem(id);
+        return new ResponseEntity<>("Item deleted successfully", HttpStatus.OK);
+    }
+
+
+
+
+
+
+    ///itemId By ID Get All CCBuilder Product Details
+
+    @GetMapping("/api/CCBuilder/Ditels/itemId/Idby/get/{id}")
+    public ResponseEntity<?> getProductDetailsByItemId(@PathVariable("id") int itemId) {
+        try {
+            List<CCBuilderItemDitels> productList = service.getccBuilderItemDitelsByItemId(itemId);
+            return new ResponseEntity<>(productList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to fetch item details: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+    ///ccBuilder By ID Get CCBuilder All Product Details
+    @GetMapping("/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}")
+    public ResponseEntity<?> getProductDetailsByBuilderId(@PathVariable("id") int ccBuilderId) {
+        try {
+            List<CCBuilderItemDitels> productList = service.getccBuilderItemDitelsCCBuilderId(ccBuilderId);
+            return new ResponseEntity<>(productList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to fetch ccBuilder details: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

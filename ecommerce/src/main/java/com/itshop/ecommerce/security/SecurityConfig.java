@@ -67,7 +67,9 @@ public class  SecurityConfig {
 
                                                         "/api/productDetails/getall","/api/productDetails/byCategory/{catagoryId}",
 
-                                                        "/api/productDetails/{id}","/api/productDetails/byName/{name}","/api/productDetails/Brand/get/ById/{id}",
+                                                        "/api/productDetails/{id}","/api/productDetails/byName/{name}","/api/productDetails/Brand/get/ById/{id}"
+
+                                                        ,"/api/productDetails/Product/get/ById/{id}",
 
 
 
@@ -97,7 +99,16 @@ public class  SecurityConfig {
 
 
                                                 ,"/api/items/get","/api/items/get/{id}",
-                                                "/api/CCBuilder/Item/Ditels/save","/api/CCBuilder/Item/Ditels/get"
+                                                "/api/CCBuilder/Item/Ditels/get",
+
+                                                "/api/CCBuilder/Item/Ditels/update/","/api/CCBuilder/Item/Ditels/delete/",
+
+                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}"
+
+
+
+
+
 
 
 
@@ -126,6 +137,8 @@ public class  SecurityConfig {
                                                         "/api/orders/AddToCadrt/productdetails/save","/api/orders/AddToCard/pcpart/save",
 
                                                         "/api/orders/delete/{id}","/api/Order/getByUser/{userId}"
+
+                                                        ,"/api/CCItem/Bulder/orders/save"
 
 
 
@@ -179,10 +192,13 @@ public class  SecurityConfig {
                                                         "/api/media/getid/{id}","/api/media/Delete/{id}",   "/api/media/save",
 
 
-                                                           "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}"
+                                                           "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}","/api/ccbuilder/save"
 
                                                         ,"/api/items/update/{id}",
-                                                        "/api/items/delete/{id}","/api/items/save"
+                                                        "/api/items/delete/{id}","/api/items/save",
+
+
+                                                        "/api/CCBuilder/Item/Ditels/save"
 
 
 

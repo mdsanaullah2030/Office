@@ -19,7 +19,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("file:" + uploadDir + "/location/")
         .addResourceLocations("file:" + uploadDir + "/pcBuilder/")
         .addResourceLocations("file:" + uploadDir + "/pcforpartadd/")
-                .addResourceLocations("file:" + uploadDir + "/homeimage/");
+                .addResourceLocations("file:" + uploadDir + "/homeimage/")
+                .addResourceLocations("file:" + uploadDir + "/media/")
+                .addResourceLocations("file:" + uploadDir + "/ccbuilderitem/")
+
+        ;
     }
 
 
