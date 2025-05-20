@@ -12,6 +12,7 @@ public class AddToCart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private int totalprice;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
