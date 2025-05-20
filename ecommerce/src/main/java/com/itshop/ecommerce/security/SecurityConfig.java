@@ -103,8 +103,9 @@ public class  SecurityConfig {
 
                                                 "/api/CCBuilder/Item/Ditels/update/","/api/CCBuilder/Item/Ditels/delete/",
 
-                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}"
+                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}",
 
+                                                "/api/CCItemBuilder/AddToCart/save","/api/orders/AddToCadrt/CCItemBuilder/save"
 
 
 

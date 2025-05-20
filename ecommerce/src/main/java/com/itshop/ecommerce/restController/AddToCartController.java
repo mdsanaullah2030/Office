@@ -4,9 +4,12 @@ import com.itshop.ecommerce.entity.AddToCart;
 import com.itshop.ecommerce.service.AddToCartService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping
@@ -34,6 +37,26 @@ public class AddToCartController {
         return cartService.addPcPartToCart(userId, pcPartId, quantity);
     }
 
+
+
+//CCBuilderItemDitels CCItemBulderAddToCart CCItemBulderId
+
+
+
+
+    @PostMapping("/api/CCItemBuilder/AddToCart/save")
+    public ResponseEntity<?> CcbuilderItemDitels(@RequestParam Long userId,
+                                                 @RequestParam int CCItemBulderId,
+                                                 @RequestParam int quantity) {
+        try {
+            AddToCart result = cartService.CCItemBuilderAddToCart(userId, CCItemBulderId, quantity);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Item not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong: " + e.getMessage());
+        }
+    }
 
 
 

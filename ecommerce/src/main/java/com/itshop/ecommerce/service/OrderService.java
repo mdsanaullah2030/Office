@@ -307,6 +307,69 @@ public Order saveOrderFromCartAndPcPart(
     }
 
 
+//Add To CC Item Builder Order &&&&&&&&&
+
+
+    @Transactional
+    public Order saveCCItemBuilderOrder (
+
+            int userId,
+            int addToCartId,
+            int CCBuilderItemDitels,
+            String districts,
+            String upazila,
+            String address
+    ) {
+        User user = userRepository.findById((long) userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        AddToCart cart = addToCartRepository.findById(addToCartId)
+                .orElseThrow(() -> new RuntimeException("AddToCart entry not found"));
+
+        CCBuilderItemDitels ccBuilderItemDitels = ccBuilderItemDitelsRepository.findById(CCBuilderItemDitels)
+                .orElseThrow(() -> new RuntimeException("PcForPartAdd not found"));
+
+        if (ccBuilderItemDitels.getQuantity() < cart.getQuantity()) {
+            throw new RuntimeException("Not enough quantity available for: " + ccBuilderItemDitels.getName());
+        }
+
+        // Create new Order
+        Order order = new Order();
+        order.setUser(user);
+        order.setName(user.getName());
+        order.setEmail(user.getEmail());
+        order.setPhoneNo(user.getPhoneNo());
+
+        order.setAddToCart(cart);
+        order.setCcBuilderItemDitels(ccBuilderItemDitels);
+        order.setProductid(String.valueOf(ccBuilderItemDitels.getId()));
+        order.setProductname(ccBuilderItemDitels.getName());
+        order.setQuantity(cart.getQuantity());
+        order.setPrice(cart.getPrice());
+        order.setStatus("PENDING");
+
+        //  Set Address Fields
+        order.setDistricts(districts);
+        order.setUpazila(upazila);
+        order.setAddress(address);
+
+        // Subtract quantity
+        ccBuilderItemDitels.setQuantity(ccBuilderItemDitels.getQuantity() - cart.getQuantity());
+        ccBuilderItemDitelsRepository.save(ccBuilderItemDitels);
+
+        return orderRepository.save(order);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

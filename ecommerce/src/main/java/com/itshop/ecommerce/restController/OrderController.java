@@ -110,6 +110,40 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
+///CC Item AddTO Card Orders
+
+
+    @PostMapping("/api/orders/AddToCadrt/CCItemBuilder/save")
+    public ResponseEntity<Order> CCItemBuilderOrder(
+            @RequestParam int userId,
+            @RequestParam int addToCartId,
+            @RequestParam int CCItemBuilderDetailsId,
+            @RequestBody Map<String, String> addressData
+    ) {
+        String districts = addressData.getOrDefault("districts", "");
+        String upazila = addressData.getOrDefault("upazila", "");
+        String address = addressData.getOrDefault("address", "");
+
+        //  Correct service method here
+        Order order = orderService.saveCCItemBuilderOrder(
+                userId,
+                addToCartId,
+                CCItemBuilderDetailsId,
+                districts,
+                upazila,
+                address
+        );
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
+    }
+
+
+
+
+
+
+
+
+
 
 
 

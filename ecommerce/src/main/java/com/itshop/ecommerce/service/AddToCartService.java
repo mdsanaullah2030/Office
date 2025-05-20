@@ -1,10 +1,7 @@
 
 package com.itshop.ecommerce.service;
 
-import com.itshop.ecommerce.entity.AddToCart;
-import com.itshop.ecommerce.entity.PcForPartAdd;
-import com.itshop.ecommerce.entity.ProductDetails;
-import com.itshop.ecommerce.entity.User;
+import com.itshop.ecommerce.entity.*;
 import com.itshop.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,26 +77,22 @@ public class AddToCartService {
 
     /// CC Item Bulder  Add To Cart *********&&&&&&&
 
-//    public AddToCart ccItemBuilder(Long userId, int ccItemId, int quantity) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        CCBuilderItemDitels part = ccBuilderItemDitelsRepository.findById(ccItemId)
-//                .orElseThrow(() -> new RuntimeException("CCBuilderItemDitels not found"));
-//
-//        double price = (part.getSpecialprice() > 0)
-//                ? part.getSpecialprice()
-//                : part.getRegularprice();
-//
-//        AddToCart cartItem = new AddToCart();
-//        cartItem.setUser(user);
-//        cartItem.setCcBuilderItemDitels(part);
-//        cartItem.setQuantity(quantity);
-//        cartItem.setPrice(price * quantity);
-//
-//        return cartRepository.save(cartItem);
-//    }
+    public AddToCart CCItemBuilderAddToCart(Long userId, int CCItemBulderId, int quantity) {
+        User user = userRepository.findById(userId).orElseThrow();
+        CCBuilderItemDitels part = ccBuilderItemDitelsRepository.findById(CCItemBulderId).orElseThrow();
 
+        double price = (part.getSpecialprice() > 0)
+                ? part.getSpecialprice()
+                : part.getRegularprice();
+
+        AddToCart cartItem = new AddToCart();
+        cartItem.setUser(user);
+        cartItem.setCcBuilderItemDitels(part);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(price * quantity);
+
+        return cartRepository.save(cartItem);
+    }
 
 
 
