@@ -23,6 +23,7 @@ public class OrderController {
     @Autowired
     private ProductDetailsRepository productDetailsRepository;
 
+
     //  Save Product Ditels Order
     @PostMapping("/api/productdetails/orders/save")
     public ResponseEntity<Order> saveOrder(@RequestBody Order order) {
@@ -59,27 +60,23 @@ public class OrderController {
 //Add To Card PC Part Order
 
     @PostMapping("/api/orders/AddToCard/pcpart/save")
-
-    public ResponseEntity<Order> createOrderFromCartAndPart(
-            @RequestParam int userId,
-            @RequestParam int addToCartId,
-            @RequestParam int pcForPartAddId,
+    public ResponseEntity<Order> saveOrderFromCartAndPcPart(
+            @RequestParam long userId,
             @RequestBody Map<String, String> addressData
     ) {
         String districts = addressData.getOrDefault("districts", "");
         String upazila = addressData.getOrDefault("upazila", "");
         String address = addressData.getOrDefault("address", "");
 
-        Order order = orderService.saveOrderFromCartAndPcPart(
+        Order order = orderService.saveCCItemBuilderOrder(
                 userId,
-                addToCartId,
-                pcForPartAddId,
                 districts,
                 upazila,
                 address
         );
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
+
 
 
 
@@ -87,22 +84,16 @@ public class OrderController {
 ///Add To Card product details  Order
 
     @PostMapping("/api/orders/AddToCadrt/productdetails/save")
-
-    public ResponseEntity<Order> createOrderCartproductDetailsId(
-            @RequestParam int userId,
-            @RequestParam int addToCartId,
-            @RequestParam int productDetailsId,
+    public ResponseEntity<Order> saveOrderProductDetails(
+            @RequestParam long userId,
             @RequestBody Map<String, String> addressData
     ) {
         String districts = addressData.getOrDefault("districts", "");
         String upazila = addressData.getOrDefault("upazila", "");
         String address = addressData.getOrDefault("address", "");
 
-        //  Correct service method here
-        Order order = orderService.saveOrderProductDetails(
+        Order order = orderService.saveCCItemBuilderOrder(
                 userId,
-                addToCartId,
-                productDetailsId,
                 districts,
                 upazila,
                 address
@@ -110,25 +101,24 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
+
+
+
+
 ///CC Item AddTO Card Orders
 
 
     @PostMapping("/api/orders/AddToCadrt/CCItemBuilder/save")
     public ResponseEntity<Order> CCItemBuilderOrder(
-            @RequestParam int userId,
-            @RequestParam int addToCartId,
-            @RequestParam int CCItemBuilderDetailsId,
+            @RequestParam long userId,
             @RequestBody Map<String, String> addressData
     ) {
         String districts = addressData.getOrDefault("districts", "");
         String upazila = addressData.getOrDefault("upazila", "");
         String address = addressData.getOrDefault("address", "");
 
-        //  Correct service method here
         Order order = orderService.saveCCItemBuilderOrder(
                 userId,
-                addToCartId,
-                CCItemBuilderDetailsId,
                 districts,
                 upazila,
                 address

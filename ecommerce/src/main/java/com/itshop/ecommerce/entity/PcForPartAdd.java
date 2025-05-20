@@ -30,6 +30,8 @@ public class PcForPartAdd {
 
     private double specialprice;   // 4900
 
+    private int warranty;
+
     private int quantity;
     private  String imagea;
 

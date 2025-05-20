@@ -15,6 +15,8 @@ public class AboutUsController {
 
     @Autowired
     private AboutUsService service;
+    @Autowired
+    private AboutUsService aboutUsService;
 
     @PostMapping("/api/aboutus/save")
     public ResponseEntity<AboutUs> create(@RequestBody AboutUs aboutUs) {
@@ -27,10 +29,9 @@ public class AboutUsController {
     }
 
     @GetMapping("/api/aboutus/get/{id}")
-    public ResponseEntity<AboutUs> getById(@PathVariable int id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<AboutUs> getAboutUsById(@PathVariable int id) {
+        AboutUs aboutUs = aboutUsService.getAboutUsById(id);
+        return ResponseEntity.ok(aboutUs);
     }
 
     @PutMapping("/api/aboutus/updete/{id}")

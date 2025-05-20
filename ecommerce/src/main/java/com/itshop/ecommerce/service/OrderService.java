@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -198,56 +199,46 @@ public class OrderService {
 
 
 
-////Add To Cart Pc Part Order
+////Add To Cart Pc Part Order  saveOrderFromCartAndPcPart
 
-@Transactional
-public Order saveOrderFromCartAndPcPart(
-        int userId,
-        int addToCartId,
-        int pcForPartAddId,
-        String districts,
-        String upazila,
-        String address
-) {
-    User user = userRepository.findById((long) userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    @Transactional
+    public Order saveOrderFromCartAndPcPart(
+            Long userId,
+            String districts,
+            String upazila,
+            String address
+    ) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    AddToCart cart = addToCartRepository.findById(addToCartId)
-            .orElseThrow(() -> new RuntimeException("AddToCart entry not found"));
+        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
+        if (cartItems.isEmpty()) {
+            throw new RuntimeException("No cart items found for user ID: " + userId);
+        }
 
-    PcForPartAdd pcPart = pcForPartAddRepository.findById(pcForPartAddId)
-            .orElseThrow(() -> new RuntimeException("PcForPartAdd not found"));
+        double totalPrice = cartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
 
-    if (pcPart.getQuantity() < cart.getQuantity()) {
-        throw new RuntimeException("Not enough quantity available for: " + pcPart.getName());
+        Order order = new Order();
+        order.setUser(user);
+        order.setName(user.getName());
+        order.setEmail(user.getEmail());
+        order.setPhoneNo(user.getPhoneNo());
+        order.setDistricts(districts);
+        order.setUpazila(upazila);
+        order.setAddress(address);
+        order.setStatus("PENDING");
+        order.setPrice(totalPrice);
+        order.setProductname("Multiple Items");
+        order.setProductid("Multiple");
+
+        Order savedOrder = orderRepository.save(order);
+
+        addToCartRepository.deleteAllByUser_Id(userId);
+
+        return savedOrder;
     }
-
-    // Create new Order
-    Order order = new Order();
-    order.setUser(user);
-    order.setName(user.getName());
-    order.setEmail(user.getEmail());
-    order.setPhoneNo(user.getPhoneNo());
-
-    order.setAddToCart(cart);
-    order.setPcForPartAdd(pcPart);
-    order.setProductid(String.valueOf(pcPart.getId()));
-    order.setProductname(pcPart.getName());
-    order.setQuantity(cart.getQuantity());
-    order.setPrice(cart.getPrice());
-    order.setStatus("PENDING");
-
-    //  Set Address Fields
-    order.setDistricts(districts);
-    order.setUpazila(upazila);
-    order.setAddress(address);
-
-    // Subtract quantity
-    pcPart.setQuantity(pcPart.getQuantity() - cart.getQuantity());
-    pcForPartAddRepository.save(pcPart);
-
-    return orderRepository.save(order);
-}
 
 
 
@@ -259,114 +250,84 @@ public Order saveOrderFromCartAndPcPart(
 
     @Transactional
     public Order saveOrderProductDetails(
-            int userId,
-            int addToCartId,
-            int ProductDetails,
+            Long userId,
             String districts,
             String upazila,
             String address
     ) {
-        User user = userRepository.findById((long) userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        AddToCart cart = addToCartRepository.findById(addToCartId)
-                .orElseThrow(() -> new RuntimeException("AddToCart entry not found"));
-
-        ProductDetails productDetails = productDetailsRepository.findById(ProductDetails)
-                .orElseThrow(() -> new RuntimeException("PcForPartAdd not found"));
-
-        if (productDetails.getQuantity() < cart.getQuantity()) {
-            throw new RuntimeException("Not enough quantity available for: " + productDetails.getName());
+        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
+        if (cartItems.isEmpty()) {
+            throw new RuntimeException("No cart items found for user ID: " + userId);
         }
 
-        // Create new Order
+        double totalPrice = cartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
         Order order = new Order();
         order.setUser(user);
         order.setName(user.getName());
         order.setEmail(user.getEmail());
         order.setPhoneNo(user.getPhoneNo());
-
-        order.setAddToCart(cart);
-        order.setProductDetails(productDetails);
-        order.setProductid(String.valueOf(productDetails.getId()));
-        order.setProductname(productDetails.getName());
-        order.setQuantity(cart.getQuantity());
-        order.setPrice(cart.getPrice());
-        order.setStatus("PENDING");
-
-        //  Set Address Fields
         order.setDistricts(districts);
         order.setUpazila(upazila);
         order.setAddress(address);
-
-        // Subtract quantity
-        productDetails.setQuantity(productDetails.getQuantity() - cart.getQuantity());
-        productDetailsRepository.save(productDetails);
-
-        return orderRepository.save(order);
-    }
-
-
-//Add To CC Item Builder Order &&&&&&&&&
-
-
-    @Transactional
-    public Order saveCCItemBuilderOrder (
-
-            int userId,
-            int addToCartId,
-            int CCBuilderItemDitels,
-            String districts,
-            String upazila,
-            String address
-    ) {
-        User user = userRepository.findById((long) userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        AddToCart cart = addToCartRepository.findById(addToCartId)
-                .orElseThrow(() -> new RuntimeException("AddToCart entry not found"));
-
-        CCBuilderItemDitels ccBuilderItemDitels = ccBuilderItemDitelsRepository.findById(CCBuilderItemDitels)
-                .orElseThrow(() -> new RuntimeException("PcForPartAdd not found"));
-
-        if (ccBuilderItemDitels.getQuantity() < cart.getQuantity()) {
-            throw new RuntimeException("Not enough quantity available for: " + ccBuilderItemDitels.getName());
-        }
-
-        // Create new Order
-        Order order = new Order();
-        order.setUser(user);
-        order.setName(user.getName());
-        order.setEmail(user.getEmail());
-        order.setPhoneNo(user.getPhoneNo());
-
-        order.setAddToCart(cart);
-        order.setCcBuilderItemDitels(ccBuilderItemDitels);
-        order.setProductid(String.valueOf(ccBuilderItemDitels.getId()));
-        order.setProductname(ccBuilderItemDitels.getName());
-        order.setQuantity(cart.getQuantity());
-        order.setPrice(cart.getPrice());
         order.setStatus("PENDING");
+        order.setPrice(totalPrice);
+        order.setProductname("Multiple Items");
+        order.setProductid("Multiple");
 
-        //  Set Address Fields
-        order.setDistricts(districts);
-        order.setUpazila(upazila);
-        order.setAddress(address);
+        Order savedOrder = orderRepository.save(order);
 
-        // Subtract quantity
-        ccBuilderItemDitels.setQuantity(ccBuilderItemDitels.getQuantity() - cart.getQuantity());
-        ccBuilderItemDitelsRepository.save(ccBuilderItemDitels);
+        addToCartRepository.deleteAllByUser_Id(userId);
 
-        return orderRepository.save(order);
+        return savedOrder;
     }
 
 
 
+    //Add To CC Item Builder Order &&&&&&&&&
+@Transactional
+public Order saveCCItemBuilderOrder(
+        Long userId,
+        String districts,
+        String upazila,
+        String address
+) {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
+    List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
+    if (cartItems.isEmpty()) {
+        throw new RuntimeException("No cart items found for user ID: " + userId);
+    }
 
+    double totalPrice = cartItems.stream()
+            .mapToDouble(AddToCart::getPrice)
+            .sum();
 
+    Order order = new Order();
+    order.setUser(user);
+    order.setName(user.getName());
+    order.setEmail(user.getEmail());
+    order.setPhoneNo(user.getPhoneNo());
+    order.setDistricts(districts);
+    order.setUpazila(upazila);
+    order.setAddress(address);
+    order.setStatus("PENDING");
+    order.setPrice(totalPrice);
+    order.setProductname("Multiple Items");
+    order.setProductid("Multiple");
 
+    Order savedOrder = orderRepository.save(order);
 
+    addToCartRepository.deleteAllByUser_Id(userId);
+
+    return savedOrder;
+}
 
 
 

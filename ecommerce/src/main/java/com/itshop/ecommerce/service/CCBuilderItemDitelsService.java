@@ -167,6 +167,14 @@ public class CCBuilderItemDitelsService {
 
 
 
+///Filter
+
+
+    public List<CCBuilderItemDitels> filterCCBuilderItems(Double regularprice, Integer warranty, Integer ccBuilderId, Integer itemId) {
+        return ccBuilderItemDitelsRepository.filterByRegularpriceWarrantyCCBuilderAndItem(
+                regularprice, warranty, ccBuilderId, itemId
+        );
+    }
 
 
 

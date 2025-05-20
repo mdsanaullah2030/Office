@@ -98,6 +98,18 @@ public class CCBuilderItemDitelsController {
 
 
 
+    @GetMapping("/api/ccbuilder/items/filter")
+    public ResponseEntity<List<CCBuilderItemDitels>> filterCCBuilderItems(
+            @RequestParam(required = false) Double regularprice,
+            @RequestParam(required = false) Integer warranty,
+            @RequestParam(required = false) Integer ccBuilderId,
+            @RequestParam(required = false) Integer itemId
+    ) {
+        List<CCBuilderItemDitels> results = service.filterCCBuilderItems(
+                regularprice, warranty, ccBuilderId, itemId
+        );
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
 
 
 

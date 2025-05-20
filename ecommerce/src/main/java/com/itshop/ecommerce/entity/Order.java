@@ -57,6 +57,8 @@ public class Order {
     private ProductDetails productDetails;
 
 
+
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "addToCart_id")
     private AddToCart addToCart;
@@ -71,3 +73,5 @@ public class Order {
     @JoinColumn(name = "ccBuilderItem_id")
     private CCBuilderItemDitels ccBuilderItemDitels;
 }
+//@ManyToOne(fetch = FetchType.EAGER, optional = true)
+//@JoinColumn(name = "item_id", nullable = true)

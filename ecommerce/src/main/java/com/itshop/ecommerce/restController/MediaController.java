@@ -1,5 +1,6 @@
 package com.itshop.ecommerce.restController;
 
+import com.itshop.ecommerce.entity.AboutUs;
 import com.itshop.ecommerce.entity.Media;
 import com.itshop.ecommerce.entity.PcBuilder;
 import com.itshop.ecommerce.service.MediaService;
@@ -38,27 +39,24 @@ public class MediaController {
         return ResponseEntity.ok(mediaService.getAllmedia());
     }
 
-    @GetMapping("/api/media/getid/{id}")
-    public ResponseEntity<Media> getById(@PathVariable int id) {
-        return mediaService.getmediaById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/api/media/get/{id}")
+    public ResponseEntity<Media> getMediaId(@PathVariable int id) {
+        Media media = mediaService.getMediaById(id);
+        return ResponseEntity.ok(media);
     }
 
-
-    @DeleteMapping("/api/media/Delete/{Id}")
+    @DeleteMapping("/api/media/delete/{id}") // use lowercase `id`
     public ResponseEntity<String> removeFromCart(@PathVariable("id") int id) {
         try {
-            if (mediaService.getmediaById(id).isPresent()) {
-                mediaService.DeleteMedia(id);
-                return ResponseEntity.ok("Media deleted successfully");
-            } else {
-                return ResponseEntity.status(404).body("Media not found with id: " + id);
-            }
+            Media media = mediaService.getMediaById(id); // throws if not found
+            mediaService.deleteMedia(id); // delete by id
+            return ResponseEntity.ok("Media deleted successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error deleting media: " + e.getMessage());
         }
+    }
 
 
-}
 }

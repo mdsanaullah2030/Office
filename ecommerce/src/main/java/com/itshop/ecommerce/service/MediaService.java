@@ -1,5 +1,6 @@
 package com.itshop.ecommerce.service;
 
+import com.itshop.ecommerce.entity.AboutUs;
 import com.itshop.ecommerce.entity.Media;
 import com.itshop.ecommerce.entity.PcBuilder;
 import com.itshop.ecommerce.repository.MediaRepository;
@@ -24,6 +25,24 @@ public class MediaService {
     private MediaRepository mediaRepository;
     @Value("src/main/resources/static/images")
     private String uploadDir;
+
+
+    public List<Media> getAllmedia() {
+        return mediaRepository.findAll();
+    }
+
+
+
+//Delete
+
+    public Media getMediaById(int id) {
+        return mediaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Media not found with ID: " + id));
+    }
+
+    public void deleteMedia(int id) {
+        mediaRepository.deleteById(id);
+    }
 
 
 
@@ -61,19 +80,5 @@ public class MediaService {
         return filename;
     }
 
-    public List<Media> getAllmedia() {
-        return mediaRepository.findAll();
-    }
-
-
-    public Optional<Media>getmediaById(int id){
-        return mediaRepository.findById(id);
-    }
-
-
-
-    public void DeleteMedia(int media) {
-        mediaRepository.deleteById(media);
-    }
 
 }

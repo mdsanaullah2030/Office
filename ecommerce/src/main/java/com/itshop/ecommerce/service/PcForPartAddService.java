@@ -107,4 +107,11 @@ public class PcForPartAddService {
 
 
     }
+
+
+
+    public List<PcForPartAdd> filterPcParts(Double regularprice, Integer warranty, Integer pcbuilderId) {
+        return pcForPartAddRepository.filterByPriceWarrantyAndPcbuilder(regularprice, warranty, pcbuilderId);
+    }
+
 }

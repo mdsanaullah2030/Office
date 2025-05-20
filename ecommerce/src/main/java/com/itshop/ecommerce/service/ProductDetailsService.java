@@ -173,9 +173,15 @@ public class ProductDetailsService {
 ///Filter
 
 
-    public List<ProductDetails> filterProductDetails(String brandname, String productName, Double regularPrice) {
-        return productDetailsRepository.filterByBrandnameAndProductNameAndRegularPrice(brandname, productName, regularPrice);
+    public List<ProductDetails> filterProductDetails(
+            String brandname,
+            String productName,
+            Double regularPrice,
+            Integer warranty) {
+        return productDetailsRepository.filterByBrandnameAndProductNameAndRegularPriceAndWarranty(
+                brandname, productName, regularPrice, warranty);
     }
+
 
 
 

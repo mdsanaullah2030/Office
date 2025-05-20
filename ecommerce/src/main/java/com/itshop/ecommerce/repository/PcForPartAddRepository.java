@@ -18,5 +18,15 @@ public interface PcForPartAddRepository extends JpaRepository<PcForPartAdd,Integ
     List<PcForPartAdd> findByPcBuilderId(@Param("builderId") int builderId);
 
 
+    @Query("SELECT p FROM PcForPartAdd p " +
+            "WHERE (:regularprice IS NULL OR p.regularprice = :regularprice) " +
+            "AND (:warranty IS NULL OR p.warranty = :warranty) " +
+            "AND (:pcbuilderId IS NULL OR p.pcbuilder.id = :pcbuilderId)")
+    List<PcForPartAdd> filterByPriceWarrantyAndPcbuilder(
+            @Param("regularprice") Double regularprice,
+            @Param("warranty") Integer warranty,
+            @Param("pcbuilderId") Integer pcbuilderId
+    );
+
 }
 

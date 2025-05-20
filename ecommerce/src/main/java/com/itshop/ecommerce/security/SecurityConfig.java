@@ -75,17 +75,15 @@ public class  SecurityConfig {
 
                                                         "/api/PcBuilder/Allget","/api/PcForPartAdd/get/{id}",
 
-                                                        "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/PcForPartAdd/getPcBuilder/Byid/{id}",
-
-
-                                                        "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save",
-                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
+                                                        "/api/PcForPartAdd/get/{id}","/api/PcForPartAdd/get","/api/PcForPartAdd/getPcBuilder/Byid/{id}"
 
 
 
-                                                ,"/api/productDetails/filter",
 
-                                                        "/api/aboutus/get",
+
+                                                ,"/api/productDetails/filter","/api/pcparts/filter","/api/ccbuilder/items/filter",
+
+                                                        "/api/aboutus/get","/api/aboutus/get/{id}",
 
 
 
@@ -103,9 +101,8 @@ public class  SecurityConfig {
 
                                                 "/api/CCBuilder/Item/Ditels/update/","/api/CCBuilder/Item/Ditels/delete/",
 
-                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}",
+                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}"
 
-                                                "/api/CCItemBuilder/AddToCart/save","/api/orders/AddToCadrt/CCItemBuilder/save"
 
 
 
@@ -135,14 +132,19 @@ public class  SecurityConfig {
 
                                                 .requestMatchers(   "/api/productdetails/orders/save","/api/pcforpart/orders/save",
 
-                                                        "/api/orders/AddToCadrt/productdetails/save","/api/orders/AddToCard/pcpart/save",
+
 
                                                         "/api/orders/delete/{id}","/api/Order/getByUser/{userId}"
 
-                                                        ,"/api/CCItem/Bulder/orders/save"
+                                                        ,"/api/CCItem/Bulder/orders/save",
 
 
+                                                        "/api/orders/AddToCadrt/productdetails/save","/api/orders/AddToCard/pcpart/save",
 
+                                                        "/api/CCItemBuilder/AddToCart/save","/api/orders/AddToCadrt/CCItemBuilder/save",
+
+                                                        "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save",
+                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
 
 
                                                 )
@@ -190,7 +192,7 @@ public class  SecurityConfig {
                                                         "/api/aboutus/updete/{id}",
 
 
-                                                        "/api/media/getid/{id}","/api/media/Delete/{id}",   "/api/media/save",
+                                                        "/api/media/get/{id}","/api/media/Delete/{id}",   "/api/media/save",
 
 
                                                            "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}","/api/ccbuilder/save"

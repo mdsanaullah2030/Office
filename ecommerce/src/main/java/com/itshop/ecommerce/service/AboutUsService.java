@@ -13,6 +13,8 @@ public class AboutUsService {
 
     @Autowired
     private AboutUsRepository repository;
+    @Autowired
+    private AboutUsRepository aboutUsRepository;
 
     public AboutUs create(AboutUs aboutUs) {
         return repository.save(aboutUs);
@@ -22,8 +24,9 @@ public class AboutUsService {
         return repository.findAll();
     }
 
-    public Optional<AboutUs> getById(int id) {
-        return repository.findById(id);
+    public AboutUs getAboutUsById(int id) {
+        return aboutUsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("AboutUs not found with ID: " + id));
     }
 
     public AboutUs update(int id, AboutUs aboutUs) {

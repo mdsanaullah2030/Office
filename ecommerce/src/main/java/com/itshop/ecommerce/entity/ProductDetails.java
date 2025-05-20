@@ -37,6 +37,7 @@ public class ProductDetails {
      private  String details;
 
      private String  specification;
+     private int warranty;
 
      private  String imagea;
      private String imageb;

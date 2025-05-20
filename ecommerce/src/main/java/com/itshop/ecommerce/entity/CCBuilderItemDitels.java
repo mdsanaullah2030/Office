@@ -25,7 +25,7 @@ public class CCBuilderItemDitels {
     private String ability;  // PCIe 3.0
 
     private double regularprice;  // 5500
-
+    private int warranty;
     private String benefits;
     private String moralqualities;
     private String opportunity;

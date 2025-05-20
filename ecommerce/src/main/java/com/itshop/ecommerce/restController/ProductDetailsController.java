@@ -2,6 +2,7 @@ package com.itshop.ecommerce.restController;
 
 import com.itshop.ecommerce.entity.Product;
 import com.itshop.ecommerce.entity.ProductDetails;
+import com.itshop.ecommerce.repository.ProductDetailsRepository;
 import com.itshop.ecommerce.service.ProductDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class ProductDetailsController {
 
     @Autowired
     private ProductDetailsService productDetailsService;
-
-
+    @Autowired
+    private ProductDetailsRepository productDetailsRepository;
 
 
     @GetMapping("/api/productDetails/getall")
@@ -96,11 +97,17 @@ public class ProductDetailsController {
     public ResponseEntity<List<ProductDetails>> filterProductDetails(
             @RequestParam(required = false) String brandname,
             @RequestParam(required = false) String productName,
-            @RequestParam(required = false) Double regularPrice
+            @RequestParam(required = false) Double regularPrice,
+             @RequestParam(required = false) int warranty
     ) {
-        List<ProductDetails> results = productDetailsService.filterProductDetails(brandname, productName, regularPrice);
+        List<ProductDetails> results = productDetailsService.filterProductDetails(brandname, productName, regularPrice,warranty);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
+
+
+
+
+
 
 
 }

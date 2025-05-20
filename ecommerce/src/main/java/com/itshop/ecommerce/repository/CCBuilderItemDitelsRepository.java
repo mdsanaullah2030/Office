@@ -18,10 +18,21 @@ public interface CCBuilderItemDitelsRepository extends JpaRepository<CCBuilderIt
     List<CCBuilderItemDitels> findByItemId(@Param("itemId") int itemId);
 
 
-
-
-
-
     // Correct method to find by ccBuilder.id
     List<CCBuilderItemDitels> findByCcBuilder_Id(int ccBuilderId);
+
+//Filter 
+    @Query("SELECT c FROM CCBuilderItemDitels c " +
+            "WHERE (:regularprice IS NULL OR c.regularprice = :regularprice) " +
+            "AND (:warranty IS NULL OR c.warranty = :warranty) " +
+            "AND (:ccBuilderId IS NULL OR c.ccBuilder.id = :ccBuilderId) " +
+            "AND (:itemId IS NULL OR c.item.id = :itemId)")
+    List<CCBuilderItemDitels> filterByRegularpriceWarrantyCCBuilderAndItem(
+            @Param("regularprice") Double regularprice,
+            @Param("warranty") Integer warranty,
+            @Param("ccBuilderId") Integer ccBuilderId,
+            @Param("itemId") Integer itemId
+    );
+
+
 }

@@ -5,6 +5,7 @@ import com.itshop.ecommerce.entity.*;
 import com.itshop.ecommerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class AddToCartService {
 
 /// Product Details Add To Cart
 
+    @Transactional
     public AddToCart productDetailsaddToCart(Long userId, int productDetailsId, int quantity) {
         User user = userRepository.findById(userId).orElseThrow();
         ProductDetails productDetails = productDetailsRepository.findById(productDetailsId).orElseThrow();
@@ -37,20 +39,35 @@ public class AddToCartService {
                 ? productDetails.getSpecialprice()
                 : productDetails.getRegularprice();
 
+        double itemPrice = price * quantity;
+
         AddToCart cartItem = new AddToCart();
         cartItem.setUser(user);
         cartItem.setProductDetails(productDetails);
         cartItem.setQuantity(quantity);
-        cartItem.setPrice(price * quantity);
+        cartItem.setPrice(itemPrice);
 
-        return cartRepository.save(cartItem);
+        // Step 1: Save the new cart item
+        AddToCart savedItem = cartRepository.save(cartItem);
+
+        // Step 2: Fetch all cart items for this user
+        List<AddToCart> allCartItems = cartRepository.findByUserId(userId);
+
+        // Step 3: Calculate the total price for this user
+        double total = allCartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        // Step 4: Set the calculated totalprice in the newly added item
+        savedItem.setTotalprice((int) total); // casting to int as your entity uses `int`
+        return cartRepository.save(savedItem); // Save again to update the totalprice field
     }
-
 
 
 
     /// PC For Part  Add To Cart
 
+    @Transactional
     public AddToCart addPcPartToCart(Long userId, int pcPartId, int quantity) {
         User user = userRepository.findById(userId).orElseThrow();
         PcForPartAdd part = pcForPartAddRepository.findById(pcPartId).orElseThrow();
@@ -59,13 +76,28 @@ public class AddToCartService {
                 ? part.getSpecialprice()
                 : part.getRegularprice();
 
+        double itemPrice = price * quantity;
+
+        // Create cart item
         AddToCart cartItem = new AddToCart();
         cartItem.setUser(user);
         cartItem.setPcForPartAdd(part);
         cartItem.setQuantity(quantity);
-        cartItem.setPrice(price * quantity);
+        cartItem.setPrice(itemPrice);
 
-        return cartRepository.save(cartItem);
+        // Save the item first
+        AddToCart savedCartItem = cartRepository.save(cartItem);
+
+        // Fetch all cart items for the user to calculate total
+        List<AddToCart> userCartItems = cartRepository.findByUserId(userId);
+
+        double totalPrice = userCartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        // Set the total price in the latest saved item
+        savedCartItem.setTotalprice((int) totalPrice); // cast to int for your entity
+        return cartRepository.save(savedCartItem);
     }
 
 
@@ -77,24 +109,34 @@ public class AddToCartService {
 
     /// CC Item Bulder  Add To Cart *********&&&&&&&
 
+    @Transactional
     public AddToCart CCItemBuilderAddToCart(Long userId, int CCItemBulderId, int quantity) {
         User user = userRepository.findById(userId).orElseThrow();
         CCBuilderItemDitels part = ccBuilderItemDitelsRepository.findById(CCItemBulderId).orElseThrow();
 
-        double price = (part.getSpecialprice() > 0)
-                ? part.getSpecialprice()
-                : part.getRegularprice();
+        double pricePerItem = (part.getSpecialprice() > 0) ? part.getSpecialprice() : part.getRegularprice();
+        double newCartItemPrice = pricePerItem * quantity;
 
+        // Create new cart item
         AddToCart cartItem = new AddToCart();
         cartItem.setUser(user);
         cartItem.setCcBuilderItemDitels(part);
         cartItem.setQuantity(quantity);
-        cartItem.setPrice(price * quantity);
+        cartItem.setPrice(newCartItemPrice);
 
-        return cartRepository.save(cartItem);
+        // Save the new cart item first (optional: you can do this after totalprice too)
+        AddToCart savedCart = cartRepository.save(cartItem);
+
+        // Calculate total price of all cart items for this user
+        List<AddToCart> userCartItems = cartRepository.findByUserId(userId);
+        double totalPrice = userCartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        // Set total price in the latest saved cart item
+        savedCart.setTotalprice((int) totalPrice); // cast to int if needed
+        return cartRepository.save(savedCart);
     }
-
-
 
 
 

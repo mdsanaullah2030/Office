@@ -82,5 +82,17 @@ public class PcForPartAddController {
     }
 
 
+///Filter
+
+    @GetMapping("/api/pcparts/filter")
+    public ResponseEntity<List<PcForPartAdd>> filterPcParts(
+            @RequestParam(required = false) Double regularprice,
+            @RequestParam(required = false) Integer warranty,
+            @RequestParam(required = false) Integer pcbuilderId
+    ) {
+        List<PcForPartAdd> results = pcForPartAddService.filterPcParts(regularprice, warranty, pcbuilderId);
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
 
 }
