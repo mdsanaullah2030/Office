@@ -4,6 +4,7 @@ import com.itshop.ecommerce.entity.PcBuilder;
 import com.itshop.ecommerce.entity.PcForPartAdd;
 import com.itshop.ecommerce.entity.Product;
 import com.itshop.ecommerce.service.PcForPartAddService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class PcForPartAddController {
     @Autowired
     private PcForPartAddService pcForPartAddService;
 
-
+//Save
 
 @PostMapping("/api/PcForPartAdd/save")
     public ResponseEntity<String> savePcForPart(
@@ -46,7 +47,7 @@ public class PcForPartAddController {
     public ResponseEntity<List<PcForPartAdd>> getAllCpus() {
         return ResponseEntity.ok(pcForPartAddService.getAllCpu());
     }
-
+//Get By ID
 
     @GetMapping("/api/PcForPartAdd/get/{id}")
     public Optional<PcForPartAdd> getCpuById(@PathVariable int id) {
@@ -63,9 +64,15 @@ public class PcForPartAddController {
 
     //  Delete CPU by ID
     @DeleteMapping("/api/PcForPartAdd/delete/{id}")
-    public ResponseEntity<String> deleteCpu(@PathVariable int id) {
-        pcForPartAddService.deletePcForPart(id);
-        return ResponseEntity.ok("Deleted CPU with ID " + id);
+    public ResponseEntity<String> deleteItem(@PathVariable int id) {
+        try {
+            pcForPartAddService.deleteProductDetils(id);
+            return new ResponseEntity<>("Item deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Item not found with ID: " + id, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete item: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -80,6 +87,21 @@ public class PcForPartAddController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred: " + ex.getMessage());
         }
     }
+
+
+
+    @PutMapping("/api/pcforpartadd/update/{id}")
+    public ResponseEntity<String> updatePcPart(
+            @PathVariable int id,
+            @RequestPart("pcpart") PcForPartAdd updatedPart,
+            @RequestParam(value = "imagea", required = false) MultipartFile imageFile
+    ) throws IOException {
+        pcForPartAddService.updatePcPart(id, updatedPart, imageFile);
+        return ResponseEntity.ok("PC part updated successfully");
+    }
+
+
+
 
 
 ///Filter

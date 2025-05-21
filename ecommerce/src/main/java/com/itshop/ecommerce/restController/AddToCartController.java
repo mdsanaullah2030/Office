@@ -1,6 +1,7 @@
 
 package com.itshop.ecommerce.restController;
 import com.itshop.ecommerce.entity.AddToCart;
+import com.itshop.ecommerce.entity.ProductItem;
 import com.itshop.ecommerce.service.AddToCartService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,19 @@ public class AddToCartController {
         return cartService.productDetailsaddToCart(userId, productDetailsId, quantity);
     }
 
-
+    @GetMapping("/api/AddTocart/get/{id}")
+    public ResponseEntity<?> getById(@PathVariable int id) {
+        try {
+            AddToCart item = cartService.getById(id);
+            return ResponseEntity.ok(item);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Item not found: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to fetch item: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/api/pcforpart/AddToCart/save")
     public AddToCart addPcPartToCart(@RequestParam Long userId,

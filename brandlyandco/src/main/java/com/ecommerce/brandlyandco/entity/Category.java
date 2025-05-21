@@ -1,5 +1,4 @@
-package com.itshop.ecommerce.entity;
-
+package com.ecommerce.brandlyandco.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,17 +11,11 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-public class HomePageImage {
-
+@Getter
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    private String imagea;
-    private String imageb;
-    private String imagec;
-    private String imaged;
+    private String categoryname;
 }
- 

@@ -4,6 +4,7 @@ import com.itshop.ecommerce.entity.CCBuilderItemDitels;
 import com.itshop.ecommerce.entity.PcForPartAdd;
 import com.itshop.ecommerce.entity.ProductDetails;
 import com.itshop.ecommerce.service.CCBuilderItemDitelsService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping
@@ -22,16 +24,30 @@ public class CCBuilderItemDitelsController {
 
     @Autowired
     private CCBuilderItemDitelsService service;
-
     @GetMapping("/api/CCBuilder/Item/Ditels/get")
-    public List<CCBuilderItemDitels> getAllItems() {
-        return service.getAllCCBuilderItemDitels();
+    public ResponseEntity<?> getAllItems() {
+        try {
+            List<CCBuilderItemDitels> items = service.getAllCCBuilderItemDitels();
+            return new ResponseEntity<>(items, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve items: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/api/CCBuilder/Item/Ditels/get/{id}")
-    public CCBuilderItemDitels getItemById(@PathVariable int id) {
-        return service.getCCBuilderItemDitelsById(id).orElse(null);
+    public ResponseEntity<?> getItemById(@PathVariable int id) {
+        try {
+            Optional<CCBuilderItemDitels> item = service.getCCBuilderItemDitelsById(id);
+            if (item.isPresent()) {
+                return new ResponseEntity<>(item.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Item not found with ID: " + id, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to retrieve item: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     @PostMapping("/api/CCBuilder/Item/Ditels/save")
 
@@ -59,10 +75,15 @@ public class CCBuilderItemDitelsController {
 
     @DeleteMapping("/api/CCBuilder/Item/Ditels/delete/{id}")
     public ResponseEntity<String> deleteItem(@PathVariable int id) {
+        try {
         service.deleteItem(id);
         return new ResponseEntity<>("Item deleted successfully", HttpStatus.OK);
+    } catch (EntityNotFoundException e) {
+        return new ResponseEntity<>("Item not found with ID: " + id, HttpStatus.NOT_FOUND);
+    } catch (Exception e) {
+        return new ResponseEntity<>("Failed to delete item: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+}
 
 
 

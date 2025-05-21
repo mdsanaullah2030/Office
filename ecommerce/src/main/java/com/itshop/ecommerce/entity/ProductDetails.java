@@ -60,6 +60,11 @@ public class ProductDetails {
     @JoinColumn(name = "brand_id", nullable = true)
     private Brand brand;
 
+
+    @ManyToOne(fetch = FetchType.EAGER,optional = true)
+    @JoinColumn(name = "productItem_id", nullable = true)
+    private ProductItem productItem;
+
 }
 ///@ManyToOne(fetch = FetchType.EAGER, optional = true)
-//@JoinColumn(name = "item_id", nullable = true)
+//@JoinColumn(name = "item_id", nullable = true) ProductItem

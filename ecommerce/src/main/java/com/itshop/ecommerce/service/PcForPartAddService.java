@@ -93,9 +93,54 @@ public class PcForPartAddService {
         return pcForPartAddRepository.save(existingCpu);
     }
 
+//Updete
+
+    public PcForPartAdd updatePcPart(int id, PcForPartAdd incoming, MultipartFile imageFile) throws IOException {
+        PcForPartAdd existing = pcForPartAddRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("PC part not found with ID: " + id));
+
+        existing.setName(incoming.getName());
+        existing.setDescription(incoming.getDescription());
+        existing.setPerformance(incoming.getPerformance());
+        existing.setAbility(incoming.getAbility());
+        existing.setRegularprice(incoming.getRegularprice());
+        existing.setSpecialprice(incoming.getSpecialprice());
+        existing.setWarranty(incoming.getWarranty());
+        existing.setQuantity(incoming.getQuantity());
+
+        // Handle image
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String filename = saveImage(imageFile, existing);
+            existing.setImagea(filename);
+        }
+
+        // Update relation if needed
+        if (incoming.getPcbuilder() != null && incoming.getPcbuilder().getId() != 0) {
+            PcBuilder builder = pcBuilderRepository.findById(incoming.getPcbuilder().getId())
+                    .orElseThrow(() -> new RuntimeException("PC Builder not found"));
+            existing.setPcbuilder(builder);
+        } else {
+            existing.setPcbuilder(null);
+        }
+
+        return pcForPartAddRepository.save(existing);
+    }
+
+
+
+
+
+
+
 
     // Delete
-    public void deletePcForPart(int id) {
+    public void deleteProductDetils(int id) {
+        if (!pcForPartAddRepository.existsById(id)) {
+            throw new RuntimeException("Item not found with ID: " + id);
+        }
+
+
+        // Now safely delete the item
         pcForPartAddRepository.deleteById(id);
     }
 

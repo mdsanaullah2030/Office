@@ -1,6 +1,7 @@
 package com.itshop.ecommerce.service;
 
 import com.itshop.ecommerce.entity.*;
+import com.itshop.ecommerce.repository.AddToCartRepository;
 import com.itshop.ecommerce.repository.CCBuilderItemDitelsRepository;
 import com.itshop.ecommerce.repository.CCBuilderRepository;
 import com.itshop.ecommerce.repository.ItemRepository;
@@ -33,6 +34,8 @@ public class CCBuilderItemDitelsService {
 
     @Value("src/main/resources/static/images")
     private String uploadDir;
+    @Autowired
+    private AddToCartRepository addToCartRepository;
 
     public List<CCBuilderItemDitels> getAllCCBuilderItemDitels() {
         return ccBuilderItemDitelsRepository.findAll();
@@ -154,16 +157,17 @@ public class CCBuilderItemDitelsService {
 
 
 
-
-
+//Delete
 
     public void deleteItem(int id) {
         if (!ccBuilderItemDitelsRepository.existsById(id)) {
             throw new RuntimeException("Item not found with ID: " + id);
         }
+
+
+        // Now safely delete the item
         ccBuilderItemDitelsRepository.deleteById(id);
     }
-
 
 
 

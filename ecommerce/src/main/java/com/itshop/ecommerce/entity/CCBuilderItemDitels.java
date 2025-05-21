@@ -45,5 +45,3 @@ public class CCBuilderItemDitels {
     private Item item;
 }
 
-///@ManyToOne(fetch = FetchType.EAGER, optional = true)
-//@JoinColumn(name = "item_id", nullable = true)

@@ -1,9 +1,6 @@
 package com.itshop.ecommerce.service;
 
-import com.itshop.ecommerce.entity.Brand;
-import com.itshop.ecommerce.entity.Catagory;
-import com.itshop.ecommerce.entity.Product;
-import com.itshop.ecommerce.entity.ProductDetails;
+import com.itshop.ecommerce.entity.*;
 import com.itshop.ecommerce.repository.*;
 import org.apache.catalina.LifecycleState;
 import org.apache.commons.io.FilenameUtils;
@@ -78,15 +75,6 @@ public class ProductDetailsService {
     @Transactional
     public void saveProductDetails(ProductDetails productDetails, MultipartFile image1File, MultipartFile image2File,MultipartFile image3File) throws IOException {
 
-
-
-
-
-
-
-
-
-
         if (productDetails.getCatagory() != null && productDetails.getCatagory().getId() != 0) {
             Catagory cat = catagoryRepository.findById(productDetails.getCatagory().getId())
                     .orElseThrow(() -> new RuntimeException("Catagory not found"));
@@ -110,18 +98,6 @@ public class ProductDetailsService {
         } else {
             productDetails.setBrand(null);
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         if (image1File != null && !image1File.isEmpty()) {
@@ -169,6 +145,96 @@ public class ProductDetailsService {
 
 
 
+//Updete
+@Transactional
+public ProductDetails updateProductDetails(
+        int id,
+        ProductDetails incoming,                 // <-- the new values
+        MultipartFile image1File,
+        MultipartFile image2File,
+        MultipartFile image3File
+) throws IOException {
+    // 1) fetch existing
+    ProductDetails existing = productDetailsRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+
+    // 2) copy scalar fields
+    existing.setName(incoming.getName());
+    existing.setQuantity(incoming.getQuantity());
+    existing.setRegularprice(incoming.getRegularprice());
+    existing.setSpecialprice(incoming.getSpecialprice());
+    existing.setTitle(incoming.getTitle());
+    existing.setDetails(incoming.getDetails());
+    existing.setSpecification(incoming.getSpecification());
+    existing.setWarranty(incoming.getWarranty());
+
+
+
+    if (image1File != null && !image1File.isEmpty()) {
+        String filename = saveImage(image1File, existing);
+        existing.setImagea(filename);
+    }
+    if (image2File != null && !image2File.isEmpty()) {
+        String filename = saveImage(image2File, existing);
+        existing.setImagea(filename);
+    }
+
+
+    if (image3File != null && !image3File.isEmpty()) {
+        String filename = saveImage(image3File, existing);
+        existing.setImagea(filename);
+    }
+
+
+
+    // 3) copy relationships
+    if (incoming.getCatagory() != null && incoming.getCatagory().getId() != 0) {
+        Catagory cat = catagoryRepository.findById(incoming.getCatagory().getId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        existing.setCatagory(cat);
+    } else {
+        existing.setCatagory(null);
+    }
+
+    if (incoming.getProduct() != null && incoming.getProduct().getId() != 0) {
+        Product prod = productRepository.findById(incoming.getProduct().getId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        existing.setProduct(prod);
+    } else {
+        existing.setProduct(null);
+    }
+
+    if (incoming.getBrand() != null && incoming.getBrand().getId() != 0) {
+        Brand br = brandRepository.findById(incoming.getBrand().getId())
+                .orElseThrow(() -> new RuntimeException("Brand not found"));
+        existing.setBrand(br);
+    } else {
+        existing.setBrand(null);
+    }
+
+
+    // 5) persist and return
+    return productDetailsRepository.save(existing);
+}
+
+
+
+
+
+//Delete
+
+    public void deleteProductDetils(int id) {
+        if (!productDetailsRepository.existsById(id)) {
+            throw new RuntimeException("Item not found with ID: " + id);
+        }
+
+
+        // Now safely delete the item
+        productDetailsRepository.deleteById(id);
+    }
+
+
+
 
 ///Filter
 
@@ -177,11 +243,13 @@ public class ProductDetailsService {
             String brandname,
             String productName,
             Double regularPrice,
-            Integer warranty) {
-        return productDetailsRepository.filterByBrandnameAndProductNameAndRegularPriceAndWarranty(
-                brandname, productName, regularPrice, warranty);
+            Integer warranty,
+            Integer productItemId) {
+        return productDetailsRepository
+                .filterByBrandnameAndProductNameAndRegularPriceAndWarrantyAndProductItem(
+                        brandname, productName, regularPrice, warranty, productItemId
+                );
     }
-
 
 
 

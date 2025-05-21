@@ -42,12 +42,14 @@ public interface ProductDetailsRepository extends JpaRepository<ProductDetails,I
         "WHERE (:brandname IS NULL OR p.brand.brandname = :brandname) " +
         "AND (:productName IS NULL OR p.product.name = :productName) " +
         "AND (:regularPrice IS NULL OR p.regularprice = :regularPrice) " +
-        "AND (:warranty IS NULL OR p.warranty = :warranty)")
-List<ProductDetails> filterByBrandnameAndProductNameAndRegularPriceAndWarranty(
+        "AND (:warranty IS NULL OR p.warranty = :warranty) " +
+        "AND (:productItemId IS NULL OR p.productItem.id = :productItemId)")
+List<ProductDetails> filterByBrandnameAndProductNameAndRegularPriceAndWarrantyAndProductItem(
         @Param("brandname") String brandname,
         @Param("productName") String productName,
         @Param("regularPrice") Double regularPrice,
-        @Param("warranty") Integer warranty
+        @Param("warranty") Integer warranty,
+        @Param("productItemId") Integer productItemId
 );
 
 

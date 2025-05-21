@@ -99,17 +99,18 @@ public class  SecurityConfig {
                                                 ,"/api/items/get","/api/items/get/{id}",
                                                 "/api/CCBuilder/Item/Ditels/get",
 
-                                                "/api/CCBuilder/Item/Ditels/update/","/api/CCBuilder/Item/Ditels/delete/",
-
-                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}"
 
 
-
+                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}",
+   "/api/CCBuilder/Item/Ditels/get/{id}",
 
 
 
 
 
+
+   "/api/product/items/get" , "/api/product/items/{id}" ,
+                                                        "/api/product/items/delete/{id}","/api/media/get/{id}"
 
 
 
@@ -144,7 +145,7 @@ public class  SecurityConfig {
                                                         "/api/CCItemBuilder/AddToCart/save","/api/orders/AddToCadrt/CCItemBuilder/save",
 
                                                         "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save",
-                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
+                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}"
 
 
                                                 )
@@ -184,15 +185,16 @@ public class  SecurityConfig {
 
                                                         "/api/PcBuilder/save",
 
-                                                        "/api/PcForPartAdd/save","/api/PcForPartAdd/update/{id}","/api/PcForPartAdd/delete/{id}"
+                                                        "/api/PcForPartAdd/save",
+                                                        "/api/pcforpartadd/update/{id}", "/api/PcForPartAdd/delete/{id}"
 
 
 
                                                         ,"/api/aboutus/save","/api/aboutus/delete/{id}",
-                                                        "/api/aboutus/updete/{id}",
+                                                        "/api/aboutus/updete/{id}"
 
 
-                                                        "/api/media/get/{id}","/api/media/Delete/{id}",   "/api/media/save",
+                                                        ,"/api/media/Delete/{id}",   "/api/media/save",
 
 
                                                            "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}","/api/ccbuilder/save"
@@ -201,11 +203,12 @@ public class  SecurityConfig {
                                                         "/api/items/delete/{id}","/api/items/save",
 
 
-                                                        "/api/CCBuilder/Item/Ditels/save"
+                                                        "/api/CCBuilder/Item/Ditels/save", "/api/CCBuilder/Item/Ditels/update/{id}","/api/CCBuilder/Item/Ditels/delete/{id}"
+                                                        ,"/api/product/Ditels/delete/{id}","/api/ProductDetails/update/{id}"
 
+                                                        ,"/api/product/items/save","/api/product/items/update/{id}"
 
-
-                                                )
+                                                        )
                                                 .hasAuthority("ADMIN")
 
 

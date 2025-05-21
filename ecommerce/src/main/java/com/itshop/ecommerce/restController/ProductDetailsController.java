@@ -1,9 +1,11 @@
 package com.itshop.ecommerce.restController;
 
+import com.itshop.ecommerce.entity.CCBuilderItemDitels;
 import com.itshop.ecommerce.entity.Product;
 import com.itshop.ecommerce.entity.ProductDetails;
 import com.itshop.ecommerce.repository.ProductDetailsRepository;
 import com.itshop.ecommerce.service.ProductDetailsService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,6 +91,38 @@ public class ProductDetailsController {
     }
 
 
+    @PutMapping("/api/ProductDetails/update/{id}")
+    public ResponseEntity<String> update(
+            @PathVariable int id,
+            @RequestPart("productdetails") ProductDetails updatedItem,
+            @RequestParam(value = "imagea", required = false) MultipartFile image1File,
+            @RequestParam(value = "imageb", required = false) MultipartFile image2File,
+            @RequestParam(value = "imagec", required = false) MultipartFile image3File
+    ) throws IOException {
+        productDetailsService.updateProductDetails(id, updatedItem, image1File, image2File, image3File);
+        return new ResponseEntity<>("Item updated successfully", HttpStatus.OK);
+    }
+
+
+
+
+
+
+//Delete Product Detels
+
+    @DeleteMapping("/api/product/Ditels/delete/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable int id) {
+        try {
+            productDetailsService.deleteProductDetils(id);
+            return new ResponseEntity<>("Item deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Item not found with ID: " + id, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete item: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 
 
 //Filter
@@ -98,9 +132,12 @@ public class ProductDetailsController {
             @RequestParam(required = false) String brandname,
             @RequestParam(required = false) String productName,
             @RequestParam(required = false) Double regularPrice,
-             @RequestParam(required = false) int warranty
+            @RequestParam(required = false) Integer warranty,
+            @RequestParam(required = false) Integer productItemId
     ) {
-        List<ProductDetails> results = productDetailsService.filterProductDetails(brandname, productName, regularPrice,warranty);
+        List<ProductDetails> results = productDetailsService.filterProductDetails(
+                brandname, productName, regularPrice, warranty, productItemId
+        );
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 

@@ -28,6 +28,13 @@ public class AddToCartService {
     private CCBuilderItemDitelsRepository ccBuilderItemDitelsRepository;
 
 
+    public AddToCart getById(int id) {
+        return cartRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("ProductItem not found with id: " + id));
+    }
+
+
+
 /// Product Details Add To Cart
 
     @Transactional
