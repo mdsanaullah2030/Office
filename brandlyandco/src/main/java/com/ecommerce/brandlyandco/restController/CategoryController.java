@@ -23,12 +23,14 @@ public class CategoryController {
     @PostMapping("/api/categories/save")
     public ResponseEntity<?> createCategory(@RequestBody Category category) {
         try {
+
             Category savedCategory = categoryService.createCategory(category);
             return ResponseEntity.ok(savedCategory);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating category: " + e.getMessage());
         }
     }
+
 
     @GetMapping("/api/categories/get")
     public ResponseEntity<?> getAllCategories() {
@@ -40,7 +42,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/api/categories/get/byid/{id}")
+    @GetMapping("/api/categories/get/{id}")
     public ResponseEntity<?> getCategoryById(@PathVariable int id) {
         try {
             Optional<Category> categoryOptional = categoryService.getCategoryById(id);
@@ -53,6 +55,22 @@ public class CategoryController {
             return ResponseEntity.status(500).body("Error retrieving category: " + e.getMessage());
         }
     }
+
+
+
+    @PutMapping("/api/categories/update/{id}")
+    public ResponseEntity<?> updateCategory(@PathVariable int id, @RequestBody Category updatedCategory) {
+        try {
+            Category category = categoryService.updateCategory(id, updatedCategory);
+            return ResponseEntity.ok(category);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage()); // Not Found
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating category: " + e.getMessage());
+        }
+    }
+
+
 
 
     @DeleteMapping("/api/categories/delete/{id}")

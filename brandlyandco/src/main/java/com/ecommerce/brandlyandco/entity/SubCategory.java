@@ -1,8 +1,5 @@
 package com.ecommerce.brandlyandco.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +16,8 @@ public class SubCategory {
     private int id;
     private String subcategoryname;
 
-
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "catagory_id")
+    private Category catagory;
 
 }
