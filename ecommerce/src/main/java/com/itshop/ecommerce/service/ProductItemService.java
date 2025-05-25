@@ -12,6 +12,8 @@ public class ProductItemService {
 
     @Autowired
     private ProductItemRepository repository;
+    @Autowired
+    private ProductItemRepository productItemRepository;
 
     public ProductItem save(ProductItem item) {
         return repository.save(item);
@@ -38,4 +40,12 @@ public class ProductItemService {
     public void delete(int id) {
         repository.deleteById(id);
     }
+
+// Get By get Items By Product Id
+    public List<ProductItem> getItemsByProductId(int productId) {
+        return productItemRepository.getItemsByProduct(productId);
+    }
+
+
+
 }

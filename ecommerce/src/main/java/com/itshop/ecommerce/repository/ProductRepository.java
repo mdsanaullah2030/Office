@@ -15,5 +15,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT p FROM Product p WHERE p.catagory.id=:catagoryid")
     List<Product>findProductsByCatagoryId(@Param("catagoryid") int catagoryid);
+
+
+
+
 }
 

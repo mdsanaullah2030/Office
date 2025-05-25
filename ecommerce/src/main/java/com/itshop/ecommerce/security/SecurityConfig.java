@@ -120,9 +120,10 @@ public class  SecurityConfig {
 
 
 
+                                                        ,"/api/item/findbyproductid/get/{id}",
 
 
-
+                                                "/api/contactus/getall","/api/contactus/get/{id}"
 
 
 
@@ -194,7 +195,7 @@ public class  SecurityConfig {
                                                         "/api/aboutus/updete/{id}"
 
 
-                                                        ,"/api/media/Delete/{id}",   "/api/media/save",
+                                                        ,"/api/media/delete/{id}",   "/api/media/save",
 
 
                                                            "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}","/api/ccbuilder/save"
@@ -206,7 +207,11 @@ public class  SecurityConfig {
                                                         "/api/CCBuilder/Item/Ditels/save", "/api/CCBuilder/Item/Ditels/update/{id}","/api/CCBuilder/Item/Ditels/delete/{id}"
                                                         ,"/api/product/Ditels/delete/{id}","/api/ProductDetails/update/{id}"
 
-                                                        ,"/api/product/items/save","/api/product/items/update/{id}"
+                                                        ,"/api/product/items/save","/api/product/items/update/{id}",
+
+
+
+                                                        "/api/contactus/save","/api/contactus/update/{id}","/api/contactus/delete/{id}"
 
                                                         )
                                                 .hasAuthority("ADMIN")

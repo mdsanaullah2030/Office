@@ -70,6 +70,24 @@ public class ProductService {
 
 
 
+//Item Id By get Product
+
+    public List<Product> getProductsByItemId(Integer itemId) {
+        return productRepository.getProductsByItemId(itemId);
+    }
+
+
+///Filter
+
+    public List<Product> filterProducts(String color, String size, Double regularprice,
+                                        Double offer, String fabric, Integer itemId,
+                                        Integer subCategoryId, Integer categoryId) {
+        return productRepository.filterProducts(
+                color, size, regularprice, offer, fabric, itemId, subCategoryId, categoryId
+        );
+    }
+
+
 
 
 }

@@ -15,6 +15,8 @@ public class ProductItemController {
 
     @Autowired
     private ProductItemService service;
+    @Autowired
+    private ProductItemService productItemService;
 
     @PostMapping("/api/product/items/save")
     public ResponseEntity<?> save(@RequestBody ProductItem item) {
@@ -65,6 +67,21 @@ public class ProductItemController {
                     .body("Failed to update item: " + e.getMessage());
         }
     }
+
+
+
+//findByProductId
+
+    @GetMapping("/api/item/findbyproductid/get/{id}")
+    public ResponseEntity<List<ProductItem>> getByProductId(@PathVariable("id") int productId) {
+        List<ProductItem> items = productItemService.getItemsByProductId(productId);
+        return ResponseEntity.ok(items);
+    }
+
+
+
+
+
 
     @DeleteMapping("/api/product/items/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable int id) {

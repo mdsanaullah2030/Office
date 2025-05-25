@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -30,5 +31,35 @@ public class ProductController {
         productService.saveProduct(product, image1, image2,image3,image4);
         return new ResponseEntity<>("ProductDetails saved successfully with images", HttpStatus.OK);
     }
+
+
+//Products data get By Item Id
+    @GetMapping("/api/products/get/item/{id}")
+    public ResponseEntity<List<Product>> getProductsByItemId(@RequestParam Integer itemId) {
+        return ResponseEntity.ok(productService.getProductsByItemId(itemId));
+    }
+
+
+
+
+
+//Filter
+
+    @GetMapping("/api/product/filter")
+    public ResponseEntity<?> filterProducts(
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) Double regularprice,
+            @RequestParam(required = false) Double offer,
+            @RequestParam(required = false) String fabric,
+            @RequestParam(required = false) Integer itemId,
+            @RequestParam(required = false) Integer subCategoryId,
+            @RequestParam(required = false) Integer categoryId
+    ) {
+        return ResponseEntity.ok(productService.filterProducts(
+                color, size, regularprice, offer, fabric, itemId, subCategoryId, categoryId
+        ));
+    }
+
 
 }
