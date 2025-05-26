@@ -55,35 +55,9 @@ public class OrderController {
 
 
 
+///Add To Card All Order
 
-
-//Add To Card PC Part Order
-
-    @PostMapping("/api/orders/AddToCard/pcpart/save")
-    public ResponseEntity<Order> saveOrderFromCartAndPcPart(
-            @RequestParam long userId,
-            @RequestBody Map<String, String> addressData
-    ) {
-        String districts = addressData.getOrDefault("districts", "");
-        String upazila = addressData.getOrDefault("upazila", "");
-        String address = addressData.getOrDefault("address", "");
-
-        Order order = orderService.saveCCItemBuilderOrder(
-                userId,
-                districts,
-                upazila,
-                address
-        );
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
-    }
-
-
-
-
-
-///Add To Card product details  Order
-
-    @PostMapping("/api/orders/AddToCadrt/productdetails/save")
+    @PostMapping("/api/orders/AddToCart/save")
     public ResponseEntity<Order> saveOrderProductDetails(
             @RequestParam long userId,
             @RequestBody Map<String, String> addressData
@@ -100,35 +74,6 @@ public class OrderController {
         );
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
-
-
-
-
-
-///CC Item AddTO Card Orders
-
-
-    @PostMapping("/api/orders/AddToCadrt/CCItemBuilder/save")
-    public ResponseEntity<Order> CCItemBuilderOrder(
-            @RequestParam long userId,
-            @RequestBody Map<String, String> addressData
-    ) {
-        String districts = addressData.getOrDefault("districts", "");
-        String upazila = addressData.getOrDefault("upazila", "");
-        String address = addressData.getOrDefault("address", "");
-
-        Order order = orderService.saveCCItemBuilderOrder(
-                userId,
-                districts,
-                upazila,
-                address
-        );
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
-    }
-
-
-
-
 
 
 

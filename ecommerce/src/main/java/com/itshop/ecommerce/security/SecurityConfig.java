@@ -100,32 +100,15 @@ public class  SecurityConfig {
                                                 "/api/CCBuilder/Item/Ditels/get",
 
 
-
-                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}",
+                                    "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}",
    "/api/CCBuilder/Item/Ditels/get/{id}",
 
-
-
-
-
-
    "/api/product/items/get" , "/api/product/items/{id}" ,
-                                                        "/api/product/items/delete/{id}","/api/media/get/{id}"
+       "/api/product/items/delete/{id}","/api/media/get/{id}"
+        ,"/api/item/findbyproductid/get/{id}",
 
 
-
-
-
-
-
-
-
-                                                        ,"/api/item/findbyproductid/get/{id}",
-
-
-                                                "/api/contactus/getall","/api/contactus/get/{id}"
-
-
+        "/api/contactus/getall","/api/contactus/get/{id}"
 
 
                                                 )
@@ -141,12 +124,12 @@ public class  SecurityConfig {
                                                         ,"/api/CCItem/Bulder/orders/save",
 
 
-                                                        "/api/orders/AddToCadrt/productdetails/save","/api/orders/AddToCard/pcpart/save",
 
-                                                        "/api/CCItemBuilder/AddToCart/save","/api/orders/AddToCadrt/CCItemBuilder/save",
+     "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save","/api/ccitembuilder/AddToCart/save",
 
-                                                        "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save",
-                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}"
+                                                        "/api/orders/AddToCart/save",
+
+   "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}"
 
 
                                                 )

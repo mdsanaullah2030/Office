@@ -198,137 +198,135 @@ public class OrderService {
 
 
 
-
 ////Add To Cart Pc Part Order  saveOrderFromCartAndPcPart
-
-    @Transactional
-    public Order saveOrderFromCartAndPcPart(
-            Long userId,
-            String districts,
-            String upazila,
-            String address
-    ) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
-        if (cartItems.isEmpty()) {
-            throw new RuntimeException("No cart items found for user ID: " + userId);
-        }
-
-        double totalPrice = cartItems.stream()
-                .mapToDouble(AddToCart::getPrice)
-                .sum();
-
-        Order order = new Order();
-        order.setUser(user);
-        order.setName(user.getName());
-        order.setEmail(user.getEmail());
-        order.setPhoneNo(user.getPhoneNo());
-        order.setDistricts(districts);
-        order.setUpazila(upazila);
-        order.setAddress(address);
-        order.setStatus("PENDING");
-        order.setPrice(totalPrice);
-        order.setProductname("Multiple Items");
-        order.setProductid("Multiple");
-
-        Order savedOrder = orderRepository.save(order);
-
-        addToCartRepository.deleteAllByUser_Id(userId);
-
-        return savedOrder;
-    }
-
-
-
-
-
-
-
-///Add To cart  ProductDetails  saveOrder
-
-    @Transactional
-    public Order saveOrderProductDetails(
-            Long userId,
-            String districts,
-            String upazila,
-            String address
-    ) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
-        if (cartItems.isEmpty()) {
-            throw new RuntimeException("No cart items found for user ID: " + userId);
-        }
-
-        double totalPrice = cartItems.stream()
-                .mapToDouble(AddToCart::getPrice)
-                .sum();
-
-        Order order = new Order();
-        order.setUser(user);
-        order.setName(user.getName());
-        order.setEmail(user.getEmail());
-        order.setPhoneNo(user.getPhoneNo());
-        order.setDistricts(districts);
-        order.setUpazila(upazila);
-        order.setAddress(address);
-        order.setStatus("PENDING");
-        order.setPrice(totalPrice);
-        order.setProductname("Multiple Items");
-        order.setProductid("Multiple");
-
-        Order savedOrder = orderRepository.save(order);
-
-        addToCartRepository.deleteAllByUser_Id(userId);
-
-        return savedOrder;
-    }
-
+//
+//    @Transactional
+//    public Order saveOrderFromCartAndPcPart(
+//            Long userId,
+//            String districts,
+//            String upazila,
+//            String address
+//    ) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
+//        if (cartItems.isEmpty()) {
+//            throw new RuntimeException("No cart items found for user ID: " + userId);
+//        }
+//
+//        double totalPrice = cartItems.stream()
+//                .mapToDouble(AddToCart::getPrice)
+//                .sum();
+//
+//        Order order = new Order();
+//        order.setUser(user);
+//        order.setName(user.getName());
+//        order.setEmail(user.getEmail());
+//        order.setPhoneNo(user.getPhoneNo());
+//        order.setDistricts(districts);
+//        order.setUpazila(upazila);
+//        order.setAddress(address);
+//        order.setStatus("PENDING");
+//        order.setPrice(totalPrice);
+//        order.setProductname("Multiple Items");
+//        order.setProductid("Multiple");
+//
+//        Order savedOrder = orderRepository.save(order);
+//
+//        addToCartRepository.deleteAllByUser_Id(userId);
+//
+//        return savedOrder;
+//    }
+//
+//
+//
+//
+//
+//
+//
+/////Add To cart  ProductDetails  saveOrder
+//
+//    @Transactional
+//    public Order saveOrderProductDetails(
+//            Long userId,
+//            String districts,
+//            String upazila,
+//            String address
+//    ) {
+//        User user = userRepository.findById(userId)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
+//        if (cartItems.isEmpty()) {
+//            throw new RuntimeException("No cart items found for user ID: " + userId);
+//        }
+//
+//        double totalPrice = cartItems.stream()
+//                .mapToDouble(AddToCart::getPrice)
+//                .sum();
+//
+//        Order order = new Order();
+//        order.setUser(user);
+//        order.setName(user.getName());
+//        order.setEmail(user.getEmail());
+//        order.setPhoneNo(user.getPhoneNo());
+//        order.setDistricts(districts);
+//        order.setUpazila(upazila);
+//        order.setAddress(address);
+//        order.setStatus("PENDING");
+//        order.setPrice(totalPrice);
+//        order.setProductname("Multiple Items");
+//        order.setProductid("Multiple");
+//
+//        Order savedOrder = orderRepository.save(order);
+//
+//        addToCartRepository.deleteAllByUser_Id(userId);
+//
+//        return savedOrder;
+//    }
+//
 
 
     //Add To CC Item Builder Order &&&&&&&&&
-@Transactional
-public Order saveCCItemBuilderOrder(
-        Long userId,
-        String districts,
-        String upazila,
-        String address
-) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    @Transactional
+    public Order saveCCItemBuilderOrder(
+            Long userId,
+            String districts,
+            String upazila,
+            String address
+    ) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
-    if (cartItems.isEmpty()) {
-        throw new RuntimeException("No cart items found for user ID: " + userId);
+        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
+        if (cartItems.isEmpty()) {
+            throw new RuntimeException("No cart items found for user ID: " + userId);
+        }
+
+        double totalPrice = cartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        Order order = new Order();
+        order.setUser(user);
+        order.setName(user.getName());
+        order.setEmail(user.getEmail());
+        order.setPhoneNo(user.getPhoneNo());
+        order.setDistricts(districts);
+        order.setUpazila(upazila);
+        order.setAddress(address);
+        order.setStatus("PENDING");
+        order.setPrice(totalPrice);
+        order.setProductname("Multiple Items");
+        order.setProductid("Multiple");
+
+        Order savedOrder = orderRepository.save(order);
+
+        addToCartRepository.deleteAllByUser_Id(userId);
+
+        return savedOrder;
     }
-
-    double totalPrice = cartItems.stream()
-            .mapToDouble(AddToCart::getPrice)
-            .sum();
-
-    Order order = new Order();
-    order.setUser(user);
-    order.setName(user.getName());
-    order.setEmail(user.getEmail());
-    order.setPhoneNo(user.getPhoneNo());
-    order.setDistricts(districts);
-    order.setUpazila(upazila);
-    order.setAddress(address);
-    order.setStatus("PENDING");
-    order.setPrice(totalPrice);
-    order.setProductname("Multiple Items");
-    order.setProductid("Multiple");
-
-    Order savedOrder = orderRepository.save(order);
-
-    addToCartRepository.deleteAllByUser_Id(userId);
-
-    return savedOrder;
-}
-
 
 
 
