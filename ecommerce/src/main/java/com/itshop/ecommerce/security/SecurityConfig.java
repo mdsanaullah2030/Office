@@ -108,28 +108,28 @@ public class  SecurityConfig {
         ,"/api/item/findbyproductid/get/{id}",
 
 
-        "/api/contactus/getall","/api/contactus/get/{id}"
+        "/api/contactus/getall","/api/contactus/get/{id}","/api/orders/delete/{id}"
 
 
                                                 )
                                                 .permitAll()
 
 
-                                                .requestMatchers(   "/api/productdetails/orders/save","/api/pcforpart/orders/save",
+                                                .requestMatchers(   "/api/pcforpart/orders/save",
 
 
 
-                                                        "/api/orders/delete/{id}","/api/Order/getByUser/{userId}"
+                                                        "/api/Order/getByUser/{userId}"
 
-                                                        ,"/api/CCItem/Bulder/orders/save",
+                                                        ,"/api/orders/AddToCart/save",
 
 
 
      "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save","/api/ccitembuilder/AddToCart/save",
 
-                                                        "/api/orders/AddToCart/save",
+                                                        "/api/orders/{id}",
 
-   "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}"
+   "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}","/api/pcforpart/orders/save"
 
 
                                                 )
@@ -164,8 +164,8 @@ public class  SecurityConfig {
                                                         ,"/api/ProductDetails/save",
 
 
-                                                          "/api/orders/all","/api/orders/{id}",
-                                                        "/api/orders/delete/{id}","/api/orders/updete/{id}",
+                                                          "/api/orders/all","/api/orders/{id}"
+                                                        ,"/api/orders/updete/{id}",
 
                                                         "/api/PcBuilder/save",
 

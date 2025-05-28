@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders") //  Here we renamed the table!
@@ -52,9 +54,6 @@ public class Order {
 
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productDetails_id")
-    private ProductDetails productDetails;
 
 
 
@@ -64,14 +63,18 @@ public class Order {
     private AddToCart addToCart;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "productDetails_id")
+    private List<ProductDetails> productDetailsList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "pcForPartAdd_id")
-    private PcForPartAdd pcForPartAdd;
+    private List<PcForPartAdd> pcForPartAddList = new ArrayList<>();
 
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ccBuilderItem_id")
-    private CCBuilderItemDitels ccBuilderItemDitels;
+    private List<CCBuilderItemDitels> ccBuilderItemDitelsList = new ArrayList<>();
 }
-//@ManyToOne(fetch = FetchType.EAGER, optional = true)
-//@JoinColumn(name = "item_id", nullable = true)

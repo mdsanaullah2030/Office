@@ -4,6 +4,7 @@ import com.itshop.ecommerce.entity.Order;
 import com.itshop.ecommerce.entity.ProductDetails;
 import com.itshop.ecommerce.repository.ProductDetailsRepository;
 import com.itshop.ecommerce.service.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,25 +35,43 @@ public class OrderController {
 
 
 ///api/pcpartorder/save
-
-    @PostMapping("/api/pcforpart/orders/save")
-    public ResponseEntity<Order> savePcForPartOrder(@RequestBody Order order) {
+@PostMapping("/api/pcforpart/orders/save")
+public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
+    try {
         Order savedOrder = orderService.PcForPartOrder(order);
         return ResponseEntity.ok(savedOrder);
+    } catch (Exception ex) {
+        // You can log the exception for debugging purposes
+        ex.printStackTrace();
+
+        // Return a 400 Bad Request with a meaningful error message
+        return ResponseEntity
+                .badRequest()
+                .body("Failed to save PC-for-Part Order: " + ex.getMessage());
     }
+}
+
 
 
 
 
     ///api/CC Item Bulder Order/save
 
-    @PostMapping("/api/CCItem/Bulder/orders/save")
-    public ResponseEntity<Order> saveCCItemBulderOrder(@RequestBody Order order) {
-        Order savedOrder = orderService.CCItemBulderOrder(order);
-        return ResponseEntity.ok(savedOrder);
+    @PostMapping("/api/ccitem/Bulder/orders/save")
+    public ResponseEntity<?> CCItemBulder(@RequestBody Order order) {
+        try {
+            Order savedOrder = orderService.CCItemBulderOrder(order);
+            return ResponseEntity.ok(savedOrder);
+        } catch (Exception ex) {
+            // You can log the exception for debugging purposes
+            ex.printStackTrace();
+
+            // Return a 400 Bad Request with a meaningful error message
+            return ResponseEntity
+                    .badRequest()
+                    .body("Failed to save PC-for-Part Order: " + ex.getMessage());
+        }
     }
-
-
 
 
 ///Add To Card All Order
@@ -92,11 +111,6 @@ public class OrderController {
 
 
 
-    // Delete order
-    @DeleteMapping("/api/orders/delete/{id}")
-    public String deleteOrder(@PathVariable int id) {
-        return orderService.deleteOrder(id);
-    }
 
 
 
@@ -125,5 +139,15 @@ public class OrderController {
         List<Order> orders = orderService.getOrdersByUserId(userId);
         return ResponseEntity.ok(orders);
     }
+
+
+
+
+    // Delete order
+    @DeleteMapping("/api/orders/delete/{id}")
+    public String deleteOrder(@PathVariable int id) {
+        return orderService.deleteOrder(id);
+    }
+
 
 }

@@ -2,13 +2,15 @@ package com.itshop.ecommerce.service;
 
 import com.itshop.ecommerce.entity.*;
 import com.itshop.ecommerce.repository.*;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class OrderService {
@@ -32,6 +34,8 @@ public class OrderService {
 
    @Autowired
    private CCBuilderItemDitelsRepository ccBuilderItemDitelsRepository;
+   @Autowired
+   private EmailService emailService;
 
 
 
@@ -54,44 +58,55 @@ public class OrderService {
 
 //Product Details Order
 
-    public Order saveOrder(Order order) {
 
-        // Set User details
+    public Order saveOrder(Order order) {
+        // 1. Set User Info
         if (order.getUser() != null && order.getUser().getId() != 0) {
             userRepository.findById(order.getUser().getId()).ifPresent(user -> {
                 order.setUser(user);
                 order.setName(user.getName());
                 order.setEmail(user.getEmail());
                 order.setPhoneNo(user.getPhoneNo());
-            }) ;
+            });
         }
 
-        // Set ProductDetails and calculate price
-        if (order.getProductDetails() != null && order.getProductDetails().getId() != 0) {
-            productDetailsRepository.findById(order.getProductDetails().getId()).ifPresent(productDetails -> {
-                order.setProductDetails(productDetails);
-                order.setProductid(productDetails.getProductid());
-                order.setProductname(productDetails.getName());
-                order.setStatus("PENDING");
+        // 2. Handle ProductDetails by ID
+        if (order.getProductDetailsList() != null && !order.getProductDetailsList().isEmpty()) {
+            ProductDetails requestProduct = order.getProductDetailsList().get(0); // Support only one product for now
+            Optional<ProductDetails> optionalProduct = productDetailsRepository.findById(requestProduct.getId());
 
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
 
-                // Calculate price
-                double unitPrice = productDetails.getSpecialprice() > 0
-                        ? productDetails.getSpecialprice()
-                        : productDetails.getRegularprice();
-                int orderQuantity = order.getQuantity();
-                order.setPrice(unitPrice * orderQuantity);
+            ProductDetails product = optionalProduct.get();
 
-                // Decrease stock quantity
-                int remainingQuantity = productDetails.getQuantity() - orderQuantity;
-                productDetails.setQuantity(remainingQuantity);
-                productDetailsRepository.save(productDetails);
-            });
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
+
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
+
+            // 5. Set Order Fields
+            order.setProductid(product.getProductid());
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setProductDetailsList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            productDetailsRepository.save(product);
+        } else {
+            throw new RuntimeException("ProductDetails list is missing.");
         }
 
         return orderRepository.save(order);
     }
-
 
 
 
@@ -110,32 +125,38 @@ public class OrderService {
             });
         }
 
-        // Set PcForPartAdd details and calculate price
-        if (order.getPcForPartAdd() != null && order.getPcForPartAdd().getId() != 0) {
-            pcForPartAddRepository.findById(order.getPcForPartAdd().getId()).ifPresent(pcPart -> {
+        if (order.getPcForPartAddList() != null && !order.getPcForPartAddList().isEmpty()) {
+            PcForPartAdd requestProduct = order.getPcForPartAddList().get(0); // Support only one product for now
+            Optional<PcForPartAdd> optionalProduct = pcForPartAddRepository.findById(requestProduct.getId());
 
-                int orderedQty = order.getQuantity();
-                int availableQty = pcPart.getQuantity();
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
 
-                // Check if enough quantity exists
-                if (availableQty < orderedQty) {
-                    throw new RuntimeException("Not enough quantity available for product: " + pcPart.getName());
-                }
+            PcForPartAdd product = optionalProduct.get();
 
-                // Set product-related fields in order
-                order.setPcForPartAdd(pcPart);
-                order.setProductid(String.valueOf(pcPart.getId()));
-                order.setProductname(pcPart.getName());
-                order.setStatus("PENDING");
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
 
-                // Set price based on specialprice or regularprice
-                double unitPrice = pcPart.getSpecialprice() > 0 ? pcPart.getSpecialprice() : pcPart.getRegularprice();
-                order.setPrice(unitPrice * orderedQty);
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
 
-                // Update available quantity in PcForPartAdd
-                pcPart.setQuantity(availableQty - orderedQty);
-                pcForPartAddRepository.save(pcPart);
-            });
+            // 5. Set Order Fields
+
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setPcForPartAddList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            pcForPartAddRepository.save(product);
+        } else {
+            throw new RuntimeException("ProductDetails list is missing.");
         }
 
         return orderRepository.save(order);
@@ -159,32 +180,38 @@ public class OrderService {
             });
         }
 
-        // Set PcForPartAdd details and calculate price
-        if (order.getCcBuilderItemDitels() != null && order.getCcBuilderItemDitels().getId() != 0) {
-            ccBuilderItemDitelsRepository.findById(order.getCcBuilderItemDitels().getId()).ifPresent(pcPart -> {
+        if (order.getCcBuilderItemDitelsList() != null && !order.getCcBuilderItemDitelsList().isEmpty()) {
+            CCBuilderItemDitels requestProduct = order.getCcBuilderItemDitelsList().get(0); // Support only one product for now
+            Optional<CCBuilderItemDitels> optionalProduct = ccBuilderItemDitelsRepository.findById(requestProduct.getId());
 
-                int orderedQty = order.getQuantity();
-                int availableQty = pcPart.getQuantity();
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
 
-                // Check if enough quantity exists
-                if (availableQty < orderedQty) {
-                    throw new RuntimeException("Not enough quantity available for product: " + pcPart.getName());
-                }
+            CCBuilderItemDitels product = optionalProduct.get();
 
-                // Set product-related fields in order
-                order.setCcBuilderItemDitels(pcPart);
-                order.setProductid(String.valueOf(pcPart.getId()));
-                order.setProductname(pcPart.getName());
-                order.setStatus("PENDING");
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
 
-                // Set price based on specialprice or regularprice
-                double unitPrice = pcPart.getSpecialprice() > 0 ? pcPart.getSpecialprice() : pcPart.getRegularprice();
-                order.setPrice(unitPrice * orderedQty);
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
 
-                // Update available quantity in PcForPartAdd
-                pcPart.setQuantity(availableQty - orderedQty);
-                ccBuilderItemDitelsRepository.save(pcPart);
-            });
+            // 5. Set Order Fields
+
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setCcBuilderItemDitelsList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            ccBuilderItemDitelsRepository.save(product);
+        } else {
+            throw new RuntimeException("ProductDetails list is missing.");
         }
 
         return orderRepository.save(order);
@@ -196,106 +223,9 @@ public class OrderService {
 
 
 
-
-
-////Add To Cart Pc Part Order  saveOrderFromCartAndPcPart
-//
-//    @Transactional
-//    public Order saveOrderFromCartAndPcPart(
-//            Long userId,
-//            String districts,
-//            String upazila,
-//            String address
-//    ) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
-//        if (cartItems.isEmpty()) {
-//            throw new RuntimeException("No cart items found for user ID: " + userId);
-//        }
-//
-//        double totalPrice = cartItems.stream()
-//                .mapToDouble(AddToCart::getPrice)
-//                .sum();
-//
-//        Order order = new Order();
-//        order.setUser(user);
-//        order.setName(user.getName());
-//        order.setEmail(user.getEmail());
-//        order.setPhoneNo(user.getPhoneNo());
-//        order.setDistricts(districts);
-//        order.setUpazila(upazila);
-//        order.setAddress(address);
-//        order.setStatus("PENDING");
-//        order.setPrice(totalPrice);
-//        order.setProductname("Multiple Items");
-//        order.setProductid("Multiple");
-//
-//        Order savedOrder = orderRepository.save(order);
-//
-//        addToCartRepository.deleteAllByUser_Id(userId);
-//
-//        return savedOrder;
-//    }
-//
-//
-//
-//
-//
-//
-//
-/////Add To cart  ProductDetails  saveOrder
-//
-//    @Transactional
-//    public Order saveOrderProductDetails(
-//            Long userId,
-//            String districts,
-//            String upazila,
-//            String address
-//    ) {
-//        User user = userRepository.findById(userId)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//
-//        List<AddToCart> cartItems = addToCartRepository.findByUserId(userId);
-//        if (cartItems.isEmpty()) {
-//            throw new RuntimeException("No cart items found for user ID: " + userId);
-//        }
-//
-//        double totalPrice = cartItems.stream()
-//                .mapToDouble(AddToCart::getPrice)
-//                .sum();
-//
-//        Order order = new Order();
-//        order.setUser(user);
-//        order.setName(user.getName());
-//        order.setEmail(user.getEmail());
-//        order.setPhoneNo(user.getPhoneNo());
-//        order.setDistricts(districts);
-//        order.setUpazila(upazila);
-//        order.setAddress(address);
-//        order.setStatus("PENDING");
-//        order.setPrice(totalPrice);
-//        order.setProductname("Multiple Items");
-//        order.setProductid("Multiple");
-//
-//        Order savedOrder = orderRepository.save(order);
-//
-//        addToCartRepository.deleteAllByUser_Id(userId);
-//
-//        return savedOrder;
-//    }
-//
-
-
     //Add To CC Item Builder Order &&&&&&&&&
     @Transactional
-    public Order saveCCItemBuilderOrder(
-            Long userId,
-            String districts,
-            String upazila,
-            String address
-    ) {
+    public Order saveCCItemBuilderOrder(Long userId, String districts, String upazila, String address) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -303,10 +233,6 @@ public class OrderService {
         if (cartItems.isEmpty()) {
             throw new RuntimeException("No cart items found for user ID: " + userId);
         }
-
-        double totalPrice = cartItems.stream()
-                .mapToDouble(AddToCart::getPrice)
-                .sum();
 
         Order order = new Order();
         order.setUser(user);
@@ -317,9 +243,47 @@ public class OrderService {
         order.setUpazila(upazila);
         order.setAddress(address);
         order.setStatus("PENDING");
-        order.setPrice(totalPrice);
         order.setProductname("Multiple Items");
         order.setProductid("Multiple");
+
+        double totalPrice = 0;
+
+        List<ProductDetails> productList = new ArrayList<>();
+        List<PcForPartAdd> pcPartList = new ArrayList<>();
+        List<CCBuilderItemDitels> ccItemList = new ArrayList<>();
+
+        for (AddToCart item : cartItems) {
+            totalPrice += item.getPrice();
+
+            if (item.getProductDetails() != null) {
+                ProductDetails pd = productDetailsRepository.findById(item.getProductDetails().getId())
+                        .orElseThrow(() -> new RuntimeException("Product not found"));
+                pd.setQuantity(pd.getQuantity() - item.getQuantity());
+                productDetailsRepository.save(pd);
+                productList.add(pd);
+            }
+
+            if (item.getPcForPartAdd() != null) {
+                PcForPartAdd pc = pcForPartAddRepository.findById(item.getPcForPartAdd().getId())
+                        .orElseThrow(() -> new RuntimeException("PC Part not found"));
+                pc.setQuantity(pc.getQuantity() - item.getQuantity());
+                pcForPartAddRepository.save(pc);
+                pcPartList.add(pc);
+            }
+
+            if (item.getCcBuilderItemDitels() != null) {
+                CCBuilderItemDitels cc = ccBuilderItemDitelsRepository.findById(item.getCcBuilderItemDitels().getId())
+                        .orElseThrow(() -> new RuntimeException("CC Item not found"));
+                cc.setQuantity(cc.getQuantity() - item.getQuantity());
+                ccBuilderItemDitelsRepository.save(cc);
+                ccItemList.add(cc);
+            }
+        }
+
+        order.setPrice(totalPrice);
+        order.setProductDetailsList(productList);
+        order.setPcForPartAddList(pcPartList);
+        order.setCcBuilderItemDitelsList(ccItemList);
 
         Order savedOrder = orderRepository.save(order);
 
@@ -331,33 +295,47 @@ public class OrderService {
 
 
 
-
 ///Update Order Statas
 
 
     @Transactional
-    public void updateOrderActions(int orderId, String newstatus) {
+    public void updateOrderActions(int orderId, String newStatus) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        order.setStatus(newstatus); // Only updating actions
-        orderRepository.save(order); // Other fields remain unchanged
+        order.setStatus(newStatus);
+        orderRepository.save(order);
+
+        // Prepare email message
+        String to = order.getEmail();
+        String subject = "Order Status Updated";
+        String text = "Hello " + order.getName() + ",\n\n"
+                + "Your order with ID " + order.getId() + " has been updated to the following status:\n\n"
+                + "**" + newStatus + "**\n\n"
+                + "Thank you for shopping with us.\n\n"
+                + "Best regards,\nIT Shop Team";
+
+        try {
+            emailService.sendSimpleEmail(to, subject, text);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Failed to send email: " + e.getMessage());
+        }
     }
 
 
-
-//Delete Order
-
+    // OrderService.java
+    @Transactional
     public String deleteOrder(int id) {
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
 
-            // Optional: Restore stock before deleting
-            ProductDetails product = order.getProductDetails();
-            if (product != null) {
-                product.setQuantity(product.getQuantity() + order.getQuantity());
-                productDetailsRepository.save(product);
+            // Restore stock for all associated ProductDetails
+            if (order.getProductDetailsList() != null) {
+                for (ProductDetails product : order.getProductDetailsList()) {
+                    product.setQuantity(product.getQuantity() + order.getQuantity());
+                    productDetailsRepository.save(product);
+                }
             }
 
             orderRepository.deleteById(id);
@@ -368,4 +346,18 @@ public class OrderService {
     }
 
 
+
+
 }
+
+
+
+
+
+
+
+//Delete Order
+
+
+
+

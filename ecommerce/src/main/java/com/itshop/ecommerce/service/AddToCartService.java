@@ -28,6 +28,10 @@ public class AddToCartService {
     private CCBuilderItemDitelsRepository ccBuilderItemDitelsRepository;
 
 
+    @Autowired
+    private ItemRepository itemRepository;
+
+
     public AddToCart getById(int id) {
         return cartRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ProductItem not found with id: " + id));
@@ -112,8 +116,6 @@ public class AddToCartService {
 
 
 
-
-
     /// CC Item Bulder  Add To Cart *********&&&&&&&
 
     @Transactional
@@ -144,9 +146,6 @@ public class AddToCartService {
         savedCart.setTotalprice((int) totalPrice); // cast to int if needed
         return cartRepository.save(savedCart);
     }
-
-
-
 
 
 
