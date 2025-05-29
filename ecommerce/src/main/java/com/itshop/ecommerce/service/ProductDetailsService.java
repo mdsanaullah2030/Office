@@ -37,6 +37,9 @@ public class ProductDetailsService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductItemRepository productItemRepository;
+
     public List<ProductDetails> getAllProductDetails(){
         return productDetailsRepository.findAll();
 
@@ -203,6 +206,17 @@ public ProductDetails updateProductDetails(
     } else {
         existing.setProduct(null);
     }
+
+
+    if (incoming.getProductItem() != null && incoming.getProductItem().getId() != 0) {
+        ProductItem prod = productItemRepository.findById(incoming.getProductItem().getId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        existing.setProductItem(prod);
+    } else {
+        existing.setProduct(null);
+    }
+
+
 
     if (incoming.getBrand() != null && incoming.getBrand().getId() != 0) {
         Brand br = brandRepository.findById(incoming.getBrand().getId())

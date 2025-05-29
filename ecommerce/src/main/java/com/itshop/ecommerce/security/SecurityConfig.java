@@ -50,12 +50,12 @@ public class  SecurityConfig {
 
                                                         ,"/api/ServiceFeature/get",
 
-                                                      "/api/brands/get/all","/api/brands/get/{id}","/api/brands/update/{id}",
+                                                        "/api/brands/get/all","/api/brands/get/{id}","/api/brands/update/{id}",
 
                                                         "/api/branches/get/all","/api/branches/getID/{id}",
 
 
-
+                                                        "/api/orders/all",
 
                                                         "/api/catagories/get/{id}",
 
@@ -81,34 +81,34 @@ public class  SecurityConfig {
 
 
 
-                                                ,"/api/productDetails/filter","/api/pcparts/filter","/api/ccbuilder/items/filter",
+                                                        ,"/api/productDetails/filter","/api/pcparts/filter","/api/ccbuilder/items/filter",
 
                                                         "/api/aboutus/get","/api/aboutus/get/{id}",
 
 
 
 
-                                             "/api/media/get"
+                                                        "/api/media/get"
 
 
-                                                , "/api/ccbuilder/get/{id}","/api/ccbuilder/get"
+                                                        , "/api/ccbuilder/get/{id}","/api/ccbuilder/get"
 
 
 
 
-                                                ,"/api/items/get","/api/items/get/{id}",
-                                                "/api/CCBuilder/Item/Ditels/get",
+                                                        ,"/api/items/get","/api/items/get/{id}",
+                                                        "/api/CCBuilder/Item/Ditels/get",
 
 
-                                    "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}",
-   "/api/CCBuilder/Item/Ditels/get/{id}",
+                                                        "/api/CCBuilder/Ditels/itemId/Idby/get/{id}","/api/CCBuilder/Ditels/ccBuilder/get/ById/{id}",
+                                                        "/api/CCBuilder/Item/Ditels/get/{id}",
 
-   "/api/product/items/get" , "/api/product/items/{id}" ,
-       "/api/product/items/delete/{id}","/api/media/get/{id}"
-        ,"/api/item/findbyproductid/get/{id}",
+                                                        "/api/product/items/get" , "/api/product/items/{id}" ,
+                                                        "/api/product/items/delete/{id}","/api/media/get/{id}"
+                                                        ,"/api/item/findbyproductid/get/{id}",
 
 
-        "/api/contactus/getall","/api/contactus/get/{id}","/api/orders/delete/{id}"
+                                                        "/api/contactus/getall","/api/contactus/get/{id}","/api/orders/delete/{id}"
 
 
                                                 )
@@ -121,15 +121,15 @@ public class  SecurityConfig {
 
                                                         "/api/Order/getByUser/{userId}"
 
-                                                        ,"/api/orders/AddToCart/save",
+                                                        ,"/api/orders/AddToCart/save/{id}","/api/ccitem/Bulder/orders/save",
 
+ 
 
-
-     "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save","/api/ccitembuilder/AddToCart/save",
+                                                        "/api/productdetails/AddTocart/save","/api/pcforpart/AddToCart/save","/api/ccitembuilder/AddToCart/save","api/productdetails/orders/save",
 
                                                         "/api/orders/{id}",
 
-   "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}","/api/pcforpart/orders/save"
+                                                        "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}","/api/pcforpart/orders/save"
 
 
                                                 )
@@ -164,7 +164,7 @@ public class  SecurityConfig {
                                                         ,"/api/ProductDetails/save",
 
 
-                                                          "/api/orders/all","/api/orders/{id}"
+                                                        "/api/orders/{id}"
                                                         ,"/api/orders/updete/{id}",
 
                                                         "/api/PcBuilder/save",
@@ -181,7 +181,7 @@ public class  SecurityConfig {
                                                         ,"/api/media/delete/{id}",   "/api/media/save",
 
 
-                                                           "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}","/api/ccbuilder/save"
+                                                        "/api/ccbuilder/updete/","/api/ccbuilder/updete/data/{id}","/api/ccbuilder/save"
 
                                                         ,"/api/items/update/{id}",
                                                         "/api/items/delete/{id}","/api/items/save",
@@ -196,7 +196,7 @@ public class  SecurityConfig {
 
                                                         "/api/contactus/save","/api/contactus/update/{id}","/api/contactus/delete/{id}"
 
-                                                        )
+                                                )
                                                 .hasAuthority("ADMIN")
 
 
@@ -240,6 +240,3 @@ public class  SecurityConfig {
 
 
 }
-
-
-

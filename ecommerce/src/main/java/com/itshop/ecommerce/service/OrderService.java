@@ -223,9 +223,9 @@ public class OrderService {
 
 
 
-    //Add To CC Item Builder Order &&&&&&&&&
+    //Add To Cart All Order &&&&&&&&&
     @Transactional
-    public Order saveCCItemBuilderOrder(Long userId, String districts, String upazila, String address) {
+    public Order saveAllAddToCartOrder(Long userId, String districts, String upazila, String address) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 

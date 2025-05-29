@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
 
 ///Add To Card All Order
 
-    @PostMapping("/api/orders/AddToCart/save")
+    @PostMapping("/api/orders/AddToCart/save/{id}")
     public ResponseEntity<Order> saveOrderProductDetails(
             @RequestParam long userId,
             @RequestBody Map<String, String> addressData
@@ -85,7 +86,7 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
         String upazila = addressData.getOrDefault("upazila", "");
         String address = addressData.getOrDefault("address", "");
 
-        Order order = orderService.saveCCItemBuilderOrder(
+        Order order = orderService.saveAllAddToCartOrder(
                 userId,
                 districts,
                 upazila,
@@ -122,6 +123,13 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
         List<Order> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orders);
     }
+
+
+
+
+
+
+
 
     //  Get Single Order by ID
     @GetMapping("/api/orders/{id}")
