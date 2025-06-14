@@ -61,7 +61,7 @@ public class ProductItemController {
             return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Item not found: " + e.getMessage());
+                    .body("Item not found: " + e.getMessage()); 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to update item: " + e.getMessage());

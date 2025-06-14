@@ -108,7 +108,17 @@ public class  SecurityConfig {
                                                         ,"/api/item/findbyproductid/get/{id}",
 
 
-                                                        "/api/contactus/getall","/api/contactus/get/{id}","/api/orders/delete/{id}"
+                                                        "/api/contactus/getall","/api/contactus/get/{id}","/api/orders/delete/{id}",
+
+                                                "/api/desktoppcall/getall","/api/desktoppcall/save","/api/Desktoppcall/getall"
+
+                                                ,"/api/allLaptop/getall","/api/allLaptop/save","/api/alllaptop/filter"
+
+                                                ,"/api/allprinter/save","/api/allprinter/filter"
+
+                                                ,"/api/allcamera/save","/api/allcamera/filter"
+
+                                                ,"/api/allnetwork/save"
 
 
                                                 )
@@ -131,6 +141,8 @@ public class  SecurityConfig {
 
                                                         "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}","/api/pcforpart/orders/save"
 
+
+                                                             ,  "/api/alllaptoaporder/save"
 
                                                 )
                                                 .hasAuthority("USER")
@@ -228,7 +240,8 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://75.119.134.82:6161", "http://localhost:5173", "http://localhost:3000","/**" ));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://75.119.134.82:6161", "http://localhost:5173","http://www.capnest.site",
+                "http://capnest.site", "http://localhost:3000","/**" ));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -239,4 +252,5 @@ public class  SecurityConfig {
     }
 
 
-}
+}//
+

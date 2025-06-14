@@ -1,0 +1,89 @@
+package com.itshop.ecommerce.entity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class AllLaptop {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private  int id;
+
+    private String productid;
+
+    @Column( nullable = false)
+    private String name;
+
+
+    private int quantity;
+
+    private double regularprice;
+
+    private double  specialprice;
+
+
+
+    private  String generation;
+
+    private String  processortype;
+    private int warranty;
+
+    private String displaysizerange;
+
+    private String ram;
+
+    private String graphicsmemory;
+    private String operatingsystem;
+
+    private String displayresolutionrange;
+    private String touchscreen;
+
+    private String maxramsupport;
+    private String graphicschipset;
+    private String lan;
+    private String fingerprintsensor;
+    private String weightrange;
+
+    private String color;
+
+    private String  title;
+
+    private  String details;
+
+    private String  specification;
+
+    private  String imagea;
+    private String imageb;
+    private String imagec;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "catagory_id")
+    private Catagory catagory;
+
+
+
+    @ManyToOne(fetch = FetchType.EAGER,optional = true)
+    @JoinColumn(name = "product_id", nullable = true)
+    private Product product;
+
+
+
+    @ManyToOne(fetch = FetchType.EAGER,optional = true)
+    @JoinColumn(name = "brand_id", nullable = true)
+    private Brand brand;
+
+
+    @ManyToOne(fetch = FetchType.EAGER,optional = true)
+    @JoinColumn(name = "productItem_id", nullable = true)
+    private ProductItem productItem;
+
+}
+

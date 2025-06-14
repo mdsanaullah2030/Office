@@ -3,7 +3,6 @@ package com.ecommerce.brandlyandco.jwt;
 import com.ecommerce.brandlyandco.entity.Token;
 import com.ecommerce.brandlyandco.entity.User;
 import com.ecommerce.brandlyandco.repository.TokenRepository;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

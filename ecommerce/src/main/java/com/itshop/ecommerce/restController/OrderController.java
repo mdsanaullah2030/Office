@@ -75,6 +75,67 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
     }
 
 
+
+
+
+    @PostMapping("/api/alllaptoaporder/save")
+    public ResponseEntity<?> laptoapOrder(@RequestBody Order order) {
+        try {
+            Order savedOrder = orderService.LaptoapOrder(order);
+            return ResponseEntity.ok(savedOrder);
+        } catch (Exception ex) {
+            // You can log the exception for debugging purposes
+            ex.printStackTrace();
+
+            // Return a 400 Bad Request with a meaningful error message
+            return ResponseEntity
+                    .badRequest()
+                    .body("Failed to save PC-for-Part Order: " + ex.getMessage());
+        }
+    }
+
+
+// All Printer Order
+
+    @PostMapping("/api/printerorder/save")
+    public ResponseEntity<?> printerOrder(@RequestBody Order order) {
+        try {
+            Order savedOrder = orderService.PrinterOrder(order);
+            return ResponseEntity.ok(savedOrder);
+        } catch (Exception ex) {
+            // You can log the exception for debugging purposes
+            ex.printStackTrace();
+
+            // Return a 400 Bad Request with a meaningful error message
+            return ResponseEntity
+                    .badRequest()
+                    .body("Failed to save Newtwork Order Order: " + ex.getMessage());
+        }
+    }
+
+    // All Network Order
+
+    @PostMapping("/api/networkorder/save")
+    public ResponseEntity<?> networkOrder(@RequestBody Order order) {
+        try {
+            Order savedOrder = orderService.NewtworkOrder(order);
+            return ResponseEntity.ok(savedOrder);
+        } catch (Exception ex) {
+            // You can log the exception for debugging purposes
+            ex.printStackTrace();
+
+            // Return a 400 Bad Request with a meaningful error message
+            return ResponseEntity
+                    .badRequest()
+                    .body("Failed to save Newtwork  Order Order: " + ex.getMessage());
+        }
+    }
+
+
+
+
+
+
 ///Add To Card All Order
 
     @PostMapping("/api/orders/AddToCart/save/{id}")

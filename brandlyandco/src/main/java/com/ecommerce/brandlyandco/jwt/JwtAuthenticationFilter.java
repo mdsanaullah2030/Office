@@ -1,7 +1,5 @@
 package com.ecommerce.brandlyandco.jwt;
 
-
-import com.ecommerce.brandlyandco.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

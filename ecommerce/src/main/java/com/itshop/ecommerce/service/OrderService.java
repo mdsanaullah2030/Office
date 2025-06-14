@@ -37,6 +37,20 @@ public class OrderService {
    @Autowired
    private EmailService emailService;
 
+   @Autowired
+   private AllLaptopRepository allLaptopRepository;
+
+
+   @Autowired
+   private AllCameraRepository allCameraRepository;
+
+   @Autowired
+   private AllPrinterRepository allPrinterRepository;
+
+
+   @Autowired
+   private  AllNetworkRepository allNetworkRepository;
+
 
 
 
@@ -221,6 +235,165 @@ public class OrderService {
 
 
 
+    ///All Laptoap Order
+
+
+    public Order LaptoapOrder(Order order) {
+
+        // Set User details
+        if (order.getUser() != null && order.getUser().getId() != 0) {
+            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
+                order.setUser(user);
+                order.setName(user.getName());
+                order.setEmail(user.getEmail());
+                order.setPhoneNo(user.getPhoneNo());
+            });
+        }
+
+        if (order.getAllLaptopList() != null && !order.getAllLaptopList().isEmpty()) {
+            AllLaptop requestProduct = order.getAllLaptopList().get(0); // Support only one product for now
+            Optional<AllLaptop> optionalProduct = allLaptopRepository.findById(requestProduct.getId());
+
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
+
+            AllLaptop product = optionalProduct.get();
+
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
+
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
+
+            // 5. Set Order Fields
+
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setAllLaptopList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            allLaptopRepository.save(product);
+        } else {
+            throw new RuntimeException("All Laptop list is missing.");
+        }
+
+        return orderRepository.save(order);
+    }
+
+    //ALL Printer Order
+
+    public Order PrinterOrder(Order order) {
+
+        // Set User details
+        if (order.getUser() != null && order.getUser().getId() != 0) {
+            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
+                order.setUser(user);
+                order.setName(user.getName());
+                order.setEmail(user.getEmail());
+                order.setPhoneNo(user.getPhoneNo());
+            });
+        }
+
+        if (order.getAllPrinterList() != null && !order.getAllPrinterList().isEmpty()) {
+            AllPrinter requestProduct = order.getAllPrinterList().get(0); // Support only one product for now
+            Optional<AllPrinter> optionalProduct = allPrinterRepository.findById(requestProduct.getId());
+
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
+
+            AllPrinter product = optionalProduct.get();
+
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
+
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
+
+            // 5. Set Order Fields
+
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setAllPrinterList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            allPrinterRepository.save(product);
+        } else {
+            throw new RuntimeException("All Laptop list is missing.");
+        }
+
+        return orderRepository.save(order);
+    }
+
+
+    // All Newtwork Order
+
+    public Order NewtworkOrder(Order order) {
+
+        // Set User details
+        if (order.getUser() != null && order.getUser().getId() != 0) {
+            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
+                order.setUser(user);
+                order.setName(user.getName());
+                order.setEmail(user.getEmail());
+                order.setPhoneNo(user.getPhoneNo());
+            });
+        }
+
+        if (order.getAllNetworkList() != null && !order.getAllNetworkList().isEmpty()) {
+            AllNetwork requestProduct = order.getAllNetworkList().get(0); // Support only one product for now
+            Optional<AllNetwork> optionalProduct = allNetworkRepository.findById(requestProduct.getId());
+
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
+
+            AllNetwork product = optionalProduct.get();
+
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
+
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
+
+            // 5. Set Order Fields
+
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setAllNetworkList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            allNetworkRepository.save(product);
+        } else {
+            throw new RuntimeException("All Laptop list is missing.");
+        }
+
+        return orderRepository.save(order);
+    }
+
+
+
+
+
 
 
     //Add To Cart All Order &&&&&&&&&
@@ -291,6 +464,15 @@ public class OrderService {
 
         return savedOrder;
     }
+
+//All Laptoap Order
+
+
+
+
+
+
+
 
 
 

@@ -25,7 +25,7 @@ public class User implements UserDetails {
 
 
 
-
+    private String name;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -85,7 +85,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !isLock; //  Reverse the value
+        return !isLock; // Reverse the value
     }
 
 

@@ -77,4 +77,30 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ccBuilderItem_id")
     private List<CCBuilderItemDitels> ccBuilderItemDitelsList = new ArrayList<>();
+
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "allLaptop_id")
+    private List<AllLaptop> allLaptopList = new ArrayList<>();
+
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "allPrinter_id")
+    private List<AllPrinter> allPrinterList = new ArrayList<>();
+
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "allCamera_id")
+    private List<AllCamera> allCameraList = new ArrayList<>();
+
+
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "allNetwork_id")
+    private List<AllNetwork> allNetworkList = new ArrayList<>();
+
 }
