@@ -18,7 +18,8 @@ import java.util.List;
 @RequestMapping
 @CrossOrigin
 public class AllNetworkController {
-@Autowired
+
+    @Autowired
     private  AllNetworkService allNetworkService;
 
     @PostMapping("/api/allnetwork/save")

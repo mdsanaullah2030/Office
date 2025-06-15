@@ -49,7 +49,7 @@ public class AllLaptopService {
 
 
 
-    public AllLaptop getProductById(int id) {
+    public AllLaptop getAllLaptopById(int id) {
         return allLaptopReopsitory.findById(id).orElse(null);
     }
 

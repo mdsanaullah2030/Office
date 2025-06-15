@@ -42,12 +42,12 @@ public class DesktopPcAll {
     private String graphicsmemory;
     private String operatingsystem;
 
-
     private String  title;
 
     private  String details;
 
     private String  specification;
+
 
     private String color;
     private  String imagea;

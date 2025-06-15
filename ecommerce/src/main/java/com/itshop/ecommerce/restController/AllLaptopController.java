@@ -1,5 +1,6 @@
 package com.itshop.ecommerce.restController;
 
+import com.itshop.ecommerce.entity.AllCamera;
 import com.itshop.ecommerce.entity.AllLaptop;
 import com.itshop.ecommerce.entity.DesktopPcAll;
 import com.itshop.ecommerce.service.AllLaptopService;
@@ -14,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 @AllArgsConstructor
-@Controller
+@RestController
 @CrossOrigin
 public class AllLaptopController {
     @Autowired
@@ -25,6 +26,12 @@ public class AllLaptopController {
         return allLaptopService.getAllProductDetails();
     }
 
+
+
+    @GetMapping("/api/AllLaptop/{id}")
+    public AllLaptop getProductBy(@PathVariable int id) {
+        return allLaptopService.getAllLaptopById(id);
+    }
 
 
 

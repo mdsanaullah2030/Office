@@ -42,7 +42,7 @@ public class AllPrinterService {
 
 
     public List<AllPrinter> getAll() {
-        return allPrinterRepository.findAll();
+        return allPrinterRepository.findAll(); 
     }
 
     public Optional<AllPrinter> getById(int id) {
@@ -142,9 +142,6 @@ public class AllPrinterService {
                 productName, brandName, productItemName
         );
     }
-
-
-
 
 
 

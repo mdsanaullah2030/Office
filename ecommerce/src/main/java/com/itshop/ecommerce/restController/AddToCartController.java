@@ -78,7 +78,86 @@ public class AddToCartController {
         }
     }
 
+//Laptop AddTo Cart
 
+    @PostMapping("/api/laptop/AddToCart/save")
+    public ResponseEntity<?> laptopAddToCart(@RequestParam Long userId,
+                                                 @RequestParam int LaptopId,
+                                                 @RequestParam int quantity) {
+        try {
+            AddToCart result = cartService.LaptopAddToCart(userId, LaptopId, quantity);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Item not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong: " + e.getMessage());
+        }
+    }
+
+
+// DeskTop ADD TO Cart desktopAddToCart
+
+    @PostMapping("/api/desktop/AddToCart/save")
+    public ResponseEntity<?> deskTopAddToCart(@RequestParam Long userId,
+                                             @RequestParam int DesktopId,
+                                             @RequestParam int quantity) {
+        try {
+            AddToCart result = cartService.desktopAddToCart(userId, DesktopId, quantity);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Item not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong: " + e.getMessage());
+        }
+    }
+
+//Printer AddTo cart
+
+    @PostMapping("/api/printer/AddToCart/save")
+    public ResponseEntity<?> printerAddTocart(@RequestParam Long userId,
+                                              @RequestParam int PrinterId,
+                                              @RequestParam int quantity) {
+        try {
+            AddToCart result = cartService.PrinterAddTocart(userId, PrinterId, quantity);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Item not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong: " + e.getMessage());
+        }
+    }
+
+    //  Camera AddTo cart
+
+    @PostMapping("/api/camera/AddToCart/save")
+    public ResponseEntity<?> cameraAddTocart(@RequestParam Long userId,
+                                              @RequestParam int CameraId,
+                                              @RequestParam int quantity) {
+        try {
+            AddToCart result = cartService.CameraAddTocart(userId, CameraId, quantity);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Item not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong: " + e.getMessage());
+        }
+    }
+
+//Network AddTo cart
+
+    @PostMapping("/api/network/AddToCart/save")
+    public ResponseEntity<?> networkAddTocart(@RequestParam Long userId,
+                                             @RequestParam int NetworkId,
+                                             @RequestParam int quantity) {
+        try {
+            AddToCart result = cartService.NetworkAddTocart(userId, NetworkId, quantity);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User or Item not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong: " + e.getMessage());
+        }
+    }
 
 
     @GetMapping("/api/addcart/user/get/{userId}")

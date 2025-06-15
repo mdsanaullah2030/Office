@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@Controller
+@RestController
 @CrossOrigin
 @AllArgsConstructor
 public class DesktopPcAllController {
@@ -29,6 +29,10 @@ public class DesktopPcAllController {
     }
 
 
+    @GetMapping("/api/Desktoppcall/{id}")
+    public DesktopPcAll getProductBy(@PathVariable int id) {
+        return desktopPcAllService.getProductById(id);
+    }
 
 
     @PostMapping("/api/desktoppcall/save")

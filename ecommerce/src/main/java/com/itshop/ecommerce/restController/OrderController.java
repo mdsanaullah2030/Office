@@ -75,10 +75,10 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
     }
 
 
+// All Laptoap Order
 
 
-
-    @PostMapping("/api/alllaptoaporder/save")
+    @PostMapping("/api/alllaptoap/order/save")
     public ResponseEntity<?> laptoapOrder(@RequestBody Order order) {
         try {
             Order savedOrder = orderService.LaptoapOrder(order);
@@ -97,7 +97,7 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
 
 // All Printer Order
 
-    @PostMapping("/api/printerorder/save")
+    @PostMapping("/api/printer/order/save")
     public ResponseEntity<?> printerOrder(@RequestBody Order order) {
         try {
             Order savedOrder = orderService.PrinterOrder(order);
@@ -115,7 +115,7 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
 
     // All Network Order
 
-    @PostMapping("/api/networkorder/save")
+    @PostMapping("/api/network/order/save")
     public ResponseEntity<?> networkOrder(@RequestBody Order order) {
         try {
             Order savedOrder = orderService.NewtworkOrder(order);
@@ -131,7 +131,43 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
         }
     }
 
+// All Desktop PC Order
 
+    @PostMapping("/api/desktoppc/order/save")
+    public ResponseEntity<?> DesktopOrder(@RequestBody Order order) {
+        try {
+            Order savedOrder = orderService.DesktopPcOrders(order);
+            return ResponseEntity.ok(savedOrder);
+        } catch (Exception ex) {
+            // You can log the exception for debugging purposes
+            ex.printStackTrace();
+
+            // Return a 400 Bad Request with a meaningful error message
+            return ResponseEntity
+                    .badRequest()
+                    .body("Failed to save Newtwork  Order Order: " + ex.getMessage());
+        }
+    }
+
+
+
+// Camera
+
+    @PostMapping("/api/camera/order/save")
+    public ResponseEntity<?> CameraOrder(@RequestBody Order order) {
+        try {
+            Order savedOrder = orderService.CameraOrders(order);
+            return ResponseEntity.ok(savedOrder);
+        } catch (Exception ex) {
+            // You can log the exception for debugging purposes
+            ex.printStackTrace();
+
+            // Return a 400 Bad Request with a meaningful error message
+            return ResponseEntity
+                    .badRequest()
+                    .body("Failed to save Desktop Pc  Order: " + ex.getMessage());
+        }
+    }
 
 
 
@@ -158,11 +194,6 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
 
 
 
-
-
-
-
-
     // Update order status
     @PutMapping("/api/orders/updete/{id}")
 
@@ -170,11 +201,6 @@ public ResponseEntity<?> savePcForPartOrder(@RequestBody Order order) {
         orderService.updateOrderActions(id, actions);
         return ResponseEntity.ok("Order actions updated successfully.");
     }
-
-
-
-
-
 
 
 

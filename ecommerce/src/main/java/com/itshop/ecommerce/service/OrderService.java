@@ -51,6 +51,10 @@ public class OrderService {
    @Autowired
    private  AllNetworkRepository allNetworkRepository;
 
+   @Autowired
+   private DesktopPcAllRepository desktopPcAllRepository;
+
+
 
 
 
@@ -392,6 +396,115 @@ public class OrderService {
 
 
 
+//ALL Desktop PC Order
+
+    public Order DesktopPcOrders(Order order) {
+
+        // Set User details
+        if (order.getUser() != null && order.getUser().getId() != 0) {
+            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
+                order.setUser(user);
+                order.setName(user.getName());
+                order.setEmail(user.getEmail());
+                order.setPhoneNo(user.getPhoneNo());
+            });
+        }
+
+        if (order.getDesktopPcAllList() != null && !order.getDesktopPcAllList().isEmpty()) {
+            DesktopPcAll requestProduct = order.getDesktopPcAllList().get(0); // Support only one product for now
+            Optional<DesktopPcAll> optionalProduct = desktopPcAllRepository.findById(requestProduct.getId());
+
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
+
+            DesktopPcAll product = optionalProduct.get();
+
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
+
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
+
+            // 5. Set Order Fields
+
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setDesktopPcAllList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            desktopPcAllRepository.save(product);
+        } else {
+            throw new RuntimeException("All Laptop list is missing.");
+        }
+
+        return orderRepository.save(order);
+    }
+
+
+
+
+//All Camera Order
+
+    public Order CameraOrders(Order order) {
+
+        // Set User details
+        if (order.getUser() != null && order.getUser().getId() != 0) {
+            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
+                order.setUser(user);
+                order.setName(user.getName());
+                order.setEmail(user.getEmail());
+                order.setPhoneNo(user.getPhoneNo());
+            });
+        }
+
+        if (order.getAllCameraList() != null && !order.getAllCameraList().isEmpty()) {
+            AllCamera requestProduct = order.getAllCameraList().get(0); // Support only one product for now
+            Optional<AllCamera> optionalProduct = allCameraRepository.findById(requestProduct.getId());
+
+            if (optionalProduct.isEmpty()) {
+                throw new RuntimeException("Product not found.");
+            }
+
+            AllCamera product = optionalProduct.get();
+
+            // 3. Validate Quantity
+            int orderQuantity = order.getQuantity();
+            if (product.getQuantity() < orderQuantity) {
+                throw new RuntimeException("Insufficient stock for product: " + product.getName());
+            }
+
+            // 4. Calculate Price
+            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+            double totalPrice = unitPrice * orderQuantity;
+
+            // 5. Set Order Fields
+
+            order.setProductname(product.getName());
+            order.setPrice(totalPrice);
+            order.setStatus("PENDING");
+            order.setAllCameraList(List.of(product)); // Set actual product
+
+            // 6. Update Product stock
+            product.setQuantity(product.getQuantity() - orderQuantity);
+            allCameraRepository.save(product);
+        } else {
+            throw new RuntimeException("All Desktop Pc All list is missing.");
+        }
+
+        return orderRepository.save(order);
+    }
+
+
+
+
+
 
 
 
@@ -424,6 +537,13 @@ public class OrderService {
         List<ProductDetails> productList = new ArrayList<>();
         List<PcForPartAdd> pcPartList = new ArrayList<>();
         List<CCBuilderItemDitels> ccItemList = new ArrayList<>();
+        List<AllLaptop> allLaptops = new ArrayList<>();
+        List<AllPrinter> allPrinters=new ArrayList<>();
+        List<AllCamera> allCameras=new ArrayList<>();
+        List<AllNetwork> allNetworks=new ArrayList<>();
+        List<DesktopPcAll>desktopPcAlls=new ArrayList<>();
+
+
 
         for (AddToCart item : cartItems) {
             totalPrice += item.getPrice();
@@ -457,6 +577,11 @@ public class OrderService {
         order.setProductDetailsList(productList);
         order.setPcForPartAddList(pcPartList);
         order.setCcBuilderItemDitelsList(ccItemList);
+        order.setAllLaptopList(allLaptops);
+        order.setAllPrinterList(allPrinters);
+        order.setAllNetworkList(allNetworks);
+        order.setAllCameraList(allCameras);
+        order.setDesktopPcAllList(desktopPcAlls);
 
         Order savedOrder = orderRepository.save(order);
 

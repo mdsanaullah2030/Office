@@ -110,15 +110,19 @@ public class  SecurityConfig {
 
                                                         "/api/contactus/getall","/api/contactus/get/{id}","/api/orders/delete/{id}",
 
-                                                "/api/desktoppcall/getall","/api/desktoppcall/save","/api/Desktoppcall/getall"
+                                                "/api/desktoppcall/getall","/api/Desktoppcall/getall"
 
-                                                ,"/api/allLaptop/getall","/api/allLaptop/save","/api/alllaptop/filter"
+                                                ,"/api/allLaptop/getall","/api/alllaptop/filter"
 
-                                                ,"/api/allprinter/save","/api/allprinter/filter"
+                                               ,"/api/allprinter/filter","/api/allPrinter/getall"
 
-                                                ,"/api/allcamera/save","/api/allcamera/filter"
+                                                ,"/api/allcamera/filter","/api/allcamera/getall"
+                                                ,"/api/laptop/AddToCart/save","/api/desktop/AddToCart/save","/api/printer/AddToCart/save",
+                                                        "/api/camera/AddToCart/save","/api/network/AddToCart/save"
 
-                                                ,"/api/allnetwork/save"
+                                                ,"/api/Desktoppcall/{id}","/api/AllCamera/{id}","/api/AllLaptop/{id}"
+
+
 
 
                                                 )
@@ -142,7 +146,9 @@ public class  SecurityConfig {
                                                         "/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}","/api/AddTocart/get/{id}","/api/pcforpart/orders/save"
 
 
-                                                             ,  "/api/alllaptoaporder/save"
+                                                             ,  "/api/alllaptoap/order/save","/api/printer/order/save","/api/network/order/save"
+                                                        ,"/api/desktoppc/order/save"  ,"/api/camera/order/save"
+
 
                                                 )
                                                 .hasAuthority("USER")
@@ -207,6 +213,10 @@ public class  SecurityConfig {
 
 
                                                         "/api/contactus/save","/api/contactus/update/{id}","/api/contactus/delete/{id}"
+
+                                                        ,"/api/allnetwork/save","/api/allcamera/save"
+
+                                                        ,"/api/allprinter/save","/api/allLaptop/save","/api/desktoppcall/save"
 
                                                 )
                                                 .hasAuthority("ADMIN")

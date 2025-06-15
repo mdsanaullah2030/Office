@@ -103,4 +103,10 @@ public class Order {
     @JoinColumn(name = "allNetwork_id")
     private List<AllNetwork> allNetworkList = new ArrayList<>();
 
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "desktopPc_id")
+    private List<DesktopPcAll> desktopPcAllList = new ArrayList<>();
+
 }

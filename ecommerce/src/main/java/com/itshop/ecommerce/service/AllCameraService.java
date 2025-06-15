@@ -38,6 +38,19 @@ public class AllCameraService {
 
 
 
+    public List<AllCamera> getAllCamera() {
+        return allCameraRepository.findAll();
+    }
+
+
+
+    public AllCamera getAllCameraById(int id) {
+        return allCameraRepository.findById(id).orElse(null);
+    }
+
+
+
+
     @Transactional
     public void saveAllCamera(AllCamera allCamera, MultipartFile image1File, MultipartFile image2File, MultipartFile image3File) throws IOException {
 

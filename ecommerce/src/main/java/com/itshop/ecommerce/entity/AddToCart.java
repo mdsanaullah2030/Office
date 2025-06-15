@@ -35,6 +35,30 @@ public class AddToCart {
     @JoinColumn(name = "CCItem_id")
     private CCBuilderItemDitels ccBuilderItemDitels;
 
+    @ManyToOne
+    @JoinColumn(name = "allLaptop_id")
+    private AllLaptop allLaptop;
+
+
+    @ManyToOne
+    @JoinColumn(name = "allNetwork_id")
+    private AllNetwork allNetwork;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "allPrinter_id")
+    private AllPrinter allPrinter;
+
+
+    @ManyToOne
+    @JoinColumn(name = "allCamera_id")
+    private AllCamera allCamera;
+
+
+    @ManyToOne
+    @JoinColumn(name = "desktopPcAll_id")
+    private DesktopPcAll desktopPcAll;
 }
 
-///@ManyToOne(fetch = FetchType.EAGER, optional = true)
+

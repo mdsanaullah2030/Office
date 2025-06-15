@@ -2,6 +2,8 @@ package com.itshop.ecommerce.restController;
 
 import com.itshop.ecommerce.entity.AllCamera;
 import com.itshop.ecommerce.entity.AllLaptop;
+import com.itshop.ecommerce.entity.AllPrinter;
+import com.itshop.ecommerce.entity.DesktopPcAll;
 import com.itshop.ecommerce.service.AllCameraService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,22 @@ import java.util.List;
 public class AllCameraController {
 
     private final AllCameraService allCameraService;
+
+
+    @GetMapping("/api/allcamera/getall")
+    public List<AllCamera> getAll() {
+        return allCameraService.getAllCamera();
+    }
+
+
+    @GetMapping("/api/AllCamera/{id}")
+    public AllCamera getProductBy(@PathVariable int id) {
+        return allCameraService.getAllCameraById(id);
+    }
+
+
+
+
 
     @PostMapping("/api/allcamera/save")
     public ResponseEntity<String> saveAllCamera(

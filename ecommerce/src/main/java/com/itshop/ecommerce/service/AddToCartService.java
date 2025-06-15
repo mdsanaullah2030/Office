@@ -27,6 +27,23 @@ public class AddToCartService {
     @Autowired
     private CCBuilderItemDitelsRepository ccBuilderItemDitelsRepository;
 
+    @Autowired
+    private AllNetworkRepository allNetworkRepository;
+
+    @Autowired
+    private  AllCameraRepository allCameraRepository;
+
+    @Autowired
+    private AllLaptopRepository allLaptopRepository;
+
+    @Autowired
+    private DesktopPcAllRepository desktopPcAllRepository;
+
+    @Autowired
+    private AllPrinterRepository allPrinterRepository;
+
+
+
 
     @Autowired
     private ItemRepository itemRepository;
@@ -146,6 +163,170 @@ public class AddToCartService {
         savedCart.setTotalprice((int) totalPrice); // cast to int if needed
         return cartRepository.save(savedCart);
     }
+
+
+
+    // All Laptop Add To Cart
+
+    @Transactional
+    public AddToCart LaptopAddToCart(Long userId, int LaptopId, int quantity) {
+        User user = userRepository.findById(userId).orElseThrow();
+        AllLaptop part = allLaptopRepository.findById(LaptopId).orElseThrow();
+
+        double pricePerItem = (part.getSpecialprice() > 0) ? part.getSpecialprice() : part.getRegularprice();
+        double newCartItemPrice = pricePerItem * quantity;
+
+        // Create new cart item
+        AddToCart cartItem = new AddToCart();
+        cartItem.setUser(user);
+        cartItem.setAllLaptop(part);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(newCartItemPrice);
+
+        // Save the new cart item first (optional: you can do this after totalprice too)
+        AddToCart savedCart = cartRepository.save(cartItem);
+
+        // Calculate total price of all cart items for this user
+        List<AddToCart> userCartItems = cartRepository.findByUserId(userId);
+        double totalPrice = userCartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        // Set total price in the latest saved cart item
+        savedCart.setTotalprice((int) totalPrice); // cast to int if needed
+        return cartRepository.save(savedCart);
+    }
+
+
+// ALl Desktop Add To Cart
+
+    @Transactional
+    public AddToCart desktopAddToCart(Long userId, int DesktopId, int quantity) {
+        User user = userRepository.findById(userId).orElseThrow();
+        DesktopPcAll part = desktopPcAllRepository.findById(DesktopId).orElseThrow();
+
+        double pricePerItem = (part.getSpecialprice() > 0) ? part.getSpecialprice() : part.getRegularprice();
+        double newCartItemPrice = pricePerItem * quantity;
+
+        // Create new cart item
+        AddToCart cartItem = new AddToCart();
+        cartItem.setUser(user);
+        cartItem.setDesktopPcAll(part);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(newCartItemPrice);
+
+        // Save the new cart item first (optional: you can do this after totalprice too)
+        AddToCart savedCart = cartRepository.save(cartItem);
+
+        // Calculate total price of all cart items for this user
+        List<AddToCart> userCartItems = cartRepository.findByUserId(userId);
+        double totalPrice = userCartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        // Set total price in the latest saved cart item
+        savedCart.setTotalprice((int) totalPrice); // cast to int if needed
+        return cartRepository.save(savedCart);
+    }
+
+
+//Add To cart Printer
+
+    @Transactional
+    public AddToCart PrinterAddTocart(Long userId, int PrinterId, int quantity) {
+        User user = userRepository.findById(userId).orElseThrow();
+        AllPrinter part = allPrinterRepository.findById(PrinterId).orElseThrow();
+
+        double pricePerItem = (part.getSpecialprice() > 0) ? part.getSpecialprice() : part.getRegularprice();
+        double newCartItemPrice = pricePerItem * quantity;
+
+        // Create new cart item
+        AddToCart cartItem = new AddToCart();
+        cartItem.setUser(user);
+        cartItem.setAllPrinter(part);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(newCartItemPrice);
+
+        // Save the new cart item first (optional: you can do this after totalprice too)
+        AddToCart savedCart = cartRepository.save(cartItem);
+
+        // Calculate total price of all cart items for this user
+        List<AddToCart> userCartItems = cartRepository.findByUserId(userId);
+        double totalPrice = userCartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        // Set total price in the latest saved cart item
+        savedCart.setTotalprice((int) totalPrice); // cast to int if needed
+        return cartRepository.save(savedCart);
+    }
+
+
+// All Camera Add To Cart
+
+    @Transactional
+    public AddToCart CameraAddTocart(Long userId, int CameraId, int quantity) {
+        User user = userRepository.findById(userId).orElseThrow();
+        AllCamera part = allCameraRepository.findById(CameraId).orElseThrow();
+
+        double pricePerItem = (part.getSpecialprice() > 0) ? part.getSpecialprice() : part.getRegularprice();
+        double newCartItemPrice = pricePerItem * quantity;
+
+        // Create new cart item
+        AddToCart cartItem = new AddToCart();
+        cartItem.setUser(user);
+        cartItem.setAllCamera(part);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(newCartItemPrice);
+
+        // Save the new cart item first (optional: you can do this after totalprice too)
+        AddToCart savedCart = cartRepository.save(cartItem);
+
+        // Calculate total price of all cart items for this user
+        List<AddToCart> userCartItems = cartRepository.findByUserId(userId);
+        double totalPrice = userCartItems.stream()
+                .mapToDouble(AddToCart::getPrice)
+                .sum();
+
+        // Set total price in the latest saved cart item
+        savedCart.setTotalprice((int) totalPrice); // cast to int if needed
+        return cartRepository.save(savedCart);
+    }
+
+//All Network
+@Transactional
+public AddToCart NetworkAddTocart(Long userId, int NetworkId, int quantity) {
+    User user = userRepository.findById(userId).orElseThrow();
+    AllNetwork part = allNetworkRepository.findById(NetworkId).orElseThrow();
+
+    double pricePerItem = (part.getSpecialprice() > 0) ? part.getSpecialprice() : part.getRegularprice();
+    double newCartItemPrice = pricePerItem * quantity;
+
+    // Create new cart item
+    AddToCart cartItem = new AddToCart();
+    cartItem.setUser(user);
+    cartItem.setAllNetwork(part);
+    cartItem.setQuantity(quantity);
+    cartItem.setPrice(newCartItemPrice);
+
+    // Save the new cart item first (optional: you can do this after totalprice too)
+    AddToCart savedCart = cartRepository.save(cartItem);
+
+    // Calculate total price of all cart items for this user
+    List<AddToCart> userCartItems = cartRepository.findByUserId(userId);
+    double totalPrice = userCartItems.stream()
+            .mapToDouble(AddToCart::getPrice)
+            .sum();
+
+    // Set total price in the latest saved cart item
+    savedCart.setTotalprice((int) totalPrice); // cast to int if needed
+    return cartRepository.save(savedCart);
+}
+
+
+
+
+
 
 
 

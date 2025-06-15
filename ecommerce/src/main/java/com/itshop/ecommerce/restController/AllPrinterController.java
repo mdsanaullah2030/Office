@@ -20,6 +20,17 @@ public class AllPrinterController {
     @Autowired
     private AllPrinterService allPrinterService;
 
+
+    @GetMapping("/api/allPrinter/getall")
+    public List<AllPrinter> getAll() {
+        return allPrinterService.getAll();
+    }
+
+
+
+
+
+
     @PostMapping("/api/allprinter/save")
     public ResponseEntity<String> saveallLaptop(
             @RequestPart("allPrinter") AllPrinter allPrinter,
@@ -69,11 +80,6 @@ public class AllPrinterController {
 
 
 
-    // Read All
-    @GetMapping("/getall")
-    public ResponseEntity<List<AllPrinter>> getAll() {
-        return ResponseEntity.ok(allPrinterService.getAll());
-    }
 
     // Read by ID
     @GetMapping("/{id}")
