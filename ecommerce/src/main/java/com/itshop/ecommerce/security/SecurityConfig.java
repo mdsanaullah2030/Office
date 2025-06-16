@@ -120,8 +120,12 @@ public class  SecurityConfig {
 
                                                 ,"/api/Desktoppcall/{id}","/api/AllCamera/{id}","/api/AllLaptop/{id}","/api/desktoppcall/filter","/api/AllNetwork/filter"
 
-                                                      ,  "/api/AllNetwork/getall" ,"/api/AllNetwork/{id}",
-                                                        "/api/DesktopPcAll/delete/{id}","/api/DesktopPcAll/update/{id}"
+                                                      ,  "/api/AllNetwork/getall" ,"/api/AllNetwork/{id}"
+
+
+                                                ,"/api/AllLaptop/update/{id}","/api/AllLaptop/delete/{id}",
+                                                        
+                                                        "/api/AllCamera/update/{id}" ,"/api/AllCamera/delete/{id}"
 
 
 
@@ -217,7 +221,10 @@ public class  SecurityConfig {
 
                                                         ,"/api/allnetwork/save","/api/allcamera/save"
 
-                                                        ,"/api/allprinter/save","/api/allLaptop/save","/api/desktoppcall/save"
+                                                        ,"/api/allprinter/save","/api/allLaptop/save","/api/desktoppcall/save",
+
+                                                        "/api/DesktopPcAll/delete/{id}","/api/DesktopPcAll/update/{id}"
+
 
                                                 )
                                                 .hasAuthority("ADMIN")

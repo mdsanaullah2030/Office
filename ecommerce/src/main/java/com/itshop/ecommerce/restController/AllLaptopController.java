@@ -4,6 +4,7 @@ import com.itshop.ecommerce.entity.AllCamera;
 import com.itshop.ecommerce.entity.AllLaptop;
 import com.itshop.ecommerce.entity.DesktopPcAll;
 import com.itshop.ecommerce.service.AllLaptopService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,45 @@ public class AllLaptopController {
         allLaptopService.saveallLaptop(allLaptop, image1, image2,image3);
         return new ResponseEntity<>("allLaptop saved successfully with images", HttpStatus.OK);
     }
+
+
+
+
+
+
+    @PutMapping("/api/AllLaptop/update/{id}")
+    public ResponseEntity<String> update(
+            @PathVariable int id,
+            @RequestPart("allLaptop") AllLaptop updatedItem,
+            @RequestParam(value = "imagea", required = false) MultipartFile image1File,
+            @RequestParam(value = "imageb", required = false) MultipartFile image2File,
+            @RequestParam(value = "imagec", required = false) MultipartFile image3File
+    ) throws IOException {
+        allLaptopService.updateAllLaptop(id, updatedItem, image1File, image2File, image3File);
+        return new ResponseEntity<>("Item updated successfully", HttpStatus.OK);
+    }
+
+//
+
+
+    @DeleteMapping("/api/AllLaptop/delete/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable int id) {
+        try {
+            allLaptopService.deleteAlLLaptop(id);
+            return new ResponseEntity<>("Item deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Item not found with ID: " + id, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete item: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
+
+
+
 
 
 
