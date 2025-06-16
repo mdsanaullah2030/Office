@@ -12,7 +12,6 @@ import java.util.List;
 public interface AllLaptopRepository extends JpaRepository<AllLaptop, Integer> {
 
     @Query("SELECT a FROM AllLaptop a WHERE " +
-
             "(:generation IS NULL OR a.generation = :generation) AND " +
             "(:processortype IS NULL OR a.processortype = :processortype) AND " +
             "(:warranty IS NULL OR a.warranty = :warranty) AND " +
@@ -31,9 +30,9 @@ public interface AllLaptopRepository extends JpaRepository<AllLaptop, Integer> {
             "(:catagoryName IS NULL OR a.catagory.name = :catagoryName) AND " +
             "(:productName IS NULL OR a.product.name = :productName) AND " +
             "(:brandName IS NULL OR a.brand.brandname = :brandName) AND " +
+            "(:regularprice IS NULL OR a.regularprice = :regularprice) AND " +
             "(:productItemName IS NULL OR a.productItem.productitemname = :productItemName)")
     List<AllLaptop> filterAllLaptops(
-
             @Param("generation") String generation,
             @Param("processortype") String processortype,
             @Param("warranty") Integer warranty,
@@ -43,16 +42,18 @@ public interface AllLaptopRepository extends JpaRepository<AllLaptop, Integer> {
             @Param("operatingsystem") String operatingsystem,
             @Param("color") String color,
             @Param("weightrange") String weightrange,
-            @Param("fingerprintsensor") Boolean fingerprintsensor,
-            @Param("lan") Boolean lan,
+            @Param("fingerprintsensor") String fingerprintsensor,
+            @Param("lan") String lan,
             @Param("graphicschipset") String graphicschipset,
             @Param("maxramsupport") String maxramsupport,
-            @Param("touchscreen") Boolean touchscreen,
+            @Param("touchscreen") String touchscreen,
             @Param("displayresolutionrange") String displayresolutionrange,
             @Param("catagoryName") String catagoryName,
             @Param("productName") String productName,
             @Param("brandName") String brandName,
+            @Param("regularprice") Double regularprice,
             @Param("productItemName") String productItemName
     );
+
 }
 

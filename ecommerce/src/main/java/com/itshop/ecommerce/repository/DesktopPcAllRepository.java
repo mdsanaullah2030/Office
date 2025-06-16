@@ -27,7 +27,8 @@ public interface DesktopPcAllRepository extends JpaRepository<DesktopPcAll,Integ
             "(:catagoryName IS NULL OR d.catagory.name = :catagoryName) AND " +
             "(:productName IS NULL OR d.product.name = :productName) AND " +
             "(:brandName IS NULL OR d.brand.brandname = :brandName) AND " +
-            "(:productItemName IS NULL OR d.productItem.productitemname = :productItemName)")
+            "(:productItemName IS NULL OR d.productItem.productitemname = :productItemName) AND " +
+            "(:regularprice IS NULL OR d.regularprice = :regularprice)")
     List<DesktopPcAll> filterDesktopProducts(
             @Param("processorbrand") String processorbrand,
             @Param("generation") String generation,
@@ -41,8 +42,7 @@ public interface DesktopPcAllRepository extends JpaRepository<DesktopPcAll,Integ
             @Param("catagoryName") String catagoryName,
             @Param("productName") String productName,
             @Param("brandName") String brandName,
-            @Param("productItemName") String productItemName
+            @Param("productItemName") String productItemName,
+            @Param("regularprice") Double regularprice
     );
-
-
 }

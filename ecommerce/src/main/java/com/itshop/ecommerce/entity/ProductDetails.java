@@ -32,6 +32,7 @@ public class ProductDetails {
 
 
 
+
      private String  title;
 
      private  String details;

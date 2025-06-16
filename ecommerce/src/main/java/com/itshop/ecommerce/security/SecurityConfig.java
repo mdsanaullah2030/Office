@@ -44,10 +44,8 @@ public class  SecurityConfig {
 
                                 req ->
                                         req.requestMatchers("/login",
-
                                                         "/api/userRegistration","/api/userRegistration/{id}",
                                                         "/activate/**","/images/**","/api/HomePageImage/getall","/api/HomePageImage/get/{id}"
-
                                                         ,"/api/ServiceFeature/get",
 
                                                         "/api/brands/get/all","/api/brands/get/{id}","/api/brands/update/{id}",
@@ -120,7 +118,10 @@ public class  SecurityConfig {
                                                 ,"/api/laptop/AddToCart/save","/api/desktop/AddToCart/save","/api/printer/AddToCart/save",
                                                         "/api/camera/AddToCart/save","/api/network/AddToCart/save"
 
-                                                ,"/api/Desktoppcall/{id}","/api/AllCamera/{id}","/api/AllLaptop/{id}"
+                                                ,"/api/Desktoppcall/{id}","/api/AllCamera/{id}","/api/AllLaptop/{id}","/api/desktoppcall/filter","/api/AllNetwork/filter"
+
+                                                      ,  "/api/AllNetwork/getall" ,"/api/AllNetwork/{id}",
+                                                        "/api/DesktopPcAll/delete/{id}","/api/DesktopPcAll/update/{id}"
 
 
 

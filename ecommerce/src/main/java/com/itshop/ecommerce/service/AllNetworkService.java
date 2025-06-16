@@ -39,17 +39,20 @@ public class AllNetworkService {
     @Autowired
     private AllNetworkRepository allNetworkRepository;
 
-    public AllNetwork saveAllNetwork(AllNetwork network) {
-        return allNetworkRepository.save(network);
-    }
+
 
     public List<AllNetwork> getAllNetworks() {
         return allNetworkRepository.findAll();
     }
 
-    public Optional<AllNetwork> getNetworkById(int id) {
-        return allNetworkRepository.findById(id);
+
+
+    public AllNetwork getNetworkById(int id) {
+        return allNetworkRepository.findById(id).orElse(null);
     }
+
+
+
 
     @Transactional
     public void saveallLaptop(AllNetwork allNetwork, MultipartFile image1File, MultipartFile image2File, MultipartFile image3File) throws IOException {
@@ -120,6 +123,29 @@ public class AllNetworkService {
 
         return filename;
     }
+
+
+
+    public List<AllNetwork> FilterAllNetwork(
+            String color,
+            String portside,
+            Double regularprice,
+            Integer warranty,
+            String catagoryName,
+            String productName,
+            String brandName,
+            String productItemName
+    ) {
+        return allNetworkRepository.filterAllNetwork(
+                color , portside , regularprice, warranty, catagoryName,
+                productName, brandName, productItemName
+        );
+    }
+
+
+
+
+
 
 
     public void deleteNetwork(int id) {

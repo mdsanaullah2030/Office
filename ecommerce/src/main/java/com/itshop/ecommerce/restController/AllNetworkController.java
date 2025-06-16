@@ -22,6 +22,24 @@ public class AllNetworkController {
     @Autowired
     private  AllNetworkService allNetworkService;
 
+
+
+    @GetMapping("/api/AllNetwork/getall")
+    public List<AllNetwork> getAllNoteBooks() {
+        return allNetworkService.getAllNetworks();
+    }
+
+
+
+    @GetMapping("/api/AllNetwork/{id}")
+    public AllNetwork getProductBy(@PathVariable int id) {
+        return allNetworkService.getNetworkById(id);
+    }
+
+
+
+
+
     @PostMapping("/api/allnetwork/save")
     public ResponseEntity<String> saveallLaptop(
             @RequestPart("allnetwork") AllNetwork allNetwork,
@@ -34,6 +52,27 @@ public class AllNetworkController {
         return new ResponseEntity<>("allNetwork saved successfully with images", HttpStatus.OK);
     }
 
+
+
+
+
+    //Filter
+    @GetMapping("/api/AllNetwork/filter")
+    public ResponseEntity<List<AllNetwork>> filterAllNetwork(
+            @RequestParam(required = false) Integer warranty,
+            @RequestParam(required = false) Double regularprice,
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String portside,
+            @RequestParam(required = false) String catagoryName,
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) String brandName,
+            @RequestParam(required = false) String productItemName
+    ) {
+        List<AllNetwork> filteredNetworks = allNetworkService.FilterAllNetwork(
+                color, portside, regularprice, warranty, catagoryName, productName,
+                brandName, productItemName);
+        return ResponseEntity.ok(filteredNetworks);
+    }
 
 
 }

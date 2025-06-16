@@ -62,22 +62,24 @@ public class AllLaptopController {
             @RequestParam(required = false) String operatingsystem,
             @RequestParam(required = false) String color,
             @RequestParam(required = false) String weightrange,
-            @RequestParam(required = false) Boolean fingerprintsensor,
-            @RequestParam(required = false) Boolean lan,
+            @RequestParam(required = false) String fingerprintsensor,
+            @RequestParam(required = false) String lan,
             @RequestParam(required = false) String graphicschipset,
             @RequestParam(required = false) String maxramsupport,
-            @RequestParam(required = false) Boolean touchscreen,
+            @RequestParam(required = false) String touchscreen,
             @RequestParam(required = false) String displayresolutionrange,
             @RequestParam(required = false) String catagoryName,
             @RequestParam(required = false) String productName,
             @RequestParam(required = false) String brandName,
-            @RequestParam(required = false) String productItemName
+            @RequestParam(required = false) String productItemName,
+            @RequestParam(required = false) Double regularprice
     ) {
         List<AllLaptop> filteredLaptops = allLaptopService.filterAllLaptop(
                 generation, processortype, warranty, displaysizerange, ram, graphicsmemory,
                 operatingsystem, color, weightrange, fingerprintsensor, lan, graphicschipset,
                 maxramsupport, touchscreen, displayresolutionrange, catagoryName, productName,
-                brandName, productItemName);
+                brandName, productItemName, regularprice
+        );
         return ResponseEntity.ok(filteredLaptops);
     }
 

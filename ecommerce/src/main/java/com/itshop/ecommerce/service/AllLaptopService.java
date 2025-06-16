@@ -134,27 +134,26 @@ public class AllLaptopService {
             String operatingsystem,
             String color,
             String weightrange,
-            Boolean fingerprintsensor,
-            Boolean lan,
+            String fingerprintsensor,
+            String lan,
             String graphicschipset,
             String maxramsupport,
-            Boolean touchscreen,
+            String touchscreen,
             String displayresolutionrange,
             String catagoryName,
             String productName,
             String brandName,
-            String productItemName
+            String productItemName,
+            Double regularprice
     ) {
         return allLaptopReopsitory.filterAllLaptops(
-                generation, processortype, warranty,
-                displaysizerange, ram, graphicsmemory, operatingsystem,
-                color, weightrange, fingerprintsensor, lan,
-                graphicschipset, maxramsupport, touchscreen, displayresolutionrange,
-                catagoryName, productName, brandName, productItemName
+                generation, processortype, warranty, displaysizerange,
+                ram, graphicsmemory, operatingsystem, color, weightrange,
+                fingerprintsensor, lan, graphicschipset, maxramsupport,
+                touchscreen, displayresolutionrange, catagoryName,
+                productName, brandName, regularprice, productItemName
         );
     }
-
-
 
 
 }

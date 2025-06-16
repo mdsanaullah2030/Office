@@ -38,6 +38,8 @@ public class AllNetwork {
 
     private String  specification;
 
+    private int warranty;
+
     private  String imagea;
     private String imageb;
     private String imagec;

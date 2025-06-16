@@ -3,6 +3,7 @@ package com.itshop.ecommerce.restController;
 import com.itshop.ecommerce.entity.DesktopPcAll;
 import com.itshop.ecommerce.entity.ProductDetails;
 import com.itshop.ecommerce.service.DesktopPcAllService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,33 @@ public class DesktopPcAllController {
 
 
 
+    @PutMapping("/api/DesktopPcAll/update/{id}")
+    public ResponseEntity<String> update(
+            @PathVariable int id,
+            @RequestPart("desktoppcall") DesktopPcAll updatedItem,
+            @RequestParam(value = "imagea", required = false) MultipartFile image1File,
+            @RequestParam(value = "imageb", required = false) MultipartFile image2File,
+            @RequestParam(value = "imagec", required = false) MultipartFile image3File
+    ) throws IOException {
+        desktopPcAllService.updateDesktopPcAll(id, updatedItem, image1File, image2File, image3File);
+        return new ResponseEntity<>("Item updated successfully", HttpStatus.OK);
+    }
+
+//
+
+
+    @DeleteMapping("/api/DesktopPcAll/delete/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable int id) {
+        try {
+            desktopPcAllService.deleteDesktopPcAll(id);
+            return new ResponseEntity<>("Item deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Item not found with ID: " + id, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete item: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 
@@ -69,12 +97,13 @@ public class DesktopPcAllController {
             @RequestParam(required = false) String catagoryName,
             @RequestParam(required = false) String productName,
             @RequestParam(required = false) String brandName,
-            @RequestParam(required = false) String productItemName
+            @RequestParam(required = false) String productItemName,
+            @RequestParam(required = false)Double regularprice
     ) {
         List<DesktopPcAll> results = desktopPcAllService.filterDesktopProducts(
                 processorbrand, generation, processortype, warranty,
                 displaysizerange, ram, graphicsmemory, operatingsystem, color,
-                catagoryName, productName, brandName, productItemName
+                catagoryName, productName, brandName, productItemName,regularprice
         );
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
