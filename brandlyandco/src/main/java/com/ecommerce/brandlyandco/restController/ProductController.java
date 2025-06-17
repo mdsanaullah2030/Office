@@ -18,6 +18,27 @@ public class ProductController {
 
     private final ProductService productService;
 
+
+
+    @GetMapping("/api/product/getall")
+    public List<Product> getAllNoteBooks() {
+        return productService.getAllProduct();
+    }
+
+
+//
+
+    @GetMapping("/api/product/{id}")
+    public Product getProductById(@PathVariable int id) {
+        return productService.getProductById(id);
+    }
+
+
+
+
+
+
+
     @PostMapping("/api/product/save")
 
     public ResponseEntity<String> saveProduct(
@@ -33,11 +54,7 @@ public class ProductController {
     }
 
 
-//Products data get By Item Id
-    @GetMapping("/api/products/get/item/{id}")
-    public ResponseEntity<List<Product>> getProductsByItemId(@RequestParam Integer itemId) {
-        return ResponseEntity.ok(productService.getProductsByItemId(itemId));
-    }
+
 
 
 
@@ -45,21 +62,6 @@ public class ProductController {
 
 //Filter
 
-    @GetMapping("/api/product/filter")
-    public ResponseEntity<?> filterProducts(
-            @RequestParam(required = false) String color,
-            @RequestParam(required = false) String size,
-            @RequestParam(required = false) Double regularprice,
-            @RequestParam(required = false) Double offer,
-            @RequestParam(required = false) String fabric,
-            @RequestParam(required = false) Integer itemId,
-            @RequestParam(required = false) Integer subCategoryId,
-            @RequestParam(required = false) Integer categoryId
-    ) {
-        return ResponseEntity.ok(productService.filterProducts(
-                color, size, regularprice, offer, fabric, itemId, subCategoryId, categoryId
-        ));
-    }
 
 
 }

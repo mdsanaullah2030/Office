@@ -1,5 +1,8 @@
 package com.ecommerce.brandlyandco.entity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,14 +13,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class SubCategory {
+public class HomeScreen {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String subcategoryname;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "catagory_id")
-    private Category catagory;
-
+    private  String imagea;
 }

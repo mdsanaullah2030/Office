@@ -21,15 +21,22 @@ import java.util.UUID;
 public class ProductService {
     @Autowired
     private  ProductRepository productRepository;
-    @Autowired
-    private  CategoryRepository categoryRepository;
-    @Autowired
-    private  SubCategoryRepository subCategoryRepository;
-     @Autowired
-    private  ItemRepository itemRepository;
 
     @Value("${image.upload.dir}")
     private String uploadDir;
+
+
+
+
+    public List<Product> getAllProduct(){
+        return productRepository.findAll();
+
+    }
+
+
+    public Product getProductById(int id) {
+        return productRepository.findById(id).orElse(null);
+    }
 
 
 
@@ -69,23 +76,6 @@ public class ProductService {
     }
 
 
-
-//Item Id By get Product
-
-    public List<Product> getProductsByItemId(Integer itemId) {
-        return productRepository.getProductsByItemId(itemId);
-    }
-
-
-///Filter
-
-    public List<Product> filterProducts(String color, String size, Double regularprice,
-                                        Double offer, String fabric, Integer itemId,
-                                        Integer subCategoryId, Integer categoryId) {
-        return productRepository.filterProducts(
-                color, size, regularprice, offer, fabric, itemId, subCategoryId, categoryId
-        );
-    }
 
 
 

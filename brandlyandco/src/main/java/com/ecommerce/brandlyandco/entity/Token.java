@@ -25,7 +25,7 @@ public class Token {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // ✅ Add this method manually
+
     public boolean isLoggedOut() {
         return loggedOut;
     }

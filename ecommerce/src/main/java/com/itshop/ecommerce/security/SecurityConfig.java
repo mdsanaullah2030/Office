@@ -125,7 +125,9 @@ public class  SecurityConfig {
 
                                                 ,"/api/AllLaptop/update/{id}","/api/AllLaptop/delete/{id}",
                                                         
-                                                        "/api/AllCamera/update/{id}" ,"/api/AllCamera/delete/{id}"
+                                                        "/api/AllCamera/update/{id}" ,"/api/AllCamera/delete/{id}",
+
+                                                        "/api/DesktopPcAll/Product/get/ById/{id}","/api/DesktopPcAll/Brand/get/ById/{id}","/api/DesktopPcAll/byCategory/{catagoryId}"
 
 
 

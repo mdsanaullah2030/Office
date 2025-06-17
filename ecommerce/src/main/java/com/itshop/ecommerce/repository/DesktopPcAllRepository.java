@@ -13,6 +13,22 @@ import java.util.List;
 public interface DesktopPcAllRepository extends JpaRepository<DesktopPcAll,Integer> {
 
 
+    //Catagory By ID
+    List<DesktopPcAll> findByCatagoryId(int catagoryId);
+
+    ///Brand BY ID
+    List<DesktopPcAll> findByBrandId(int brandId);
+
+
+
+    // find By Product Id
+    List<DesktopPcAll>findByProductId(int productId) ;
+
+
+
+
+
+
 
     @Query("SELECT d FROM DesktopPcAll d WHERE " +
             "(:processorbrand IS NULL OR d.processorbrand = :processorbrand) AND " +

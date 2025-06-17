@@ -35,6 +35,37 @@ public class DesktopPcAllController {
         return desktopPcAllService.getProductById(id);
     }
 
+  //
+
+
+    @GetMapping("/api/DesktopPcAll/byCategory/{catagoryId}")
+    public ResponseEntity<List<DesktopPcAll>> getProductDetailsByCatagoryId(@PathVariable int catagoryId) {
+        List<DesktopPcAll> productList = desktopPcAllService.getProductDetailsByCatagoryId(catagoryId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Brand By ID Get All Product Details
+
+    @GetMapping("/api/DesktopPcAll/Brand/get/ById/{id}")
+    public ResponseEntity<List<DesktopPcAll>> getProductDetailsByBrandId(@PathVariable("id") int brandId) {
+        List<DesktopPcAll> productList = desktopPcAllService.getProductDetailsByBrandId(brandId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Product By ID Get All Product Details
+
+    @GetMapping("/api/DesktopPcAll/Product/get/ById/{id}")
+    public ResponseEntity<List<DesktopPcAll>> getProductDetailsByBrandIds(@PathVariable("id") int productId) {
+        List<DesktopPcAll> productList = desktopPcAllService.getProductDetailsByProductId(productId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+
+//
+
+
+
+    //
 
     @PostMapping("/api/desktoppcall/save")
     public ResponseEntity<String> saveProductDetails(

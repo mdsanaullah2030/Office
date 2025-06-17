@@ -52,7 +52,23 @@ public class DesktopPcAllService {
         return desktopPcAllRepository.findById(id).orElse(null);
     }
 
+//
 
+   public List<DesktopPcAll> getProductDetailsByCatagoryId(int catagoryId) {
+    return desktopPcAllRepository.findByCatagoryId(catagoryId);
+}
+
+
+    public List<DesktopPcAll> getProductDetailsByBrandId(int brandId) {
+        return desktopPcAllRepository.findByBrandId(brandId);
+    }
+
+
+    public List<DesktopPcAll> getProductDetailsByProductId(int productId) {
+        return desktopPcAllRepository.findByProductId(productId);
+    }
+
+//
 
 
     @Transactional

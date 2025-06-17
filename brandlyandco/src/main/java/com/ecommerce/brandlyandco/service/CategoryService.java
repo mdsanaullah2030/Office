@@ -1,7 +1,7 @@
 package com.ecommerce.brandlyandco.service;
 
 import com.ecommerce.brandlyandco.entity.Category;
-import com.ecommerce.brandlyandco.entity.SubCategory;
+
 import com.ecommerce.brandlyandco.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
