@@ -36,6 +36,9 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String phoneNo;
 
+    private String customer;
+    private String reseller;
+    private String username;
 
 
     @Column(nullable = false)

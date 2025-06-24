@@ -143,7 +143,29 @@ public class ProductDetailsController {
 
 
 
+//
 
+    @PutMapping("/api/productDetails/publish/{id}")
+    public ResponseEntity<String> publishProduct(@PathVariable int id) {
+        ProductDetails product = productDetailsService.getProductById(id);
+        if (product == null) return ResponseEntity.notFound().build();
+
+        product.setPublished(true);
+        productDetailsRepository.save(product);
+        return ResponseEntity.ok("Product published");
+    }
+
+    @PutMapping("/api/productDetails/unpublish/{id}")
+    public ResponseEntity<String> unpublishProduct(@PathVariable int id) {
+        ProductDetails product = productDetailsService.getProductById(id);
+        if (product == null) return ResponseEntity.notFound().build();
+
+        product.setPublished(false);
+        productDetailsRepository.save(product);
+        return ResponseEntity.ok("Product unpublished");
+    }
+
+//
 
 
 

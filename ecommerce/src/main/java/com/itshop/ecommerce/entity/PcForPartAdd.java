@@ -20,6 +20,7 @@ public class PcForPartAdd {
 
     private String name;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String description;  // Radeon Vega 3 Graphics
 
     private String performance;  // 3.4GHz

@@ -26,6 +26,10 @@ public class DepositWithdrawBank {
     @Temporal(TemporalType.TIMESTAMP)
     private Date requestdate;
     // Automatically set the current date before persisting
+
+
+    private String generatedOtp; // Add this
+
     @PrePersist
     protected void onCreate() {
         this.requestdate = new Date();
@@ -33,7 +37,7 @@ public class DepositWithdrawBank {
 
 
 
-    private String otp;
+
     private boolean otpVerified = false;
 
     @Temporal(TemporalType.TIMESTAMP)

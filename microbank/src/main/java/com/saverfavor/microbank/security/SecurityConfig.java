@@ -44,17 +44,38 @@ public class  SecurityConfig {
 
                                 req ->
                                         req.requestMatchers("/login",
-                                                        "/api/userRegistration","/activate/**","/api/userRegistration/get","/api/userRegistration/update/{id}",
-                                                        "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save","/api/nominee/updateNominee/{id}",
+                                                        "/api/userRegistration","/activate/**","/api/userRegistration/update/{id}",
+                                                        "/api/userRegistration/get",
+                                                        "/api/nominee/get","/api/nominee/get/{id}","/api/nominee/save",
+                                                        "/api/nominee/updateNominee/{id}",
 
 
-                                                        "/api/Balance/save","/api/Balance/get","/api/Balance/get/{id}","/api/Balance/getByUser/{userId}",
+                                                        "/api/Balance/save","/api/Balance/get","/api/Balance/get/{id}",
+                                                        "/api/Balance/getByUser/{userId}",
 
                                                         "/api/loan/save", "/api/loan/get/{id}" ,"/api/loan/get","/api/loan/getByUser/{userId}",
 
-                                                        "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,"/api/Referral/get/{id}"
-                                                ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**","/all/messages","/private",
-                                                "/api/transactions/save"
+                                                        "/api/Referral/save","/api/Referral/get","/api/Referral/getByUser/{id}" ,
+                                                        "/api/Referral/get/{id}"
+                                                ,"/api/notifications/sendToAll","/api/notifications/sendToUser/{userId}","/ws/**",
+                                                        "/all/messages","/private",
+
+                                                        "/api/transactions/save","/api/confirm-otp","/api/Withdrawal/verify",
+                                                        "/api/withdraw/CryptoDeposit/save",
+                                                        "/api/transactions/get","/api/transactions/getByUser/{userId}",
+                                                        "/api/transactions/{id}","/api/CryptoDeposit/get",
+                                                        "/api/CryptoDeposit/{id}","/api/CryptoDeposit/getByUser/{userId}",
+                                                "/api/ProfitWithdrawalBank/get","/api/ProfitWithdrawalBank/{id}"
+
+                                                ,"/api/ProfitWithdrawalBank/getByUser/{userId}","/api/ProfitWithdrawalBank/save",
+
+
+                                                        "/api/CryptoProfit/get", "/api/CryptoProfit/{id}",
+                                                        "/api/CryptoProfit/getByUser/{userId}","/api/withdraw/CryptoProfit/save"
+
+
+                                                ,"/api/ProfitWithdrawalBank/verify"
+                                                ,"/api/EmiPay/save"
 
                                                 )
                                                 .permitAll()
@@ -107,7 +128,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:6160", "http://108.181.173.121:6160"));  // Add allowed origins
+        configuration.setAllowedOrigins(List.of("http://localhost:6160", "http://localhost:6161"));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);

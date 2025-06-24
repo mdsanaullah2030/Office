@@ -38,10 +38,11 @@ public class AllCamera {
 
     private int warranty;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String  title;
-
+    @Column(columnDefinition = "LONGTEXT")
     private  String details;
-
+    @Column(columnDefinition = "LONGTEXT")
     private String  specification;
 
     private  String imagea;

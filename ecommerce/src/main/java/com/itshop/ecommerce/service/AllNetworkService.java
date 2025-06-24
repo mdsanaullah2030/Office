@@ -52,6 +52,27 @@ public class AllNetworkService {
     }
 
 
+//
+
+    public List<AllNetwork> getAllNetworkByCatagoryId(int catagoryId) {
+        return allNetworkRepository.findByCatagoryId(catagoryId);
+    }
+
+
+    public List<AllNetwork> getAllNetworkByBrandId(int brandId) {
+        return allNetworkRepository.findByBrandId(brandId);
+    }
+
+
+    public List<AllNetwork> getAllNetworkByProductId(int productId) {
+        return allNetworkRepository.findByProductId(productId);
+    }
+//
+
+
+
+
+
 
 
     @Transactional
@@ -127,18 +148,30 @@ public class AllNetworkService {
 
 
     public List<AllNetwork> FilterAllNetwork(
-            String color,
-            String portside,
             Double regularprice,
             Integer warranty,
+            String portside,
+            String color,
             String catagoryName,
             String productName,
             String brandName,
-            String productItemName
+            String productItemName,
+
+            String mimotechnology,
+            String vpnsupport,
+            String wificoveragerange,
+            String datatransferrate,
+            String datatransferratewifi,
+            String numberoflanport,
+            String numberofwanport,
+            String wannetworkstandard,
+            String lannetworkstandard,
+            String wifigeneration
     ) {
         return allNetworkRepository.filterAllNetwork(
-                color , portside , regularprice, warranty, catagoryName,
-                productName, brandName, productItemName
+                regularprice, warranty, portside, color, catagoryName, productName, brandName, productItemName,
+                mimotechnology, vpnsupport, wificoveragerange, datatransferrate, datatransferratewifi,
+                numberoflanport, numberofwanport, wannetworkstandard, lannetworkstandard, wifigeneration
         );
     }
 

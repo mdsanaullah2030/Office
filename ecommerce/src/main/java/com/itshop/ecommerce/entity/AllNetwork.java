@@ -20,23 +20,32 @@ public class AllNetwork {
 
     @Column( nullable = false)
     private String name;
-
-
     private int quantity;
-
     private double regularprice;
-
     private double  specialprice;
 
     private String portside;
 
     private String color;
-
+    @Column(columnDefinition = "LONGTEXT")
     private String  title;
-
+    @Column(columnDefinition = "LONGTEXT")
     private  String details;
-
+    @Column(columnDefinition = "LONGTEXT")
     private String  specification;
+
+    private  String wifigeneration;
+    private String lannetworkstandard;
+    private String wannetworkstandard;
+    private String numberofwanport;
+    private  String numberoflanport;
+    private  String datatransferratewifi;
+    private  String datatransferrate;
+    private  String wificoveragerange;
+    private String vpnsupport;
+    private  String mimotechnology;
+
+
 
     private int warranty;
 

@@ -40,6 +40,15 @@ public class ProductService {
 
 
 
+
+    //Catagory ID By Get All Product Details
+    public List<Product> getProductByCatagoryId(int catagoryId) {
+        return productRepository.findByCatagoryId(catagoryId);
+    }
+
+
+
+
     @Transactional
     public void saveProduct(Product product, MultipartFile image1File, MultipartFile image2File, MultipartFile image3File, MultipartFile image4File) throws IOException {
         if (image1File != null && !image1File.isEmpty()) {

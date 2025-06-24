@@ -1,6 +1,7 @@
 package com.itshop.ecommerce.repository;
 
 import com.itshop.ecommerce.entity.AllLaptop;
+import com.itshop.ecommerce.entity.AllNetwork;
 import com.itshop.ecommerce.entity.AllPrinter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,16 @@ import java.util.List;
 @Repository
 public interface AllPrinterRepository extends JpaRepository<AllPrinter, Integer> {
 
+    //Catagory By ID
+    List<AllPrinter> findByCatagoryId(int catagoryId);
+
+    ///Brand BY ID
+    List<AllPrinter> findByBrandId(int brandId);
+
+
+
+    // find By Product Id
+    List<AllPrinter>findByProductId(int productId) ;
 
 
 

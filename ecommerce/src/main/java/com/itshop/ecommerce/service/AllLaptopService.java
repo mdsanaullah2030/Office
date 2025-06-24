@@ -52,7 +52,22 @@ public class AllLaptopService {
     public AllLaptop getAllLaptopById(int id) {
         return allLaptopReopsitory.findById(id).orElse(null);
     }
+//
 
+    public List<AllLaptop> getAllLaptopByCatagoryId(int catagoryId) {
+        return allLaptopReopsitory.findByCatagoryId(catagoryId);
+    }
+
+
+    public List<AllLaptop> getAllLaptopByBrandId(int brandId) {
+        return allLaptopReopsitory.findByBrandId(brandId);
+    }
+
+
+    public List<AllLaptop> getAllLaptopByProductId(int productId) {
+        return allLaptopReopsitory.findByProductId(productId);
+    }
+//
 
     @Transactional
     public void saveallLaptop(AllLaptop allLaptop, MultipartFile image1File, MultipartFile image2File, MultipartFile image3File) throws IOException {

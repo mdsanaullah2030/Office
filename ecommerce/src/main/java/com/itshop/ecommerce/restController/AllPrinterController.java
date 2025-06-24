@@ -1,6 +1,7 @@
 package com.itshop.ecommerce.restController;
 
 import com.itshop.ecommerce.entity.AllLaptop;
+import com.itshop.ecommerce.entity.AllNetwork;
 import com.itshop.ecommerce.entity.AllPrinter;
 import com.itshop.ecommerce.service.AllPrinterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,45 @@ public class AllPrinterController {
     @GetMapping("/api/allPrinter/getall")
     public List<AllPrinter> getAll() {
         return allPrinterService.getAll();
+
+
+
     }
 
 
+    @GetMapping("/api/AllPrinter/{id}")
+    public AllPrinter getProductBy(@PathVariable int id) {
+        return allPrinterService.getAllPrinterById(id);
+    }
+
+
+
+//  byCategory ID  //
+
+    @GetMapping("/api/AllPrinter/byCategory/{catagoryId}")
+    public ResponseEntity<List<AllPrinter>> getProductDetailsByCatagoryId(@PathVariable int catagoryId) {
+        List<AllPrinter> productList = allPrinterService.getAllPrinterByCatagoryId(catagoryId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Brand By ID Get All Product Details
+
+    @GetMapping("/api/AllPrinter/Brand/get/ById/{id}")
+    public ResponseEntity<List<AllPrinter>> getProductDetailsByBrandId(@PathVariable("id") int brandId) {
+        List<AllPrinter> productList = allPrinterService.getAllPrinterByBrandId(brandId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Product By ID Get All Product Details
+
+    @GetMapping("/api/AllPrinter/Product/get/ById/{id}")
+    public ResponseEntity<List<AllPrinter>> getProductDetailsByBrandIds(@PathVariable("id") int productId) {
+        List<AllPrinter> productList = allPrinterService.getAllPrinterByProductId(productId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+
+//
 
 
 
@@ -42,12 +79,6 @@ public class AllPrinterController {
         allPrinterService.saveallPrinter(allPrinter, image1, image2,image3);
         return new ResponseEntity<>("allLaptop saved successfully with images", HttpStatus.OK);
     }
-
-
-
-
-
-
 
 
     //Filter
@@ -74,26 +105,6 @@ public class AllPrinterController {
     }
 
 
-
-
-
-
-
-
-
-    // Read by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<AllPrinter> getById(@PathVariable int id) {
-        return allPrinterService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Update
-//    @PutMapping("/update/{id}")
-//    public ResponseEntity<AllPrinter> update(@PathVariable int id, @RequestBody AllPrinter printer) {
-//        return ResponseEntity.ok(allPrinterService.update(id, printer));
-//    }
 
     // Delete
     @DeleteMapping("/delete/{id}")

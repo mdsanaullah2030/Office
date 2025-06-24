@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-//Item Tebele ID by get Product tebele data
+    //Catagory By ID
+    List<Product> findByCatagoryId(int catagoryId);
 
 
 

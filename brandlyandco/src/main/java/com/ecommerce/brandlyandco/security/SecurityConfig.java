@@ -52,6 +52,12 @@ public class  SecurityConfig {
                                                         "/api/homeScreen/save","/api/homeScreen/get","/api/homeScreen/get/{id}","/api/homeScreen/delete/{id}",
 
                                                         "/api/product/save","/api/product/getall","/api/product/{id}"
+                                                ,"/api/product/byCategory/{categoryId}",
+                                                        "/api/orders/save","/api/orders/get","/api/orders/{id}",
+                                                        "/api/orders/update/{id}","/api/orders/delete/{id}"
+                                                ,"/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
+                                                        ,"/api/AddTocart/get/{id}","/api/product/AddTocart/save",
+                                                        "/api/orders/AddToCart/save/{id}"
 
 
 
@@ -116,7 +122,7 @@ public class  SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://75.119.134.82:2030", "http://localhost:5173",
+        configuration.setAllowedOrigins(List.of("http://75.119.134.82:2030", "http://localhost:2030",
                  "http://localhost:3000","/**" ));  // Add allowed origins
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));

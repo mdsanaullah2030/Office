@@ -35,6 +35,38 @@ public class AllLaptopController {
     }
 
 
+    //
+//  byCategory ID
+
+    @GetMapping("/api/AllLaptop/byCategory/{catagoryId}")
+    public ResponseEntity<List<AllLaptop>> getProductDetailsByCatagoryId(@PathVariable int catagoryId) {
+        List<AllLaptop> productList = allLaptopService.getAllLaptopByCatagoryId(catagoryId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Brand By ID Get All Product Details
+
+    @GetMapping("/api/AllLaptop/Brand/get/ById/{id}")
+    public ResponseEntity<List<AllLaptop>> getProductDetailsByBrandId(@PathVariable("id") int brandId) {
+        List<AllLaptop> productList = allLaptopService.getAllLaptopByBrandId(brandId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Product By ID Get All Product Details
+
+    @GetMapping("/api/AllLaptop/Product/get/ById/{id}")
+    public ResponseEntity<List<AllLaptop>> getProductDetailsByBrandIds(@PathVariable("id") int productId) {
+        List<AllLaptop> productList = allLaptopService.getAllLaptopByProductId(productId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+
+//
+
+
+
+
+
 
     @PostMapping("/api/allLaptop/save")
     public ResponseEntity<String> saveallLaptop(

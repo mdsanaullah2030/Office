@@ -18,6 +18,7 @@ public class CCBuilderItemDitels {
     @Column(unique = true, nullable = false)
     private String name;
 
+
     private String description;  // Radeon Vega 3 Graphics
 
     private String performance;  // 3.4GHz

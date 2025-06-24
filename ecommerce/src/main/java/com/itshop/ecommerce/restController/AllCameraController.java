@@ -1,7 +1,7 @@
 package com.itshop.ecommerce.restController;
 
 import com.itshop.ecommerce.entity.AllCamera;
-import com.itshop.ecommerce.entity.AllLaptop;
+import com.itshop.ecommerce.entity.AllCamera;
 import com.itshop.ecommerce.entity.AllPrinter;
 import com.itshop.ecommerce.entity.DesktopPcAll;
 import com.itshop.ecommerce.service.AllCameraService;
@@ -35,6 +35,36 @@ public class AllCameraController {
     public AllCamera getProductBy(@PathVariable int id) {
         return allCameraService.getAllCameraById(id);
     }
+
+
+    //  byCategory ID
+
+    @GetMapping("/api/AllCamera/byCategory/{catagoryId}")
+    public ResponseEntity<List<AllCamera>> getProductDetailsByCatagoryId(@PathVariable int catagoryId) {
+        List<AllCamera> productList = allCameraService.getAllCamerapByCatagoryId(catagoryId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Brand By ID Get All Product Details
+
+    @GetMapping("/api/AllCamera/Brand/get/ById/{id}")
+    public ResponseEntity<List<AllCamera>> getProductDetailsByBrandId(@PathVariable("id") int brandId) {
+        List<AllCamera> productList = allCameraService.getAllCameraByBrandId(brandId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+///Product By ID Get All Product Details
+
+    @GetMapping("/api/AllCamera/Product/get/ById/{id}")
+    public ResponseEntity<List<AllCamera>> getProductDetailsByBrandIds(@PathVariable("id") int productId) {
+        List<AllCamera> productList = allCameraService.getAllCameraByProductId(productId);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+
+//
+
+
 
 
 

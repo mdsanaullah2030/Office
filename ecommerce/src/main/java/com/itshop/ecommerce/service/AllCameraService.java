@@ -49,6 +49,23 @@ public class AllCameraService {
     }
 
 
+    //
+
+    public List<AllCamera> getAllCamerapByCatagoryId(int catagoryId) {
+        return allCameraRepository.findByCatagoryId(catagoryId);
+    }
+
+
+    public List<AllCamera> getAllCameraByBrandId(int brandId) {
+        return allCameraRepository.findByBrandId(brandId);
+    }
+
+
+    public List<AllCamera> getAllCameraByProductId(int productId) {
+        return allCameraRepository.findByProductId(productId);
+    }
+//
+
 
 
     @Transactional

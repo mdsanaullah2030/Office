@@ -42,10 +42,12 @@ public class DesktopPcAll {
     private String graphicsmemory;
     private String operatingsystem;
 
+
+    @Column(columnDefinition = "LONGTEXT")
     private String  title;
-
+    @Column(columnDefinition = "LONGTEXT")
     private  String details;
-
+    @Column(columnDefinition = "LONGTEXT")
     private String  specification;
 
 

@@ -45,9 +45,31 @@ public class AllPrinterService {
         return allPrinterRepository.findAll(); 
     }
 
-    public Optional<AllPrinter> getById(int id) {
-        return allPrinterRepository.findById(id);
+    public AllPrinter getAllPrinterById(int id) {
+        return allPrinterRepository.findById(id).orElse(null);
     }
+
+
+    //
+
+    public List<AllPrinter> getAllPrinterByCatagoryId(int catagoryId) {
+        return allPrinterRepository.findByCatagoryId(catagoryId);
+    }
+
+
+    public List<AllPrinter> getAllPrinterByBrandId(int brandId) {
+        return allPrinterRepository.findByBrandId(brandId);
+    }
+
+
+    public List<AllPrinter> getAllPrinterByProductId(int productId) {
+        return allPrinterRepository.findByProductId(productId);
+    }
+//
+
+
+
+
 
     @Transactional
     public void saveallPrinter(AllPrinter allPrinter, MultipartFile image1File, MultipartFile image2File, MultipartFile image3File) throws IOException {

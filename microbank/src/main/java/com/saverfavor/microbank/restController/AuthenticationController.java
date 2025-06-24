@@ -95,5 +95,14 @@ public class AuthenticationController {
                     .body("An error occurred while fetching user data: " + e.getMessage());
         }
     }
+    @DeleteMapping("/logout/{userId}")
+    public ResponseEntity<String> logoutUser(@PathVariable Long userId) {
+        try {
+            authService.logoutByUserId(userId);
+            return ResponseEntity.ok("User logged out successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }

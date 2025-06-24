@@ -43,23 +43,15 @@ public class AllPrinter {
 
     private int warranty;
 
-
+    @Column(columnDefinition = "LONGTEXT")
     private String  title;
-
+    @Column(columnDefinition = "LONGTEXT")
     private  String details;
-
+    @Column(columnDefinition = "LONGTEXT")
     private String  specification;
-
-
-
-
-
-
-
     private  String imagea;
     private String imageb;
     private String imagec;
-
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "catagory_id")

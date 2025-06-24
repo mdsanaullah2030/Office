@@ -265,8 +265,12 @@ public ProductDetails updateProductDetails(
                 );
     }
 
+//
+public List<ProductDetails> getPublishedProducts() {
+    return productDetailsRepository.findPublishedProducts();
+}
 
-
+//
 
 }
 

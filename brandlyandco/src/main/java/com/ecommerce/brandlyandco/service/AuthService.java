@@ -51,37 +51,52 @@ public class AuthService {
         if (userRepository.findByEmail(user.getUsername()).isPresent()) {
             return new AuthenticationResponse(null, "User already exists");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.USER);
-        user.setLock(true);
-        user.setActive(false);
+
+
+        user.setLock(false);     // Unlock user
+        user.setActive(true);    // Enable user
+
         userRepository.save(user);
+
         String jwt = jwtService.generateToken(user);
         saveUserToken(jwt, user);
-        sendActivationEmail(user);
+
+
+
         return new AuthenticationResponse(jwt, "User registration was successful");
     }
+
 
     public AuthenticationResponse registerAdmin(User user) {
         if (userRepository.findByEmail(user.getUsername()).isPresent()) {
             return new AuthenticationResponse(null, "User already exists");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.ADMIN);
-        user.setLock(true);
-        user.setActive(false);
+
+
+        user.setLock(false);     // Unlock admin
+        user.setActive(true);    // Enable admin
+
         userRepository.save(user);
+
         String jwt = jwtService.generateToken(user);
         saveUserToken(jwt, user);
-        sendActivationEmail(user);
-        return new AuthenticationResponse(jwt, "User registration was successful");
+
+
+
+        return new AuthenticationResponse(jwt, "Admin registration was successful");
     }
 
 
 
 
     private void sendActivationEmail(User user) {
-        String activationLink = "http://75.119.134.82:6161/activate/" + user.getId();
+        String activationLink = "http://localhost:2030/activate/" + user.getId();
 
         String subject = "Activate Your FINSYS Account";
 
@@ -124,17 +139,19 @@ public class AuthService {
         }
     }
 
-
     public AuthenticationResponse authenticate(User request) {
-        User user = userRepository.findByEmail(request.getUsername())
+        String identifier = request.getUsername(); // Can be email or phone number
+
+        // Find user by email or phone number
+        User user = userRepository.findByEmail(identifier)
+                .or(() -> userRepository.findByUsername(identifier))
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        //  Ensure user is activated
+        // Validate status
         if (!user.isEnabled()) {
             return new AuthenticationResponse(null, "User is not activated.");
         }
 
-        //  Ensure account is not locked
         if (!user.isAccountNonLocked()) {
             return new AuthenticationResponse(null, "User account is locked.");
         }
@@ -142,20 +159,19 @@ public class AuthService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getUsername(), request.getPassword()
+                            user.getEmail(), // AuthenticationManager uses email internally
+                            request.getPassword()
                     )
             );
         } catch (Exception e) {
             return new AuthenticationResponse(null, "Invalid username or password");
         }
 
-        //  Generate JWT token only if checks passed
         String jwt = jwtService.generateToken(user);
         revokeAllTokenByUser(user);
         saveUserToken(jwt, user);
         return new AuthenticationResponse(jwt, "User login was successful");
     }
-
 
 
 

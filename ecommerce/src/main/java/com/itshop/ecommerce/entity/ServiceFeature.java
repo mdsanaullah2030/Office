@@ -1,9 +1,6 @@
 package com.itshop.ecommerce.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,9 +17,13 @@ public class ServiceFeature {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(columnDefinition = "LONGTEXT")
     private String emi;
+    @Column(columnDefinition = "LONGTEXT")
     private String support;
+    @Column(columnDefinition = "LONGTEXT")
     private String payment;
+    @Column(columnDefinition = "LONGTEXT")
     private String delivery ;
 
 

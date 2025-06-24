@@ -1,6 +1,7 @@
 package com.itshop.ecommerce.repository;
 
 import com.itshop.ecommerce.entity.AllLaptop;
+import com.itshop.ecommerce.entity.DesktopPcAll;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,24 @@ import java.util.List;
 
 @Repository
 public interface AllLaptopRepository extends JpaRepository<AllLaptop, Integer> {
+
+
+    //Catagory By ID
+    List<AllLaptop> findByCatagoryId(int catagoryId);
+
+    ///Brand BY ID
+    List<AllLaptop> findByBrandId(int brandId);
+
+
+
+    // find By Product Id
+    List<AllLaptop>findByProductId(int productId) ;
+
+
+
+
+
+
 
     @Query("SELECT a FROM AllLaptop a WHERE " +
             "(:generation IS NULL OR a.generation = :generation) AND " +

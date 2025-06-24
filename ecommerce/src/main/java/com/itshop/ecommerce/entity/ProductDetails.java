@@ -32,13 +32,21 @@ public class ProductDetails {
 
 
 
-
+    @Column(columnDefinition = "LONGTEXT")
      private String  title;
 
+    @Column(columnDefinition = "LONGTEXT")
      private  String details;
 
+    @Column(columnDefinition = "LONGTEXT")
      private String  specification;
      private int warranty;
+
+     //
+     @Column(nullable = false)
+     private boolean published = false; // default false, i.e., unpublished
+
+    //
 
      private  String imagea;
      private String imageb;
@@ -67,5 +75,3 @@ public class ProductDetails {
     private ProductItem productItem;
 
 }
-///@ManyToOne(fetch = FetchType.EAGER, optional = true)
-//@JoinColumn(name = "item_id", nullable = true) ProductItem

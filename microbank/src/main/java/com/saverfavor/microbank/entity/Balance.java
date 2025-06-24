@@ -31,8 +31,10 @@ public class Balance {
 
 
     // Automatically set the current date before persisting
+
     @PrePersist
     protected void onCreate() {
+
         this.date = new Date();
     }
 

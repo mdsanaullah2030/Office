@@ -12,6 +12,21 @@ import java.util.List;
 @Repository
 public interface AllCameraRepository extends JpaRepository<AllCamera, Integer> {
 
+    //Catagory By ID
+    List<AllCamera> findByCatagoryId(int catagoryId);
+
+    ///Brand BY ID
+    List<AllCamera> findByBrandId(int brandId);
+
+
+
+    // find By Product Id
+    List<AllCamera>findByProductId(int productId) ;
+
+
+
+
+
     @Query("SELECT a FROM AllCamera a WHERE " +
             "(:name IS NULL OR a.name LIKE %:name%) AND " +
             "(:totalpixel IS NULL OR a.totalpixel = :totalpixel) AND " +

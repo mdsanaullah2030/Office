@@ -53,10 +53,11 @@ public class AllLaptop {
 
     private String color;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String  title;
-
+    @Column(columnDefinition = "LONGTEXT")
     private  String details;
-
+    @Column(columnDefinition = "LONGTEXT")
     private String  specification;
 
     private  String imagea;

@@ -130,6 +130,18 @@ public class  SecurityConfig {
                                                         "/api/DesktopPcAll/Product/get/ById/{id}","/api/DesktopPcAll/Brand/get/ById/{id}","/api/DesktopPcAll/byCategory/{catagoryId}"
 
 
+                                                        ,"/api/AllLaptop/byCategory/{catagoryId}",
+                                                        "/api/AllLaptop/Brand/get/ById/{id}","/api/AllLaptop/Product/get/ById/{id}",
+
+                                                        "/api/AllCamera/Product/get/ById/{id}","/api/AllCamera/byCategory/{catagoryId}",
+                                                        "/api/AllCamera/Brand/get/ById/{id}"
+
+
+                                                        ,"/api/AllPrinter/byCategory/{catagoryId}","/api/AllPrinter/Brand/get/ById/{id}",
+                                                        "/api/AllPrinter/Product/get/ById/{id}"
+
+                                                        ,"/api/AllNetwork/Product/get/ById/{id}","/api/AllNetwork/Brand/get/ById/{id}",
+                                                        "/api/AllNetwork/byCategory/{catagoryId}","/api/AllPrinter/{id}"
 
 
                                                 )
@@ -225,7 +237,8 @@ public class  SecurityConfig {
 
                                                         ,"/api/allprinter/save","/api/allLaptop/save","/api/desktoppcall/save",
 
-                                                        "/api/DesktopPcAll/delete/{id}","/api/DesktopPcAll/update/{id}"
+                                                        "/api/DesktopPcAll/delete/{id}","/api/DesktopPcAll/update/{id}",
+                                                        "/api/productDetails/publish/{id}","/api/productDetails/unpublish/{id}"
 
 
                                                 )

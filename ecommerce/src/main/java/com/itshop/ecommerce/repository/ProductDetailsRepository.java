@@ -34,6 +34,14 @@ public interface ProductDetailsRepository extends JpaRepository<ProductDetails,I
 
     //Wareenty
 
+    // published  and unpublished
+
+    @Query("SELECT p FROM ProductDetails p WHERE p.published = true")
+    List<ProductDetails> findPublishedProducts();
+
+    //
+
+
 
 
 
