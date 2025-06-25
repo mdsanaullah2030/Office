@@ -25,7 +25,8 @@ public class ProductService {
     @Value("${image.upload.dir}")
     private String uploadDir;
 
-
+    @Autowired
+    private CategoryRepository categoryRepository;
 
 
     public List<Product> getAllProduct(){
@@ -87,6 +88,73 @@ public class ProductService {
 
 
 
+
+    //Updete
+    @Transactional
+    public Product updateProduct(
+            int id,
+            Product incoming,
+            MultipartFile image1File,
+            MultipartFile image2File,
+            MultipartFile image3File
+    ) throws IOException {
+        // 1) Fetch existing product
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + id));
+
+        // 2) Update fields from incoming
+        existing.setProductname(incoming.getProductname());
+        existing.setQuantity(incoming.getQuantity());
+        existing.setRegularprice(incoming.getRegularprice());
+        existing.setSpecialprice(incoming.getSpecialprice());
+        existing.setModel(incoming.getModel());
+        existing.setRating(incoming.getRating());
+        existing.setDescription(incoming.getDescription());
+        existing.setWarranty(incoming.getWarranty());
+        existing.setSalesservice(incoming.getSalesservice());
+        existing.setPolicy(incoming.getPolicy());
+        existing.setOffer(incoming.getOffer());
+        existing.setCatagory(incoming.getCatagory());
+
+        // 3) Update images only if new ones are provided
+        if (image1File != null && !image1File.isEmpty()) {
+            String filename = saveImage(image1File);
+            existing.setImagea(filename);
+        }
+        if (image2File != null && !image2File.isEmpty()) {
+            String filename = saveImage(image2File);
+            existing.setImageb(filename);
+        }
+        if (image3File != null && !image3File.isEmpty()) {
+            String filename = saveImage(image3File);
+            existing.setImagec(filename);
+        }
+
+
+
+        if (incoming.getCatagory() != null && incoming.getCatagory().getId() != 0) {
+            Category cat = categoryRepository.findById(incoming.getCatagory().getId())
+                    .orElseThrow(() -> new RuntimeException("Category not found"));
+            existing.setCatagory(cat);
+        } else {
+            existing.setCatagory(null);
+        }
+        // 4) Save and return
+        return productRepository.save(existing);
+    }
+
+
+//Delete
+
+    public void deleteProduct(int id) {
+        if (!productRepository.existsById(id)) {
+            throw new RuntimeException("Item not found with ID: " + id);
+        }
+
+
+        // Now safely delete the item
+        productRepository.deleteById(id);
+    }
 
 
 }

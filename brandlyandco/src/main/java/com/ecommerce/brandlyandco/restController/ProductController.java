@@ -2,6 +2,7 @@ package com.ecommerce.brandlyandco.restController;
 
 import com.ecommerce.brandlyandco.entity.Product;
 import com.ecommerce.brandlyandco.service.ProductService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,13 +62,39 @@ public class ProductController {
     }
 
 
+    @PutMapping("/api/Product/update/{id}")
+    public ResponseEntity<String> update(
+            @PathVariable int id,
+            @RequestPart("productdetails") Product updatedItem,
+            @RequestPart(value = "imagea", required = false) MultipartFile image1File,
+            @RequestPart(value = "imageb", required = false) MultipartFile image2File,
+            @RequestPart(value = "imagec", required = false) MultipartFile image3File
+    ) throws IOException {
+        productService.updateProduct(id, updatedItem, image1File, image2File, image3File);
+        return ResponseEntity.ok("Item updated successfully");
+    }
 
 
+//Delete Product Detels
 
+    @DeleteMapping("/api/product/delete/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable int id) {
+        try {
+            productService.deleteProduct(id);
+            return new ResponseEntity<>("Item deleted successfully", HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>("Item not found with ID: " + id, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Failed to delete item: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 
 
 //Filter
+
+
+
 
 
 

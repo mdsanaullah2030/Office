@@ -57,7 +57,9 @@ public class  SecurityConfig {
                                                         "/api/orders/update/{id}","/api/orders/delete/{id}"
                                                 ,"/api/addcart/user/get/{userId}","/api/addcart/remove/{cartId}"
                                                         ,"/api/AddTocart/get/{id}","/api/product/AddTocart/save",
-                                                        "/api/orders/AddToCart/save/{id}"
+                                                        "/api/orders/AddToCart/save/{id}","/api/Product/update/{id}","/api/product/delete/{id}",
+
+                                                        "/api/forms/save","/api/forms/get","/api/forms/{id}","/api/forms/update/{id}","/api/forms/delete/{id}"
 
 
 
