@@ -1,3 +1,4 @@
+import 'package:capnest/Form/dashboard/DashboardView.dart';
 import 'package:capnest/Form/model/FormModel.dart';
 import 'package:capnest/Form/servics/FormService.dart';
 
@@ -52,12 +53,26 @@ class _DataupdateState extends State<Dataupdate> {
 
       bool success = await _service.updateForm(updatedData);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(success ? '✅ Updated' : '❌ Failed')),
+        SnackBar(
+          content: Text(
+            success
+                ? '✅ Data updated successfully!'
+                : '❌ Failed to update data.',
+          ),
+          backgroundColor: success ? Colors.green : Colors.red,
+        ),
       );
 
-      if (success) Navigator.pop(context);
+      if (success) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardView()),
+              (route) => false,
+        );
+      }
     }
   }
+
 
   Future<void> pickDate() async {
     DateTime? picked = await showDatePicker(

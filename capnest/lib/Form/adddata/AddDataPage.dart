@@ -21,8 +21,7 @@ class _AddDataPageState extends State<AddDataPage> {
   late TextEditingController addressController;
   late TextEditingController nationalIdController;
   DateTime? selectedDate;
-
-  String? selectedGender;  // For dropdown
+  String? selectedGender;
 
   @override
   void initState() {
@@ -34,7 +33,7 @@ class _AddDataPageState extends State<AddDataPage> {
     addressController = TextEditingController(text: data?.address ?? '');
     nationalIdController = TextEditingController(text: data?.nationalId ?? '');
     selectedDate = data?.dateOfBirth ?? DateTime.now();
-    selectedGender = data?.gender ?? 'Male';  // default to Male if null
+    selectedGender = data?.gender ?? 'Male';
   }
 
   Future<void> saveForm() async {
@@ -132,35 +131,81 @@ class _AddDataPageState extends State<AddDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.existingData == null ? 'Add Data' : 'Edit Data')),
-      body: Padding(
+      appBar: AppBar(
+        title: Text(widget.existingData == null ? 'Add Data' : 'Edit Data'),
+        backgroundColor: Colors.blueAccent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
+      ),
+      body: Container(
+        color: Colors.grey[200],
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              buildTextField("Full Name", fullNameController, Icons.person),
-              buildTextField("Email", emailController, Icons.email),
-              buildTextField("Phone Number", phoneController, Icons.phone),
-              buildTextField("Address", addressController, Icons.home),
-              buildGenderDropdown(),  // <-- Dropdown with icon
-              buildTextField("National ID", nationalIdController, Icons.badge),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: pickDate,
-                    child: const Text("Pick Date"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: saveForm,
-                child: Text(widget.existingData == null ? "Submit" : "Update"),
-              ),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade400,
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              )
             ],
+          ),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                buildTextField("Full Name", fullNameController, Icons.person),
+                buildTextField("Email", emailController, Icons.email),
+                buildTextField("Phone Number", phoneController, Icons.phone),
+                buildTextField("Address", addressController, Icons.home),
+                buildGenderDropdown(),
+                buildTextField("National ID", nationalIdController, Icons.badge),
+
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text(
+                      selectedDate != null
+                          ? 'Date: ${selectedDate!.toLocal().toString().split(' ')[0]}'
+                          : 'Pick a date',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const Spacer(),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      onPressed: pickDate,
+                      icon: const Icon(Icons.calendar_today),
+                      label: const Text("Pick Date"),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: saveForm,
+                  child: Text(
+                    widget.existingData == null ? "Submit" : "Update",
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

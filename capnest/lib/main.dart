@@ -4,8 +4,10 @@ import 'package:capnest/Form/formviewpage/FormViewPage.dart';
 import 'package:flutter/material.dart';
 
 
-
+  //1st
 void main() {
+
+  //2nt
   runApp(const MyApp());
 }
 
@@ -14,10 +16,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //3rd
     return MaterialApp(
       debugShowCheckedModeBanner: false,
 
-
+     //4th  active page
       home:DashboardView(
 
       ),

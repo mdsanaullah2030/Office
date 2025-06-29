@@ -77,12 +77,12 @@ class _DashboardViewState extends State<DashboardView> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const SizedBox(
-            height: 150,
+            height: 180,
             child: Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasError) {
           return const SizedBox(
-            height: 150,
+            height: 180,
             child: Center(child: Text('Error loading banners')),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -94,7 +94,7 @@ class _DashboardViewState extends State<DashboardView> {
 
         final banners = snapshot.data!;
         return SizedBox(
-          height: 150,
+          height: 180,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
