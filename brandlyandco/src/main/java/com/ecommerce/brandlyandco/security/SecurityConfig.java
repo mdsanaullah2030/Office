@@ -59,7 +59,9 @@ public class  SecurityConfig {
                                                         ,"/api/AddTocart/get/{id}","/api/product/AddTocart/save",
                                                         "/api/orders/AddToCart/save/{id}","/api/Product/update/{id}","/api/product/delete/{id}",
 
-                                                        "/api/forms/save","/api/forms/get","/api/forms/{id}","/api/forms/update/{id}","/api/forms/delete/{id}"
+                                                        "/api/forms/save","/api/forms/get","/api/forms/{id}","/api/forms/update/{id}","/api/forms/delete/{id}",
+                                                        "/api/Order/getByUser/{userId}"
+
 
 
 

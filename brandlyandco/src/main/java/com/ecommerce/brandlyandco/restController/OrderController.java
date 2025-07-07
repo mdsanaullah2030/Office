@@ -1,6 +1,8 @@
 package com.ecommerce.brandlyandco.restController;
 
 import com.ecommerce.brandlyandco.entity.Order;
+import com.ecommerce.brandlyandco.entity.User;
+import com.ecommerce.brandlyandco.repository.UserRepository;
 import com.ecommerce.brandlyandco.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,29 @@ public class OrderController {
 
     @Autowired
     private  OrderService orderService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/api/orders/save")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order,
-                                             @AuthenticationPrincipal UserDetails userDetails) {
-        return ResponseEntity.ok(orderService.saveOrder(order, userDetails));
+    public ResponseEntity<Order> createOrder(
+            @RequestBody Order order,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        // Fetch user from email (username in UserDetails)
+        User user = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found with email: " + userDetails.getUsername()));
+
+        // Set user information in the order
+        order.setUser(user);
+        order.setName(user.getName());
+        order.setEmail(user.getEmail());
+        order.setPhonenumber(user.getPhoneNo());
+
+        return ResponseEntity.ok(orderService.saveOrder(order));
     }
 
     @GetMapping("/api/orders/get")
@@ -74,4 +94,13 @@ public class OrderController {
         orderService.deleteOrder(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+    @GetMapping("/api/Order/getByUser/{userId}")
+    public ResponseEntity<List<Order>> getOrdersByUser(@PathVariable long userId) {
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        return ResponseEntity.ok(orders);
+    }
+
 }

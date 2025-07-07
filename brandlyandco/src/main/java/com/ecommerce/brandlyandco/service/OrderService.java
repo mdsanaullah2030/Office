@@ -52,45 +52,40 @@ public class OrderService {
 
 
 
-    public Order saveOrder(Order order, UserDetails userDetails) {
-        // ✅ Get the logged-in user from the JWT token
-        User loggedInUser = userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Order saveOrder(Order order) {
+        // Validate user
+        if (order.getUser() == null || order.getUser().getId() == 0) {
+            throw new RuntimeException("User information is missing.");
+        }
 
-        // ✅ Set user information in the order
-        order.setUser(loggedInUser);
-        order.setName(loggedInUser.getName());
-        order.setEmail(loggedInUser.getEmail());
-        order.setPhonenumber(loggedInUser.getPhoneNo());
-
-        // ✅ Handle product list
-        if (order.getProductList() != null && !order.getProductList().isEmpty()) {
-            Product requestProduct = order.getProductList().get(0); // support 1 product
-            Product product = productRepository.findById(requestProduct.getId())
-                    .orElseThrow(() -> new RuntimeException("Product not found"));
-
-            if (product.getQuantity() < order.getQuantity()) {
-                throw new RuntimeException("Insufficient stock for product: " + product.getModel());
-            }
-
-            double unitPrice = product.getSpecialprice() > 0
-                    ? product.getSpecialprice()
-                    : product.getRegularprice();
-            double totalPrice = unitPrice * order.getQuantity();
-
-            // ✅ Set order details
-            order.setProductid(product.getModel());
-            order.setProductname(product.getProductname());
-            order.setPrice(totalPrice);
-            order.setStatus("PENDING");
-            order.setProductList(List.of(product));
-
-            // ✅ Update stock
-            product.setQuantity(product.getQuantity() - order.getQuantity());
-            productRepository.save(product);
-        } else {
+        // Validate product list
+        if (order.getProductList() == null || order.getProductList().isEmpty()) {
             throw new RuntimeException("No product selected.");
         }
+
+        Product requestProduct = order.getProductList().get(0); // Support one product
+        Product product = productRepository.findById(requestProduct.getId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        // Validate quantity
+        if (product.getQuantity() < order.getQuantity()) {
+            throw new RuntimeException("Insufficient stock for product: " + product.getModel());
+        }
+
+        // Calculate price
+        double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
+        double totalPrice = unitPrice * order.getQuantity();
+
+        // Set order details
+        order.setProductid(product.getModel());
+        order.setProductname(product.getProductname());
+        order.setPrice(totalPrice);
+        order.setStatus("PENDING");
+        order.setProductList(List.of(product));
+
+        // Update product stock
+        product.setQuantity(product.getQuantity() - order.getQuantity());
+        productRepository.save(product);
 
         return orderRepository.save(order);
     }
@@ -203,5 +198,10 @@ public class OrderService {
         }
     }
 
+
+    //User Id order data get//
+    public List<Order> getOrdersByUserId(long userId) {
+        return orderRepository.findByUserId(userId);
+    }
 
 }

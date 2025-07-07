@@ -46,6 +46,9 @@ public class JwtService {
                 .builder()
                 .setSubject(user.getEmail())  // Sets the email as the subject
                 .claim("role", user.getRole())  // Adds the user's role to the token payload
+
+                .claim("userId", user.getId())
+
                 .setIssuedAt(new Date(System.currentTimeMillis()))  // Sets the issue time
                 .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))  // Sets expiration to 24 hours
                 .signWith(getSigninKey())  // Signs the token with the secret key
