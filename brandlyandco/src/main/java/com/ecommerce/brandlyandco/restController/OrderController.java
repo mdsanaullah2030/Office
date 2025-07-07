@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +23,9 @@ public class OrderController {
     private  OrderService orderService;
 
     @PostMapping("/api/orders/save")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        return ResponseEntity.ok(orderService.saveOrder(order));
+    public ResponseEntity<Order> createOrder(@RequestBody Order order,
+                                             @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(orderService.saveOrder(order, userDetails));
     }
 
     @GetMapping("/api/orders/get")

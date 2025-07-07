@@ -11,6 +11,7 @@ import com.ecommerce.brandlyandco.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,51 +52,44 @@ public class OrderService {
 
 
 
+    public Order saveOrder(Order order, UserDetails userDetails) {
+        // ✅ Get the logged-in user from the JWT token
+        User loggedInUser = userRepository.findByEmail(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    public Order saveOrder(Order order) {
-        // 1. Set User Info
-        if (order.getUser() != null && order.getUser().getId() != 0) {
-            userRepository.findById(order.getUser().getId()).ifPresent(user -> {
-                order.setUser(user);
-                order.setName(user.getName());
-                order.setEmail(user.getEmail());
-                order.setPhonenumber(user.getPhoneNo());
-            });
-        }
+        // ✅ Set user information in the order
+        order.setUser(loggedInUser);
+        order.setName(loggedInUser.getName());
+        order.setEmail(loggedInUser.getEmail());
+        order.setPhonenumber(loggedInUser.getPhoneNo());
 
-        // 2. Handle ProductDetails by ID
+        // ✅ Handle product list
         if (order.getProductList() != null && !order.getProductList().isEmpty()) {
-            Product requestProduct = order.getProductList().get(0); // Support only one product for now
-            Optional<Product> optionalProduct = productRepository.findById(requestProduct.getId());
+            Product requestProduct = order.getProductList().get(0); // support 1 product
+            Product product = productRepository.findById(requestProduct.getId())
+                    .orElseThrow(() -> new RuntimeException("Product not found"));
 
-            if (optionalProduct.isEmpty()) {
-                throw new RuntimeException("Product not found.");
-            }
-
-            Product product = optionalProduct.get();
-
-            // 3. Validate Quantity
-            int orderQuantity = order.getQuantity();
-            if (product.getQuantity() < orderQuantity) {
+            if (product.getQuantity() < order.getQuantity()) {
                 throw new RuntimeException("Insufficient stock for product: " + product.getModel());
             }
 
-            // 4. Calculate Price
-            double unitPrice = product.getSpecialprice() > 0 ? product.getSpecialprice() : product.getRegularprice();
-            double totalPrice = unitPrice * orderQuantity;
+            double unitPrice = product.getSpecialprice() > 0
+                    ? product.getSpecialprice()
+                    : product.getRegularprice();
+            double totalPrice = unitPrice * order.getQuantity();
 
-            // 5. Set Order Fields
+            // ✅ Set order details
             order.setProductid(product.getModel());
             order.setProductname(product.getProductname());
             order.setPrice(totalPrice);
             order.setStatus("PENDING");
-            order.setProductList(List.of(product)); // Set actual product
+            order.setProductList(List.of(product));
 
-            // 6. Update Product stock
-            product.setQuantity(product.getQuantity() - orderQuantity);
+            // ✅ Update stock
+            product.setQuantity(product.getQuantity() - order.getQuantity());
             productRepository.save(product);
         } else {
-            throw new RuntimeException("ProductDetails list is missing.");
+            throw new RuntimeException("No product selected.");
         }
 
         return orderRepository.save(order);
